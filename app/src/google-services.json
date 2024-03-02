@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1035954494838",
+    "project_id": "objectdetection-dc6bf",
+    "storage_bucket": "objectdetection-dc6bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035954494838:android:5754b83b8e279aa0a76e57",
+        "android_client_info": {
+          "package_name": "com.example.objectdetection"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK4XtYbFsGdRkzbE_6b0tFVavzr397eLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
