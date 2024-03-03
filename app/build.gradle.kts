@@ -55,9 +55,23 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 
+    implementation("com.google.mlkit:face-detection:16.1.5")
+    implementation("com.google.android.gms:play-services-mlkit-face-detection:17.0.1")
+
+    implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin")
+    implementation("org.tensorflow:tensorflow-lite-task-vision:0.2.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.3.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.7.0")
+
+    implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.1.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.3.0")
+
 
     implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
 }
 
 kapt {
