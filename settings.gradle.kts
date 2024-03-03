@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ObjectDetction"
+rootProject.name = "ObjectDetection"
 include(":app")
  

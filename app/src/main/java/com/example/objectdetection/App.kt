@@ -1,4 +1,4 @@
-package com.example.objectdetction
+package com.example.objectdetection
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

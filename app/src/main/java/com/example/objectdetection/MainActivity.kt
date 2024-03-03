@@ -1,4 +1,4 @@
-package com.example.objectdetction
+package com.example.objectdetection
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

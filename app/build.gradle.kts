@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.objectdetction"
+    namespace = "com.example.objectdetection"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.objectdetction"
+        applicationId = "com.example.objectdetection"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,6 +35,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures{
+        dataBinding = true
     }
 }
 
