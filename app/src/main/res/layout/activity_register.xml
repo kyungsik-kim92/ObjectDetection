@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.objectdetection.ui.register.RegisterViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/iv_register"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="60dp"
+                app:lottie_autoPlay="true"
+                app:lottie_rawRes="@raw/user"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".1"
+                app:layout_constraintWidth_percent=".6" />
+
+            <EditText
+                android:id="@+id/input_email_register"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/bg_box_stroke"
+                android:ellipsize="end"
+                android:hint="이메일 주소를 입력"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:paddingStart="16sp"
+                android:paddingEnd="16sp"
+                android:text="@={viewModel.inputEmailLiveData}"
+                app:layout_constraintDimensionRatio="W,1:8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_register"
+                app:layout_constraintWidth_percent=".8" />
+
+
+            <EditText
+                android:id="@+id/input_pass_register"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_box_stroke"
+                android:ellipsize="end"
+                android:hint="패스워드 입력"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:minEms="8"
+                android:minLines="1"
+                android:paddingStart="16sp"
+                android:paddingEnd="16sp"
+                android:text="@={viewModel.inputPasswordLiveData}"
+                app:layout_constraintDimensionRatio="W,1:8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_email_register"
+                app:layout_constraintWidth_percent=".8" />
+
+
+            <EditText
+                android:id="@+id/input_pass_register_ok"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_box_stroke"
+                android:ellipsize="end"
+                android:hint="패스워드 확인"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:minEms="8"
+                android:minLines="1"
+                android:paddingStart="16sp"
+                android:paddingEnd="16sp"
+                android:text="@={viewModel.inputPasswordOkLiveData}"
+                app:layout_constraintDimensionRatio="W,1:8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_pass_register"
+                app:layout_constraintWidth_percent=".8" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/bg_action_lorange"
+                android:onClick="@{()->viewModel.register()}"
+                android:text="회원가입하기"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintDimensionRatio="W,1:8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_pass_register_ok"
+                app:layout_constraintWidth_percent=".8" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
