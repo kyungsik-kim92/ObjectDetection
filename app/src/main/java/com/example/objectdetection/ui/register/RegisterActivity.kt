@@ -10,7 +10,10 @@ import com.example.objectdetection.base.BaseActivity
 import com.example.objectdetection.databinding.ActivityRegisterBinding
 import com.example.objectdetection.ext.showToast
 import com.example.objectdetection.ui.home.HomeActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class RegisterActivity : BaseActivity<ActivityRegisterBinding>(R.layout.activity_register) {
 
     private val registerViewModel by viewModels<RegisterViewModel>()

@@ -6,6 +6,9 @@ import com.example.objectdetection.R
 import com.example.objectdetection.base.BaseActivity
 import com.example.objectdetection.databinding.ActivityHomeBinding
 import com.example.objectdetection.ui.adapter.FragmentPagerAdapter
+import com.example.objectdetection.ui.bookmark.BookmarkFragment
+import com.example.objectdetection.ui.mypage.MyPageFragment
+import com.example.objectdetection.ui.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,19 +32,19 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
     }
 
     private fun initUi() {
-//        val list = listOf(
-//            SearchFragment(),
-//            BookmarkFragment(),
-//            MyPageFragment()
-//        )
-//        val adapter = FragmentPagerAdapter(list, this)
-//
-//        with(binding) {
-//            viewpager.adapter = adapter
-//            viewpager.isUserInputEnabled = false
-//            viewpager.offscreenPageLimit = list.size
-//            TabLayoutMediator(tab,viewpager,tabConfigurationStrategy).attach()
-//        }
+        val list = listOf(
+            SearchFragment(),
+            BookmarkFragment(),
+            MyPageFragment()
+        )
+        val adapter = FragmentPagerAdapter(list, this)
+
+        with(binding) {
+            viewpager.adapter = adapter
+            viewpager.isUserInputEnabled = false
+            viewpager.offscreenPageLimit = list.size
+            TabLayoutMediator(tab,viewpager,tabConfigurationStrategy).attach()
+        }
     }
 
     private fun initViewModel() {
