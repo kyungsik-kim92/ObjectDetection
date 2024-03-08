@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class WithDrawDialog(
+class WithdrawDialog(
     private val chooseItem: ChooseItem,
     private val cancelable: Boolean = true,
     private val dismissCallback: () -> Unit = {}
