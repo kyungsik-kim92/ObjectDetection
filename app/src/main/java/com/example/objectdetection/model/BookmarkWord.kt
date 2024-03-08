@@ -1,5 +1,6 @@
 package com.example.objectdetection.model
 
+import com.example.objectdetection.ui.adapter.WordItem
 import java.util.Calendar
 
 data class BookmarkWord(
@@ -9,8 +10,8 @@ data class BookmarkWord(
     var month: String = (Calendar.getInstance().get(Calendar.MONTH) + 1).toString(),
     var day: String = (Calendar.getInstance().get(Calendar.DATE)).toString()
 ) {
-//    fun foWordItem(): WordItem =
-//        WordItem(word, mean)
+    fun foWordItem(): WordItem =
+        WordItem(word, mean)
 
 }
 
