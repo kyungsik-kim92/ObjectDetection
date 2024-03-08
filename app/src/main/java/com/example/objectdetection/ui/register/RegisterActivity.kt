@@ -9,6 +9,7 @@ import com.example.objectdetection.R
 import com.example.objectdetection.base.BaseActivity
 import com.example.objectdetection.databinding.ActivityRegisterBinding
 import com.example.objectdetection.ext.showToast
+import com.example.objectdetection.ui.home.HomeActivity
 
 class RegisterActivity : BaseActivity<ActivityRegisterBinding>(R.layout.activity_register) {
 
