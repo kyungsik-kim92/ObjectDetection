@@ -1,7 +1,7 @@
 package com.example.objectdetection.ui.bookmark
 
 import com.example.objectdetection.base.ViewState
-import com.example.objectdetection.model.BookmarkWord
+import com.example.objectdetection.data.model.BookmarkWord
 
 sealed class BookmarkViewState : ViewState {
 

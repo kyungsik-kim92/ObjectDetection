@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.objectdetection.databinding.ItemWordBinding
-import com.example.objectdetection.model.BookmarkWord
+import com.example.objectdetection.data.model.BookmarkWord
 import kotlinx.parcelize.Parcelize
 
 class BookmarkAdapter(private val onDelete: (BookmarkWord) -> Unit) :

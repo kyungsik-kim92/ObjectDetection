@@ -22,7 +22,9 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(R.layout.fragment
 
     private val bookmarkViewModel by viewModels<BookmarkViewModel>()
 
-    private val bookmarkAdapter = BookmarkAdapter{}
+    private val bookmarkAdapter = BookmarkAdapter{
+        homeViewModel.deleteBookmark(it)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

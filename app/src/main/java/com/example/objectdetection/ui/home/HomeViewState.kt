@@ -1,7 +1,7 @@
 package com.example.objectdetection.ui.home
 
 import com.example.objectdetection.base.ViewState
-import com.example.objectdetection.model.BookmarkWord
+import com.example.objectdetection.data.model.BookmarkWord
 
 sealed class HomeViewState : ViewState  {
 

@@ -6,7 +6,7 @@ import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.ext.addWord
 import com.example.objectdetection.ext.deleteWord
 import com.example.objectdetection.ext.ioScope
-import com.example.objectdetection.model.BookmarkWord
+import com.example.objectdetection.data.model.BookmarkWord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

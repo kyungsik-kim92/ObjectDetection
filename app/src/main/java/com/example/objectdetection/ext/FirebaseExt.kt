@@ -1,8 +1,8 @@
 package com.example.objectdetection.ext
 
 import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.model.BookmarkWord
-import com.example.objectdetection.model.toBookmarkWord
+import com.example.objectdetection.data.model.BookmarkWord
+import com.example.objectdetection.data.model.toBookmarkWord
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

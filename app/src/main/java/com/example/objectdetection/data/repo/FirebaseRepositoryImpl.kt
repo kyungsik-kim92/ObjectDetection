@@ -1,7 +1,7 @@
 package com.example.objectdetection.data.repo
 
 import com.example.objectdetection.data.source.remote.FirebaseRemoteDataSource
-import com.example.objectdetection.model.BookmarkWord
+import com.example.objectdetection.data.model.BookmarkWord
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
