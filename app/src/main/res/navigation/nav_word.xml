@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_word"
     app:startDestination="@id/word_content_fragment">
 
     <fragment
         android:id="@+id/word_content_fragment"
         android:name="com.example.objectdetection.ui.search.word.WordContentFragment"
-        android:label="WordContentFragment">
+        android:label="WordContentFragment"
+        tools:layout="@layout/fragment_word_content">
 
         <action
             android:id="@+id/action_content_to_detail"
@@ -18,7 +20,8 @@
     <fragment
         android:id="@+id/word_detail_fragment"
         android:name="com.example.objectdetection.ui.search.word.WordDetailFragment"
-        android:label="WordDetailFragment">
+        android:label="WordDetailFragment"
+        tools:layout="@layout/fragment_word_detail">
 
     </fragment>
 
