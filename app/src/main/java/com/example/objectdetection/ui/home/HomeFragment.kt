@@ -1,23 +1,28 @@
 package com.example.objectdetection.ui.home
 
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseActivity
-import com.example.objectdetection.databinding.ActivityHomeBinding
+import com.example.objectdetection.base.BaseFragment
+import com.example.objectdetection.base.ViewEvent
+import com.example.objectdetection.base.ViewState
+import com.example.objectdetection.databinding.FragmentHomeBinding
 import com.example.objectdetection.ui.adapter.FragmentPagerAdapter
 import com.example.objectdetection.ui.bookmark.BookmarkFragment
 import com.example.objectdetection.ui.mypage.MyPageFragment
 import com.example.objectdetection.ui.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 
 
 @AndroidEntryPoint
-class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
-    private val homeViewModel by viewModels<HomeViewModel>()
-
+    override val viewModel by viewModels<HomeViewModel>()
 
     private val tabConfigurationStrategy =
         TabLayoutMediator.TabConfigurationStrategy { tab, position ->
@@ -25,13 +30,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
             tab.icon = resources.obtainTypedArray(R.array.array_home_icon).getDrawable(position)
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initUi()
-        initViewModel()
     }
 
-    private fun initUi() {
+    override fun initUi() {
         val list = listOf(
             SearchFragment(),
             BookmarkFragment(),
@@ -43,32 +47,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
             viewpager.adapter = adapter
             viewpager.isUserInputEnabled = false
             viewpager.offscreenPageLimit = list.size
-            TabLayoutMediator(tab,viewpager,tabConfigurationStrategy).attach()
+            TabLayoutMediator(tab, viewpager, tabConfigurationStrategy).attach()
         }
+        viewModel.viewEvent.map(::onChangeViewEvent).launchIn(lifecycleScope)
     }
 
-    private fun initViewModel() {
-        homeViewModel.viewStateLiveData.observe(this) { viewState ->
-            (viewState as? HomeViewState)?.let {
-                onChangedHomeViewState(it)
-            }
-        }
-    }
+    override fun onChangedViewState(state: ViewState) {}
 
-    private fun onChangedHomeViewState(viewState: HomeViewState) {
-        when (viewState) {
-            is HomeViewState.AddBookmark -> {
+    override fun onChangeViewEvent(event: ViewEvent) {}
 
-            }
-
-            is HomeViewState.DeleteBookmark -> {
-
-            }
-
-            is HomeViewState.ShowToast -> {
-
-            }
-        }
-    }
 
 }
+

@@ -72,9 +72,7 @@ class BookmarkViewHolder(private val binding: ItemWordBinding) :
         itemView.setOnClickListener {
             onDelete(item)
         }
-//        binding.deleteBookmark.setOnClickListener {
-//            onDelete(item)
-//        }
+
         binding.mean.isVisible = toggleMean
     }
 }

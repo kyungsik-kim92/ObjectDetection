@@ -1,11 +1,11 @@
 package com.example.objectdetection.ui.search.detect
 
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseActivity
-import com.example.objectdetection.databinding.ActivityDetectBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetectActivity : BaseActivity<ActivityDetectBinding>(R.layout.activity_detect) {
+class DetectActivity : AppCompatActivity(R.layout.activity_detect) {
 
 }

@@ -17,16 +17,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WordDetailViewModel @Inject constructor(
-    app: Application,
     private val searchWordRepository: SearchWordRepository,
     private val firebaseRepository: FirebaseRepository
-) : BaseViewModel(app) {
+) : BaseViewModel() {
 
     val wordItemObservableField = ObservableField<WordItem>()
 
     fun searchMeanWord() {
 
-        viewStateChanged(WordDetailViewState.ShowProgress)
+        onChangedViewState(WordDetailViewState.ShowProgress)
 
         wordItemObservableField.get()?.let { wordItem ->
             ioScope {
@@ -34,22 +33,22 @@ class WordDetailViewModel @Inject constructor(
                     is Result.Success -> {
 
                         if (result.data.isNotEmpty()) {
-                            viewStateChanged(WordDetailViewState.GetSearchWord(result.data[0]))
+                            onChangedViewState(WordDetailViewState.GetSearchWord(result.data[0]))
                         } else {
-                            viewStateChanged(WordDetailViewState.NotSearchWord)
-                            viewStateChanged(WordDetailViewState.ShowToast("단어를 찾을 수 없습니다."))
+                            onChangedViewState(WordDetailViewState.NotSearchWord)
+                            onChangedViewState(WordDetailViewState.ShowToast("단어를 찾을 수 없습니다."))
                         }
                     }
 
                     is Result.Error -> {
-                        viewStateChanged(WordDetailViewState.NotSearchWord)
-                        viewStateChanged(WordDetailViewState.ShowToast("단어를 찾을 수 없습니다."))
+                        onChangedViewState(WordDetailViewState.NotSearchWord)
+                        onChangedViewState(WordDetailViewState.ShowToast("단어를 찾을 수 없습니다."))
                     }
                 }
             }
         }
 
-        viewStateChanged(WordDetailViewState.HideProgress)
+        onChangedViewState(WordDetailViewState.HideProgress)
     }
 
     fun checkBookmark() {
@@ -61,9 +60,9 @@ class WordDetailViewModel @Inject constructor(
                         (it.word == wordItemObservableField.get()!!.word) &&
                                 (it.mean == wordItemObservableField.get()!!.mean)
                     }
-                viewStateChanged(WordDetailViewState.BookmarkState(filterList.isNotEmpty()))
+                onChangedViewState(WordDetailViewState.BookmarkState(filterList.isNotEmpty()))
             }else{
-                viewStateChanged(WordDetailViewState.BookmarkState(false))
+                onChangedViewState(WordDetailViewState.BookmarkState(false))
             }
         }
     }
@@ -76,7 +75,7 @@ class WordDetailViewModel @Inject constructor(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isAddBookmark ->
                     if (!isAddBookmark) {
-                        viewStateChanged(WordDetailViewState.ShowToast("즐겨찾기 추가를 실패하였습니다."))
+                        onChangedViewState(WordDetailViewState.ShowToast("즐겨찾기 추가를 실패하였습니다."))
                     }
                 }
             }
@@ -86,7 +85,7 @@ class WordDetailViewModel @Inject constructor(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isDeleteBookmark ->
                     if (!isDeleteBookmark) {
-                        viewStateChanged(WordDetailViewState.ShowToast("즐겨찾기 제거를 실패하였습니다."))
+                        onChangedViewState(WordDetailViewState.ShowToast("즐겨찾기 제거를 실패하였습니다."))
                     }
                 }
             }

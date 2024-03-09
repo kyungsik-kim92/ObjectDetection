@@ -6,19 +6,26 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.objectdetection.R
 import com.example.objectdetection.base.BaseFragment
+import com.example.objectdetection.base.BaseViewModel
+import com.example.objectdetection.base.ViewEvent
+import com.example.objectdetection.base.ViewState
 import com.example.objectdetection.databinding.FragmentWordContentBinding
 import com.example.objectdetection.ext.showToast
 import com.example.objectdetection.ui.adapter.WordAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class WordContentFragment :
     BaseFragment<FragmentWordContentBinding>(R.layout.fragment_word_content) {
 
-    private val wordContentViewModel by viewModels<WordContentViewModel>()
+
+    override val viewModel by viewModels<WordContentViewModel>()
 
     private val wordAdapter = WordAdapter()
 
@@ -27,14 +34,15 @@ class WordContentFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        initViewModel()
+
     }
 
-    private fun initUi() {
+
+    override fun initUi() {
         with(binding) {
             etSearch.addTextChangedListener {
                 if (!it.isNullOrEmpty()) {
-                    wordContentViewModel.searchWord(it.toString())
+                    viewModel.searchWord(it.toString())
                 }
             }
             rvWord.adapter = wordAdapter
@@ -47,19 +55,12 @@ class WordContentFragment :
                 bundleOf(ARG_WORD to clickItem)
             )
         }
+
+        viewModel.viewState.map(::onChangedViewState).launchIn(lifecycleScope)
     }
 
-    private fun initViewModel() {
-        wordContentViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState ->
-            (viewState as? WordContentViewState)?.let {
-                onChangedWordContentViewState(it)
-            }
-        }
-
-    }
-
-    private fun onChangedWordContentViewState(viewState: WordContentViewState) {
-        when (viewState) {
+    override fun onChangedViewState(state: ViewState) {
+        when (state) {
 
             is WordContentViewState.EmptyResult -> {
                 binding.rvWord.isVisible = false
@@ -69,11 +70,11 @@ class WordContentFragment :
             is WordContentViewState.GetSearchResult -> {
                 binding.rvWord.isVisible = true
                 binding.tvNotResult.isVisible = false
-                wordAdapter.addAll(viewState.list)
+                wordAdapter.addAll(state.list)
             }
 
             is WordContentViewState.ShowToast -> {
-                showToast(message = viewState.message)
+                showToast(message = state.message)
             }
 
             is WordContentViewState.ShowProgress -> {
@@ -86,6 +87,11 @@ class WordContentFragment :
             }
         }
     }
+
+    override fun onChangeViewEvent(event: ViewEvent) {
+
+    }
+
 
     override fun onStop() {
         isStopAndDestroy = true

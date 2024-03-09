@@ -17,16 +17,15 @@ import com.example.objectdetection.util.Result
 
 @HiltViewModel
 class SelectDetectionViewModel @Inject constructor(
-    app: Application,
     private val searchWordRepository: SearchWordRepository,
     private val firebaseRepository: FirebaseRepository
-) : BaseViewModel(app) {
+) : BaseViewModel() {
 
     private val wordItemObservableField = ObservableField<WordItem>()
 
     fun searchMeanWord(word: String?) {
         word?.let {
-            viewStateChanged(SelectDetectionViewState.ShowProgress)
+            onChangedViewState(SelectDetectionViewState.ShowProgress)
 
             ioScope {
                 when (val result = searchWordRepository.searchMeanWord(word)) {
@@ -49,39 +48,39 @@ class SelectDetectionViewModel @Inject constructor(
                                                 result.data[0].toMean(),
                                             )
                                         )
-                                        viewStateChanged(
+                                        onChangedViewState(
                                             SelectDetectionViewState.GetSearchWord(
                                                 result.data[0]
                                             )
                                         )
                                     } else {
-                                        viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                                        viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                                     }
                                 }
 
                                 is Result.Error -> {
-                                    viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                                    viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                                    onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                                    onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                                 }
                             }
 
                         } else {
-                            viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                            viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                            onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                            onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                         }
 
                     }
 
                     is Result.Error -> {
-                        viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                        viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                     }
 
                 }
             }
 
-            viewStateChanged(SelectDetectionViewState.HideProgress)
+            onChangedViewState(SelectDetectionViewState.HideProgress)
         }
     }
 
@@ -92,9 +91,9 @@ class SelectDetectionViewModel @Inject constructor(
                     bookmarkList.filter {
                         (it.word == wordItemObservableField.get()!!.word) && (it.mean == wordItemObservableField.get()!!.mean)
                     }
-                viewStateChanged(SelectDetectionViewState.BookmarkState(filterList.isNotEmpty()))
+                onChangedViewState(SelectDetectionViewState.BookmarkState(filterList.isNotEmpty()))
             } else {
-                viewStateChanged(SelectDetectionViewState.BookmarkState(false))
+                onChangedViewState(SelectDetectionViewState.BookmarkState(false))
             }
         }
     }
@@ -107,7 +106,7 @@ class SelectDetectionViewModel @Inject constructor(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isAddBookmark ->
                     if (!isAddBookmark) {
-                        viewStateChanged(SelectDetectionViewState.ShowToast("즐겨찾기 추가를 실패하였습니다."))
+                        onChangedViewState(SelectDetectionViewState.ShowToast("즐겨찾기 추가를 실패하였습니다."))
                     }
                 }
             }
@@ -117,7 +116,7 @@ class SelectDetectionViewModel @Inject constructor(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isDeleteBookmark ->
                     if (!isDeleteBookmark) {
-                        viewStateChanged(SelectDetectionViewState.ShowToast("즐겨찾기 제거를 실패하였습니다."))
+                        onChangedViewState(SelectDetectionViewState.ShowToast("즐겨찾기 제거를 실패하였습니다."))
                     }
                 }
             }

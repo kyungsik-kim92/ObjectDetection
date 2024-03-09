@@ -1,30 +1,31 @@
 package com.example.objectdetection.ui.register
 
-import android.app.Application
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.ext.ioScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    app: Application,
     private val firebaseRepository: FirebaseRepository
-) : BaseViewModel(app) {
+) : BaseViewModel() {
 
 
-    val inputEmailLiveData = MutableLiveData<String>()
-    val inputPasswordLiveData = MutableLiveData<String>()
-    val inputPasswordOkLiveData = MutableLiveData<String>()
+    val inputEmailStateFlow : MutableStateFlow<String?> = MutableStateFlow("")
+    val inputPasswordStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
+    val inputPasswordOkStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
 
     fun register() {
-        ioScope {
-            viewStateChanged(RegisterViewState.ShowProgress)
-            viewStateChanged(RegisterViewState.EnableInput(false))
+        viewModelScope.launch(Dispatchers.IO) {
+            onChangedViewState(RegisterViewState.ShowProgress)
+            onChangedViewState(RegisterViewState.EnableInput(false))
             val checkEmail = async { checkEmail() }
             val checkPassword = async { checkPassword() }
             val checkPasswordOk = async { checkPasswordOk() }
@@ -38,12 +39,12 @@ class RegisterViewModel @Inject constructor(
                     person.email,
                     person.password
                 ).addOnSuccessListener {
-                    viewStateChanged(RegisterViewState.RouteHome)
-                    viewStateChanged(RegisterViewState.HideProgress)
+                    onChangedViewState(RegisterViewState.RouteHome)
+                    onChangedViewState(RegisterViewState.HideProgress)
                 }.addOnFailureListener {
-                    viewStateChanged(RegisterViewState.Error("회원가입을 실패하였습니다."))
-                    viewStateChanged(RegisterViewState.EnableInput(true))
-                    viewStateChanged(RegisterViewState.HideProgress)
+                    onChangedViewState(RegisterViewState.Error("회원가입을 실패하였습니다."))
+                    onChangedViewState(RegisterViewState.EnableInput(true))
+                    onChangedViewState(RegisterViewState.HideProgress)
                 }
             }
         }
@@ -56,17 +57,17 @@ class RegisterViewModel @Inject constructor(
         checkPasswordOk: Boolean,
     ): Person? {
         return if (checkEmail && checkPassword && checkPasswordOk) {
-            Person(inputEmailLiveData.value!!, inputPasswordLiveData.value!!)
+            Person(inputEmailStateFlow.value!!, inputPasswordStateFlow.value!!)
         } else {
-            viewStateChanged(RegisterViewState.EnableInput(true))
-            viewStateChanged(RegisterViewState.HideProgress)
+            onChangedViewState(RegisterViewState.EnableInput(true))
+            onChangedViewState(RegisterViewState.HideProgress)
             null
         }
     }
     private fun checkEmail(): Boolean {
         return when {
-            inputEmailLiveData.value.isNullOrEmpty() -> {
-                viewStateChanged(RegisterViewState.Error("이메일을 입력해 주세요."))
+            inputEmailStateFlow.value.isNullOrEmpty() -> {
+                onChangedViewState(RegisterViewState.Error("이메일을 입력해 주세요."))
                 false
             }
 
@@ -76,8 +77,8 @@ class RegisterViewModel @Inject constructor(
 
     private fun checkPassword(): Boolean {
         return when {
-            inputPasswordLiveData.value.isNullOrEmpty() -> {
-                viewStateChanged(RegisterViewState.Error("비밀번호를 입력해 주세요."))
+            inputPasswordStateFlow.value.isNullOrEmpty() -> {
+                onChangedViewState(RegisterViewState.Error("비밀번호를 입력해 주세요."))
                 false
             }
 
@@ -87,8 +88,8 @@ class RegisterViewModel @Inject constructor(
 
     private fun checkPasswordOk(): Boolean {
         return when {
-            inputPasswordLiveData.value != inputPasswordOkLiveData.value -> {
-                viewStateChanged(RegisterViewState.Error("비밀번호 재입력을 올바르게 입력해 주세요."))
+            inputPasswordStateFlow.value != inputPasswordOkStateFlow.value -> {
+                onChangedViewState(RegisterViewState.Error("비밀번호 재입력을 올바르게 입력해 주세요."))
                 false
             }
 
