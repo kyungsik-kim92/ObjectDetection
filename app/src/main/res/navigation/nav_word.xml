@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_word"
+    app:startDestination="@id/word_content_fragment">
+
+    <fragment
+        android:id="@+id/word_content_fragment"
+        android:name="com.example.objectdetection.ui.search.word.WordContentFragment"
+        android:label="WordContentFragment">
+
+        <action
+            android:id="@+id/action_content_to_detail"
+            app:destination="@id/word_detail_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/word_detail_fragment"
+        android:name="com.example.objectdetection.ui.search.word.WordDetailFragment"
+        android:label="WordDetailFragment">
+
+    </fragment>
+
+
+</navigation>
