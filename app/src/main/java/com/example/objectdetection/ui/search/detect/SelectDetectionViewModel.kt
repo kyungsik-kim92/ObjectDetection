@@ -1,19 +1,20 @@
 package com.example.objectdetection.ui.search.detect
 
-import android.app.Application
 import androidx.databinding.ObservableField
+import androidx.lifecycle.viewModelScope
 import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
+import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.objectdetection.ext.addWord
 import com.example.objectdetection.ext.deleteWord
 import com.example.objectdetection.ext.getWordList
-import com.example.objectdetection.ext.ioScope
-import com.example.objectdetection.ui.adapter.WordItem
-import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.objectdetection.network.response.DictionaryResponseItem
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import com.example.objectdetection.ui.adapter.WordItem
 import com.example.objectdetection.util.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SelectDetectionViewModel @Inject constructor(
@@ -27,7 +28,7 @@ class SelectDetectionViewModel @Inject constructor(
         word?.let {
             onChangedViewState(SelectDetectionViewState.ShowProgress)
 
-            ioScope {
+            viewModelScope.launch(Dispatchers.IO) {
                 when (val result = searchWordRepository.searchMeanWord(word)) {
 
                     is Result.Success -> {
@@ -101,7 +102,7 @@ class SelectDetectionViewModel @Inject constructor(
 
     fun toggleBookmark(state: Boolean) {
         if (state) {
-            ioScope {
+            viewModelScope.launch(Dispatchers.IO) {
                 firebaseRepository.addWord(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isAddBookmark ->
@@ -111,7 +112,7 @@ class SelectDetectionViewModel @Inject constructor(
                 }
             }
         } else {
-            ioScope {
+            viewModelScope.launch(Dispatchers.IO) {
                 firebaseRepository.deleteWord(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isDeleteBookmark ->

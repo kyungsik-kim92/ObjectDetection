@@ -1,14 +1,15 @@
 package com.example.objectdetection.ui.mypage
 
-import android.app.Application
 import androidx.databinding.ObservableField
+import androidx.lifecycle.viewModelScope
 import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.ext.getWordList
-import com.example.objectdetection.ext.ioScope
 import com.google.firebase.auth.FirebaseAuth
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
@@ -40,7 +41,7 @@ class MyPageViewModel @Inject constructor(
 
     fun getBookmarkList() {
         onChangedViewState(MyPageViewState.ShowProgress)
-        ioScope {
+        viewModelScope.launch(Dispatchers.IO){
             firebaseRepository.getWordList { list ->
                 if (!list.isNullOrEmpty()) {
                     onChangedViewState(MyPageViewState.GetBookmarkList(list))
@@ -79,7 +80,7 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun logout() {
-        ioScope {
+        viewModelScope.launch(Dispatchers.IO) {
             if (firebaseRepository.logout()) {
                 onChangedViewState(MyPageViewState.Logout)
             } else {
