@@ -27,11 +27,12 @@ class RegisterViewModel @Inject constructor(
             onChangedViewState(RegisterViewState.ShowProgress)
             onChangedViewState(RegisterViewState.EnableInput(false))
             val checkEmail = async { checkEmail() }
+            // async는 launch와는 다르게 Defferd(여기서는 데이터)를 반환해주는 함수라고 공부했습니다.
             val checkPassword = async { checkPassword() }
             val checkPasswordOk = async { checkPasswordOk() }
 
             checkUser(
-                checkEmail.await(),
+                checkEmail.await(), // async의 결과 값을 await로 접근한다.
                 checkPassword.await(),
                 checkPasswordOk.await()
             )?.let { person ->
