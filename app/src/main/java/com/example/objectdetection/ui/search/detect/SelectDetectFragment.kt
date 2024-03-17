@@ -34,6 +34,7 @@ class SelectDetectFragment :
         super.onCreate(savedInstanceState)
         arguments?.let {
             selectDetectionItem = it.getString(ARG_SELECT_ITEM)
+            // 이 부분 어떤걸 의미 하는 건지 잘 모르겠습니다...
         }
     }
 
