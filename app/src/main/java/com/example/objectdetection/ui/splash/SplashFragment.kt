@@ -15,6 +15,7 @@ import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.base.ViewEvent
 import com.example.objectdetection.base.ViewState
 import com.example.objectdetection.databinding.FragmentSplashBinding
+import com.example.objectdetection.ext.routeLoginFragment
 import com.example.objectdetection.ui.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -55,10 +56,10 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(R.layout.fragment_spl
 //        })
 //    }
     }
+
     override fun onChangedViewState(state: ViewState) {
         when (state) {
-            is SplashViewState.RouteLogin ->
-                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+            is SplashViewState.RouteLogin -> routeLoginFragment()
         }
     }
 
