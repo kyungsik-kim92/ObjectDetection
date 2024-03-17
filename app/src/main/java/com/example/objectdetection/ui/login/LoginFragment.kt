@@ -61,18 +61,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
             }
 
 
-            is LoginViewState.RouteRegister -> {
-                with(binding) {
-                    inputEmailLogin.text.clear()
-                    inputPassLogin.text.clear()
-                }
-                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-                findNavController().navigate(action)
-
-
-            }
-
-
             is LoginViewState.ShowProgress -> {
                 binding.progressbar.bringToFront()
                 binding.progressbar.isVisible = true
@@ -86,7 +74,19 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     }
 
     override fun onChangeViewEvent(event: ViewEvent) {
-
+        when (event) {
+            is LoginViewEvent.RouteRegister -> {
+                with(binding) {
+                    inputEmailLogin.text.clear()
+                    inputPassLogin.text.clear()
+                }
+                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                findNavController().navigate(action)
+                // 복습으로 뒤로가기가 왜 안되었었는지 이해한 내용
+                // RouteRegister를 State로 처리하면 뒤로가기 했을 때 viewState 값이 계속 작용되어
+                // register 창으로 반복 이동 되는 것을 Event처리하여 한 번만 값을 전달하게 바꿈.
+            }
+        }
     }
 
 

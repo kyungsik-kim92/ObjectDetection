@@ -45,7 +45,7 @@ class LoginViewModel @Inject constructor(
 
 
     fun register() {
-        onChangedViewState(LoginViewState.RouteRegister)
+        onChangedViewEvent(LoginViewEvent.RouteRegister)
     }
 
 
