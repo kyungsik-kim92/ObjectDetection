@@ -1,34 +1,45 @@
 package com.example.flowtimer
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    companion object {
-        private var INIT_TIME = 10
+
+    private var initTime = 10
+
+
+    private val _countdownState = MutableStateFlow(initTime)
+    val countdownState: StateFlow<Int> = _countdownState.asStateFlow()
+
+    init {
+        countdown()
     }
 
-    fun countDownTimerFlow() = flow {
-
-        while (INIT_TIME > 0) {
-            delay(1000)
-            INIT_TIME--
-            emit(INIT_TIME)
+    private fun countdown() {
+        viewModelScope.launch {
+            while (initTime >= 0) {
+                _countdownState.emit(initTime)
+                delay(1000)
+                initTime--
+            }
         }
-
     }
 
-//    private val _stateFlow = MutableStateFlow(10)
-//    val stateFlow = _stateFlow.asStateFlow()
+//    fun countDownTimerFlow() = flow {
 //
-//   suspend fun countDownTimer() {
 //        while (INIT_TIME > 0) {
 //            delay(1000)
 //            INIT_TIME--
-//            _stateFlow.value = INIT_TIME
-//
+//            emit(INIT_TIME)
 //        }
 //
 //    }
+
+
 }

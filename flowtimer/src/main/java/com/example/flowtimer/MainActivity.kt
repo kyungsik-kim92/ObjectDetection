@@ -25,8 +25,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private suspend fun countDownTimer() {
-        viewModel.countDownTimerFlow().collect{countDown ->
-            binding.counter.text = "$countDown"
+        viewModel.countdownState.collect { countdown ->
+            binding.counter.text = "$countdown"
+
+            if (countdown == 0) {
+                binding.counter.text = "종료"
+            }
         }
     }
 
