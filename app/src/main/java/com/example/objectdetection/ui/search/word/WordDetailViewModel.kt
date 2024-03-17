@@ -25,6 +25,8 @@ class WordDetailViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val wordItemObservableField = ObservableField<WordItem>()
+    // ObservableField의 사용 이유를 검색해보고, LiveData와의 차이는 수명주기를 아느냐 모르느냐 인 것 같음.
+    // LiveData를 쓰지않고 ObservableField를 사용한 이유가 궁금합니다.
 
     fun searchMeanWord() {
 
