@@ -20,9 +20,14 @@ abstract class BaseViewModel : ViewModel() {
 
     private val _viewState = MutableStateFlow<ViewState>(ViewState.Idle)
     val viewState: StateFlow<ViewState> = _viewState.stateIn(
-        scope = viewModelScope,
+        scope = viewModelScope, // viewModelScope가 살아있을 때 까지 구독을 계속 한다
         started = SharingStarted.WhileSubscribed(5000),
+        // 구독자가 없어진 후 5초 후에 동작을 멈춤
         initialValue = ViewState.Idle
+        // 초기값 설정
+
+        // 인터넷에서 stateIn은 Flow타입(콜드스트림)을 StateFlow(핫스트림)으로 변환하는 함수라고 하는데
+        // _viewState 변수는 StateFlow타입인데 왜 stateIn을 쓴걸까요?
     )
 
     private val _viewEvent = MutableSharedFlow<ViewEvent>()
