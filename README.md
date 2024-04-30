@@ -21,6 +21,9 @@ ___
 ### 주요 라이브러리
 ![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/a0e7a2a3-343b-4f1d-86d8-324c0ec58d24)
 
+### 아키텍처
+![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/51f1fefa-b798-40e2-a387-7292c6bd89db)
+
 ### Project Flow
 ![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/a8192e61-a8bb-4a54-940a-89506860fdbe)
 
