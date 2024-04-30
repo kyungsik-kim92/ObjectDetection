@@ -8,7 +8,7 @@ Kotiln, MVVM, Corountine Flow, Hilt, DataBinding, Navigation, TensorFlowLite, Ca
 ___  
 
 ### 주요 기능
-- MVVM 아키텍처와 Navigation을 사용해서 Single Activity Architecture 구성
+- MVVM Architecture와 Navigation을 사용해서 Single Activity Architecture 구성
 - TensorFlowLite ObjectDetection 모델을 이용, CameraX 라이브러리와 연동하여 이미지를 해석/분류
 - Firebase Auth, Firebase FireStore 연동하여 로그인, 회원가입, 회원탈퇴 기능과 단어장 추가, 삭제 기능
 - Firebase Crashlytics 사용으로 예기치 못한 앱의 충돌을 파악하고 성능 개선
