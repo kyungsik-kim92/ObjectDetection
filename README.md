@@ -24,7 +24,7 @@ ___
 
 
 ### Project Flow
-![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/a8192e61-a8bb-4a54-940a-89506860fdbe)
+![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/c7f3c7db-83dd-4559-83d7-84f8d986716b)
 ![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/7679dfe7-151b-466c-b482-23891858c963)
 
 
