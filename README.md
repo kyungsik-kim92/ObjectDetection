@@ -6,7 +6,7 @@ TensorFlowLite 오픈소스 머신러닝 API를 이용해서 카메라로 비추
 ___
 Kotiln, MVVM, Corountine Flow, Hilt, DataBinding, Navigation, TensorFlowLite, CameraX, Retrofit, Lottie, CalendarView, Firebase Auth, Firebase FireStore, Firebase Crashlytics , ConstraintLayout
 ___  
-
+![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/7679dfe7-151b-466c-b482-23891858c963)
 ### 주요 기능
 - MVVM Architecture와 Navigation을 사용해서 Single Activity Architecture 구성
 - TensorFlowLite ObjectDetection 모델을 이용, CameraX 라이브러리와 연동하여 이미지를 해석/분류
@@ -25,7 +25,7 @@ ___
 
 ### Project Flow
 ![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/a2ae347b-6140-4305-b9db-48a5750503d4)
-![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/7679dfe7-151b-466c-b482-23891858c963)
+
 
 
 
