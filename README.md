@@ -18,6 +18,9 @@ ___
 - Lottie Animation 라이브러리 사용 스플래시 화면
 - Kotlin DSL 적용
 
+![KakaoTalk_20240512_175011004](https://github.com/kyungsik-kim92/AroundHospital/assets/93589990/6c0d716c-8256-4e2a-bf33-66bead01e3b2)
+
+
 ### 주요 라이브러리
 ![image](https://github.com/kyungsik-kim92/ObjectDetction/assets/93589990/a0e7a2a3-343b-4f1d-86d8-324c0ec58d24)
 
