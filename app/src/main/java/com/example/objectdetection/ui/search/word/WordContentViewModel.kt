@@ -12,9 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WordContentViewModel @Inject constructor(
-    app: Application,
     searchWordRepository: SearchWordRepository
-) : BaseViewModel(app) {
+) : BaseViewModel() {
 
     private val excelList = mutableListOf<WordItem>()
 
@@ -25,17 +24,17 @@ class WordContentViewModel @Inject constructor(
     }
 
     fun searchWord(word: String) {
-        viewStateChanged(WordContentViewState.ShowProgress)
+        onChangedViewState(WordContentViewState.ShowProgress)
 
         val toWordItemList = excelList.filter { it.word.length >= word.length }
             .filter { it.word.substring(word.indices).contains(word) }
 
         if (toWordItemList.isEmpty()) {
-            viewStateChanged(WordContentViewState.EmptyResult)
-            viewStateChanged(WordContentViewState.HideProgress)
+            onChangedViewState(WordContentViewState.EmptyResult)
+            onChangedViewState(WordContentViewState.HideProgress)
         } else {
-            viewStateChanged(WordContentViewState.GetSearchResult(toWordItemList))
-            viewStateChanged(WordContentViewState.HideProgress)
+            onChangedViewState(WordContentViewState.GetSearchResult(toWordItemList))
+            onChangedViewState(WordContentViewState.HideProgress)
         }
     }
 

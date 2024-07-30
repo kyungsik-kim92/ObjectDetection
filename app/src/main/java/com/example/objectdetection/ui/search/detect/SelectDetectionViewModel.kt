@@ -1,34 +1,34 @@
 package com.example.objectdetection.ui.search.detect
 
-import android.app.Application
 import androidx.databinding.ObservableField
+import androidx.lifecycle.viewModelScope
 import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
+import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.objectdetection.ext.addWord
 import com.example.objectdetection.ext.deleteWord
 import com.example.objectdetection.ext.getWordList
-import com.example.objectdetection.ext.ioScope
-import com.example.objectdetection.ui.adapter.WordItem
-import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.objectdetection.network.response.DictionaryResponseItem
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import com.example.objectdetection.ui.adapter.WordItem
 import com.example.objectdetection.util.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SelectDetectionViewModel @Inject constructor(
-    app: Application,
     private val searchWordRepository: SearchWordRepository,
     private val firebaseRepository: FirebaseRepository
-) : BaseViewModel(app) {
+) : BaseViewModel() {
 
     private val wordItemObservableField = ObservableField<WordItem>()
 
     fun searchMeanWord(word: String?) {
         word?.let {
-            viewStateChanged(SelectDetectionViewState.ShowProgress)
+            onChangedViewState(SelectDetectionViewState.ShowProgress)
 
-            ioScope {
+            viewModelScope.launch(Dispatchers.IO) {
                 when (val result = searchWordRepository.searchMeanWord(word)) {
 
                     is Result.Success -> {
@@ -49,39 +49,39 @@ class SelectDetectionViewModel @Inject constructor(
                                                 result.data[0].toMean(),
                                             )
                                         )
-                                        viewStateChanged(
+                                        onChangedViewState(
                                             SelectDetectionViewState.GetSearchWord(
                                                 result.data[0]
                                             )
                                         )
                                     } else {
-                                        viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                                        viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                                     }
                                 }
 
                                 is Result.Error -> {
-                                    viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                                    viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                                    onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                                    onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                                 }
                             }
 
                         } else {
-                            viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                            viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                            onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                            onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                         }
 
                     }
 
                     is Result.Error -> {
-                        viewStateChanged(SelectDetectionViewState.NotSearchWord)
-                        viewStateChanged(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
+                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
                     }
 
                 }
             }
 
-            viewStateChanged(SelectDetectionViewState.HideProgress)
+            onChangedViewState(SelectDetectionViewState.HideProgress)
         }
     }
 
@@ -92,9 +92,9 @@ class SelectDetectionViewModel @Inject constructor(
                     bookmarkList.filter {
                         (it.word == wordItemObservableField.get()!!.word) && (it.mean == wordItemObservableField.get()!!.mean)
                     }
-                viewStateChanged(SelectDetectionViewState.BookmarkState(filterList.isNotEmpty()))
+                onChangedViewState(SelectDetectionViewState.BookmarkState(filterList.isNotEmpty()))
             } else {
-                viewStateChanged(SelectDetectionViewState.BookmarkState(false))
+                onChangedViewState(SelectDetectionViewState.BookmarkState(false))
             }
         }
     }
@@ -102,22 +102,22 @@ class SelectDetectionViewModel @Inject constructor(
 
     fun toggleBookmark(state: Boolean) {
         if (state) {
-            ioScope {
+            viewModelScope.launch(Dispatchers.IO) {
                 firebaseRepository.addWord(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isAddBookmark ->
                     if (!isAddBookmark) {
-                        viewStateChanged(SelectDetectionViewState.ShowToast("즐겨찾기 추가를 실패하였습니다."))
+                        onChangedViewState(SelectDetectionViewState.ShowToast("즐겨찾기 추가를 실패하였습니다."))
                     }
                 }
             }
         } else {
-            ioScope {
+            viewModelScope.launch(Dispatchers.IO) {
                 firebaseRepository.deleteWord(
                     wordItemObservableField.get()!!.toBookmarkWord()
                 ) { isDeleteBookmark ->
                     if (!isDeleteBookmark) {
-                        viewStateChanged(SelectDetectionViewState.ShowToast("즐겨찾기 제거를 실패하였습니다."))
+                        onChangedViewState(SelectDetectionViewState.ShowToast("즐겨찾기 제거를 실패하였습니다."))
                     }
                 }
             }

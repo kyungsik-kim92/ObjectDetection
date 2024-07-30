@@ -2,16 +2,27 @@ package com.example.objectdetection.ui.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseFragment
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.objectdetection.databinding.FragmentSearchBinding
 import com.example.objectdetection.ui.search.detect.DetectActivity
 import com.example.objectdetection.ui.search.word.WordActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
+class SearchFragment : Fragment() {
+
+    lateinit var binding: FragmentSearchBinding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_detect"
     app:startDestination="@id/permissions_fragment">
 
@@ -20,7 +21,8 @@
     <fragment
         android:id="@+id/camera_fragment"
         android:name="com.example.objectdetection.ui.search.detect.CameraFragment"
-        android:label="CameraFragment">
+        android:label="CameraFragment"
+        tools:layout="@layout/fragment_camera">
 
         <action
             android:id="@+id/action_camera_to_permissions"
@@ -38,7 +40,8 @@
     <fragment
         android:id="@+id/select_detect_item_fragment"
         android:name="com.example.objectdetection.ui.search.detect.SelectDetectFragment"
-        android:label="SelectDetectItemFragment" />
+        android:label="SelectDetectItemFragment"
+        tools:layout="@layout/fragment_select_detect"/>
 
 
 </navigation>

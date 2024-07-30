@@ -31,8 +31,18 @@ import java.util.concurrent.Executors
 
 
 @AndroidEntryPoint
-class CameraFragment : BaseFragment<FragmentCameraBinding>(R.layout.fragment_camera),
+class CameraFragment : Fragment(),
     ObjectDetectorHelper.DetectorListener {
+        lateinit var binding :FragmentCameraBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentCameraBinding.inflate(inflater)
+        return binding.root
+    }
 
     private lateinit var objectDetectorHelper: ObjectDetectorHelper
     private lateinit var bitmapBuffer: Bitmap

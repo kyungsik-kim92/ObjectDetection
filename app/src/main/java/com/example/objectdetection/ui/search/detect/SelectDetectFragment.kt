@@ -6,11 +6,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.objectdetection.R
 import com.example.objectdetection.base.BaseFragment
+import com.example.objectdetection.base.BaseViewModel
+import com.example.objectdetection.base.ViewEvent
+import com.example.objectdetection.base.ViewState
 import com.example.objectdetection.databinding.FragmentSelectDetectBinding
 import com.example.objectdetection.ext.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 
 
 const val ARG_SELECT_ITEM = "item_select_detection"
@@ -19,6 +25,8 @@ const val ARG_SELECT_ITEM = "item_select_detection"
 class SelectDetectFragment :
     BaseFragment<FragmentSelectDetectBinding>(R.layout.fragment_select_detect) {
 
+    override val viewModel by viewModels<SelectDetectionViewModel>()
+
     private var selectDetectionItem: String? = null
     private val selectDetectionViewModel by viewModels<SelectDetectionViewModel>()
 
@@ -26,39 +34,35 @@ class SelectDetectFragment :
         super.onCreate(savedInstanceState)
         arguments?.let {
             selectDetectionItem = it.getString(ARG_SELECT_ITEM)
+            // 이 부분 어떤걸 의미 하는 건지 잘 모르겠습니다...
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        initViewModel()
+
     }
 
-    private fun initUi() {
+
+
+    override fun initUi() {
 
         with(binding) {
             viewWordDetail.itemBookmark.setOnCheckedChangeListener { _, bookmarkState ->
                 selectDetectionViewModel.toggleBookmark(bookmarkState)
             }
         }
+
+        viewModel.viewState.map(::onChangedViewState).launchIn(lifecycleScope)
+        viewModel.searchMeanWord(selectDetectionItem)
     }
-    private fun initViewModel() {
 
-        selectDetectionViewModel.searchMeanWord(selectDetectionItem)
-
-        selectDetectionViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState ->
-            (viewState as? SelectDetectionViewState)?.let {
-                onChangedSelectDetectionViewState(it)
-            }
-        }
-
-    }
-    private fun onChangedSelectDetectionViewState(viewState: SelectDetectionViewState) {
-        when (viewState) {
+    override fun onChangedViewState(state: ViewState) {
+        when (state) {
 
             is SelectDetectionViewState.BookmarkState -> {
-                binding.viewWordDetail.itemBookmark.isChecked = viewState.isBookmark
+                binding.viewWordDetail.itemBookmark.isChecked = state.isBookmark
             }
 
             is SelectDetectionViewState.GetSearchWord -> {
@@ -66,11 +70,11 @@ class SelectDetectFragment :
                 binding.containerWordDetail.isVisible = true
 
 
-                binding.viewWordDetail.item = viewState.word
+                binding.viewWordDetail.item = state.word
 
-                binding.viewWordDetail.phonetic.text = viewState.word.phonetic
+                binding.viewWordDetail.phonetic.text = state.word.phonetic
 
-                val getSoundUrl = viewState.word.phonetics.filter { it.audio != "" }
+                val getSoundUrl = state.word.phonetics.filter { it.audio != "" }
 
                 binding.viewWordDetail.sound.isVisible = getSoundUrl.isNotEmpty()
 
@@ -78,7 +82,7 @@ class SelectDetectFragment :
                     playSound(getSoundUrl[0].audio)
                 }
 
-                viewState.word.meanings.forEach { meaning ->
+                state.word.meanings.forEach { meaning ->
 
                     when (meaning.partOfSpeech) {
 
@@ -110,7 +114,7 @@ class SelectDetectFragment :
             }
 
             is SelectDetectionViewState.ShowToast -> {
-                showToast(message = viewState.message)
+                showToast(message = state.message)
             }
 
             is SelectDetectionViewState.NotSearchWord -> {
@@ -128,6 +132,12 @@ class SelectDetectFragment :
             }
         }
     }
+
+    override fun onChangeViewEvent(event: ViewEvent) {
+
+    }
+
+
 
     private fun playSound(url: String) {
         try {

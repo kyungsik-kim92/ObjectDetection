@@ -14,15 +14,9 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes private val layoutId
 
     protected lateinit var binding: B
 
-    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = DataBindingUtil.setContentView(this, layoutId)
         setContentView(binding.root)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

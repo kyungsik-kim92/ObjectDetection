@@ -5,57 +5,48 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.objectdetection.R
 import com.example.objectdetection.base.BaseFragment
+import com.example.objectdetection.base.BaseViewModel
+import com.example.objectdetection.base.ViewEvent
+import com.example.objectdetection.base.ViewState
 import com.example.objectdetection.databinding.FragmentMyPageBinding
 import com.example.objectdetection.ui.dialog.ChooseDialog
 import com.example.objectdetection.ui.dialog.ChooseItem
 import com.example.objectdetection.ui.dialog.WithdrawDialog
-import com.example.objectdetection.ui.login.LoginActivity
+import com.example.objectdetection.ui.login.LoginFragment
 import com.example.objectdetection.util.EventDecorator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 
 
 @AndroidEntryPoint
-class MyPageFragment :BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
+class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
 
-    private val myPageViewModel by viewModels<MyPageViewModel>()
 
+    override val viewModel by viewModels<MyPageViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        initViewModel()
-    }
-
-    private fun initUi() {
 
     }
 
-    private fun initViewModel() {
-        binding.viewModel = myPageViewModel
 
-        myPageViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState ->
-            (viewState as? MyPageViewState)?.let {
-                onChangedMyPageViewState(it)
-            }
-        }
+    override fun initUi() {
+        viewModel.viewState.map(::onChangedViewState).launchIn(lifecycleScope)
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        myPageViewModel.getBookmarkList()
-    }
-
-    private fun onChangedMyPageViewState(viewState: MyPageViewState) {
-        when (viewState) {
+    override fun onChangedViewState(state: ViewState) {
+        when (state) {
             is MyPageViewState.GetBookmarkList -> {
-                viewState.list
+                state.list
             }
 
             is MyPageViewState.GetCalendarList -> {
 
-                viewState.list.forEach {
+                state.list.forEach {
                     binding.calendarView.addDecorator(
                         EventDecorator(
                             listOf(it.first),
@@ -66,6 +57,7 @@ class MyPageFragment :BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_p
                 }
             }
 
+
             is MyPageViewState.ShowLogoutDialog -> {
                 ChooseDialog(
                     ChooseItem(
@@ -75,7 +67,7 @@ class MyPageFragment :BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_p
                         positiveString = "로그아웃"
                     ),
                     dismissCallback = {
-                        myPageViewModel.logout()
+                        viewModel.logout()
                     }
                 ).show(childFragmentManager, "ChooseDialog")
             }
@@ -100,7 +92,7 @@ class MyPageFragment :BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_p
                                 startActivity(
                                     Intent(
                                         requireActivity(),
-                                        LoginActivity::class.java
+                                        LoginFragment::class.java
                                     ).apply {
                                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                     })
@@ -111,7 +103,7 @@ class MyPageFragment :BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_p
             }
 
             is MyPageViewState.Logout -> {
-                startActivity(Intent(requireActivity(), LoginActivity::class.java).apply {
+                startActivity(Intent(requireActivity(), LoginFragment::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 })
             }
@@ -132,10 +124,20 @@ class MyPageFragment :BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_p
             is MyPageViewState.ShowToast -> {
 
             }
+
             MyPageViewState.WithDraw -> {
 
             }
         }
+    }
+
+    override fun onChangeViewEvent(event: ViewEvent) {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getBookmarkList()
     }
 
     private fun Int.convertLevel(): String {

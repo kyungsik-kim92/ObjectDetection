@@ -13,6 +13,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.objectdetection.R
 import com.example.objectdetection.base.BaseFragment
+import com.example.objectdetection.base.BaseViewModel
+import com.example.objectdetection.base.ViewEvent
+import com.example.objectdetection.base.ViewState
 import com.example.objectdetection.databinding.FragmentWordDetailBinding
 import com.example.objectdetection.ext.showToast
 import com.example.objectdetection.ui.adapter.WordItem
@@ -24,62 +27,52 @@ const val ARG_WORD = "item_word"
 class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.fragment_word_detail) {
     private var wordItem: WordItem? = null
 
-    private val wordDetailViewModel by viewModels<WordDetailViewModel>()
+    override val viewModel by viewModels<WordDetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             wordItem = it.getParcelable(ARG_WORD)
         }
-        wordDetailViewModel.wordItemObservableField.set(wordItem)
+        viewModel.wordItemObservableField.set(wordItem)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        initViewModel()
+
     }
 
-    private fun initUi() {
+
+
+    override fun initUi() {
 
         with(binding) {
-            binding.viewWordDetail.itemBookmark.setOnCheckedChangeListener { _, bookmarkState ->
-                wordDetailViewModel.toggleBookmark(bookmarkState)
+            viewWordDetail.itemBookmark.setOnCheckedChangeListener { _, bookmarkState ->
+                viewModel.toggleBookmark(bookmarkState)
             }
         }
+        viewModel.searchMeanWord()
 
     }
 
-    private fun initViewModel() {
-
-        wordDetailViewModel.searchMeanWord()
-
-
-        wordDetailViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState ->
-            (viewState as? WordDetailViewState)?.let {
-                onChangedWordDetailViewState(it)
-            }
-        }
-
-    }
-
-    private fun onChangedWordDetailViewState(viewState: WordDetailViewState) {
-        when (viewState) {
+    override fun onChangedViewState(state: ViewState) {
+        when (state) {
 
             is WordDetailViewState.BookmarkState -> {
-                binding.viewWordDetail.itemBookmark.isChecked = viewState.isBookmark
+                binding.viewWordDetail.itemBookmark.isChecked = state.isBookmark
             }
 
             is WordDetailViewState.GetSearchWord -> {
                 binding.notResult.isVisible = false
                 binding.containerWordDetail.isVisible = true
 
-                binding.viewWordDetail.item = viewState.word
+                binding.viewWordDetail.item = state.word
 
-                binding.viewWordDetail.phonetic.text = viewState.word.phonetic
+                binding.viewWordDetail.phonetic.text = state.word.phonetic
 
-                val getSoundUrl = viewState.word.phonetics.filter { it.audio != "" }
+                val getSoundUrl = state.word.phonetics.filter { it.audio != "" }
 
                 getSoundUrl.forEach {
                     Log.d("결과", it.audio)
@@ -91,10 +84,10 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
                     playSound(getSoundUrl[0].audio)
                 }
                 binding.viewWordDetail.sound.setOnClickListener {
-                    playSound(viewState.word.phonetics[0].audio)
+                    playSound(state.word.phonetics[0].audio)
                 }
 
-                viewState.word.meanings.forEach { meaning ->
+                state.word.meanings.forEach { meaning ->
 
                     when (meaning.partOfSpeech) {
 
@@ -122,12 +115,12 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
                         else -> {}
                     }
                 }
-                wordDetailViewModel.checkBookmark()
+                viewModel.checkBookmark()
 
             }
 
             is WordDetailViewState.ShowToast -> {
-                showToast(message = viewState.message)
+                showToast(message = state.message)
             }
 
             is WordDetailViewState.NotSearchWord -> {
@@ -145,6 +138,12 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
             }
         }
     }
+
+    override fun onChangeViewEvent(event: ViewEvent) {
+
+    }
+
+
 
 
     private fun playSound(url: String) {

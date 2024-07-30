@@ -1,14 +1,15 @@
 package com.example.objectdetection.ui.mypage
 
-import android.app.Application
 import androidx.databinding.ObservableField
+import androidx.lifecycle.viewModelScope
 import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.ext.getWordList
-import com.example.objectdetection.ext.ioScope
 import com.google.firebase.auth.FirebaseAuth
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
@@ -16,10 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    app: Application,
     private val firebaseRepository: FirebaseRepository
 
-) : BaseViewModel(app) {
+) : BaseViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
     private val authListener = FirebaseAuth.AuthStateListener {
@@ -40,11 +40,11 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun getBookmarkList() {
-        viewStateChanged(MyPageViewState.ShowProgress)
-        ioScope {
+        onChangedViewState(MyPageViewState.ShowProgress)
+        viewModelScope.launch(Dispatchers.IO){
             firebaseRepository.getWordList { list ->
                 if (!list.isNullOrEmpty()) {
-                    viewStateChanged(MyPageViewState.GetBookmarkList(list))
+                    onChangedViewState(MyPageViewState.GetBookmarkList(list))
 
                     val calendarDayList = mutableListOf<Pair<CalendarDay, Int>>()
 
@@ -67,33 +67,33 @@ class MyPageViewModel @Inject constructor(
                     }
 
                     if (calendarDayList.isNotEmpty()) {
-                        viewStateChanged(MyPageViewState.GetCalendarList(calendarDayList))
+                        onChangedViewState(MyPageViewState.GetCalendarList(calendarDayList))
                     } else {
-                        viewStateChanged(MyPageViewState.EmptyBookmarkList)
+                        onChangedViewState(MyPageViewState.EmptyBookmarkList)
                     }
                 } else {
-                    viewStateChanged(MyPageViewState.EmptyBookmarkList)
+                    onChangedViewState(MyPageViewState.EmptyBookmarkList)
                 }
             }
         }
-        viewStateChanged(MyPageViewState.HideProgress)
+        onChangedViewState(MyPageViewState.HideProgress)
     }
 
     fun logout() {
-        ioScope {
+        viewModelScope.launch(Dispatchers.IO) {
             if (firebaseRepository.logout()) {
-                viewStateChanged(MyPageViewState.Logout)
+                onChangedViewState(MyPageViewState.Logout)
             } else {
-                viewStateChanged(MyPageViewState.ShowToast("로그아웃을 실패하였습니다."))
+                onChangedViewState(MyPageViewState.ShowToast("로그아웃을 실패하였습니다."))
             }
         }
     }
 
     fun showWithdrawDialog() {
-        viewStateChanged(MyPageViewState.ShowWithdrawDialog)
+        onChangedViewState(MyPageViewState.ShowWithdrawDialog)
     }
 
     fun showLogoutDialog() {
-        viewStateChanged(MyPageViewState.ShowLogoutDialog)
+        onChangedViewState(MyPageViewState.ShowLogoutDialog)
     }
 }
