@@ -1,7 +1,5 @@
-package com.example.objectdetection.base
+package com.example.presentation.base
 
-import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity

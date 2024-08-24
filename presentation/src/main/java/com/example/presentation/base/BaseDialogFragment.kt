@@ -1,4 +1,4 @@
-package com.example.objectdetection.base
+package com.example.presentation.base
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
