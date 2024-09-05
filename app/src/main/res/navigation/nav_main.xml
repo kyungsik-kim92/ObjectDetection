@@ -39,23 +39,23 @@
             android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.example.objectdetection.ui.search.SearchFragment"
-        android:label="SearchFragment" >
-        <action
-            android:id="@+id/action_searchFragment_to_detectFragment"
-            app:destination="@id/detectFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_wordFragment"
-            app:destination="@id/wordFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/detectFragment"
-        android:name="com.example.objectdetection.ui.search.detect.DetectActivity"
-        android:label="DetectFragment" />
-    <fragment
-        android:id="@+id/wordFragment"
-        android:name="com.example.objectdetection.ui.search.word.WordActivity"
-        android:label="WordFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/searchFragment"-->
+<!--        android:name="com.example.objectdetection.ui.search.SearchFragment"-->
+<!--        android:label="SearchFragment" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_searchFragment_to_detectFragment"-->
+<!--            app:destination="@id/detectFragment" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_searchFragment_to_wordFragment"-->
+<!--            app:destination="@id/wordFragment" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/detectFragment"-->
+<!--        android:name="com.example.objectdetection.ui.search.detect.DetectActivity"-->
+<!--        android:label="DetectFragment" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/wordFragment"-->
+<!--        android:name="com.example.objectdetection.ui.search.word.WordActivity"-->
+<!--        android:label="WordFragment" />-->
 </navigation>
