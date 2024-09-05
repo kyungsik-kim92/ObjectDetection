@@ -1,4 +1,4 @@
-package com.example.presentation.base
+package com.example.objectdetection.base
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
