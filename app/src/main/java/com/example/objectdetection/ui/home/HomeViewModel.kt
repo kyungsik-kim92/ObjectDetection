@@ -16,18 +16,6 @@ class HomeViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
-//    fun addBookmark(item: BookmarkWord) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            firebaseRepository.addWord(item) { isSuccess ->
-//                if (isSuccess) {
-//                    onChangedViewEvent(HomeViewEvent.AddBookmark(item))
-//                } else {
-//
-//                }
-//            }
-//        }
-//    }
-
     fun deleteBookmark(item: BookmarkWord) {
 
         viewModelScope.launch(Dispatchers.IO) {
