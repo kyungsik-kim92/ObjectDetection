@@ -1,11 +1,8 @@
 package com.example.objectdetection.ui.login
 
-import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.ext.ioScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -35,9 +32,12 @@ class LoginViewModel @Inject constructor(
                     .addOnSuccessListener {
                         onChangedViewState(LoginViewState.RouteHome)
                         onChangedViewState(LoginViewState.HideProgress)
+
                     }.addOnFailureListener {
                         onChangedViewState(LoginViewState.Error("로그인을 실패하였습니다."))
                         onChangedViewState(LoginViewState.HideProgress)
+                        onChangedViewState(LoginViewState.EnableInput(true))
+
                     }
             }
         }
