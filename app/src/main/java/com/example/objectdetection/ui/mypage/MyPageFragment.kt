@@ -6,9 +6,9 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.objectdetection.MainActivity
 import com.example.objectdetection.R
 import com.example.objectdetection.base.BaseFragment
-import com.example.objectdetection.base.BaseViewModel
 import com.example.objectdetection.base.ViewEvent
 import com.example.objectdetection.base.ViewState
 import com.example.objectdetection.databinding.FragmentMyPageBinding
@@ -103,7 +103,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             }
 
             is MyPageViewState.Logout -> {
-                startActivity(Intent(requireActivity(), LoginFragment::class.java).apply {
+                startActivity(Intent(requireActivity(), MainActivity::class.java).apply {
+                    putExtra(KEY_LOGOUT, true)
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 })
             }
@@ -158,5 +159,9 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
                 "level_3"
             }
         }
+    }
+
+    companion object {
+        const val KEY_LOGOUT = "key_logout"
     }
 }
