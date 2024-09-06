@@ -1,7 +1,6 @@
 package com.example.objectdetection.ui.splash
 
-import android.Manifest
-import com.example.objectdetection.base.BaseViewModel
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.ext.LottieAnimateState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 package com.example.objectdetection.ui.register
 
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.ViewState
 
 sealed class RegisterViewState : ViewState {
 

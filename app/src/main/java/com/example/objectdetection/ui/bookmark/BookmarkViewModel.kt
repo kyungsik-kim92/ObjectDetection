@@ -1,7 +1,7 @@
 package com.example.objectdetection.ui.bookmark
 
 import androidx.lifecycle.viewModelScope
-import com.example.objectdetection.base.BaseViewModel
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.ext.getWordList
 import dagger.hilt.android.lifecycle.HiltViewModel

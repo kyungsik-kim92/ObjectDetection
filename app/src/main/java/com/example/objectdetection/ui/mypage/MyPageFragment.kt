@@ -8,9 +8,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.objectdetection.MainActivity
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseFragment
-import com.example.objectdetection.base.ViewEvent
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.BaseFragment
+import com.example.presentation.base.ViewEvent
+import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentMyPageBinding
 import com.example.objectdetection.ui.dialog.ChooseDialog
 import com.example.objectdetection.ui.dialog.ChooseItem

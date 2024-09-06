@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseFragment
-import com.example.objectdetection.base.ViewEvent
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.BaseFragment
+import com.example.presentation.base.ViewEvent
+import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentSplashBinding
 import com.example.objectdetection.ext.routeLoginFragment
 import com.example.objectdetection.ui.mypage.MyPageFragment.Companion.KEY_LOGOUT

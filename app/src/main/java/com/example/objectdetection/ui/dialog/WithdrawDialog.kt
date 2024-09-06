@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseDialogFragment
+import com.example.presentation.base.BaseDialogFragment
 import com.example.objectdetection.databinding.DialogWithdrawBinding
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,12 +1,11 @@
 package com.example.objectdetection.ui.register
 
 import androidx.lifecycle.viewModelScope
-import com.example.objectdetection.base.BaseViewModel
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

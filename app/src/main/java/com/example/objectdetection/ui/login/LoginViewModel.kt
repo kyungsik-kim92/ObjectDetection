@@ -1,7 +1,7 @@
 package com.example.objectdetection.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.example.objectdetection.base.BaseViewModel
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

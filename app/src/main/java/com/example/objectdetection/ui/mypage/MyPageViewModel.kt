@@ -2,7 +2,7 @@ package com.example.objectdetection.ui.mypage
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.example.objectdetection.base.BaseViewModel
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.ext.getWordList
 import com.google.firebase.auth.FirebaseAuth

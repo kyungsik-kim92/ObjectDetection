@@ -1,23 +1,18 @@
 package com.example.objectdetection.ui.register
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseFragment
-import com.example.objectdetection.base.ViewEvent
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.BaseFragment
+import com.example.presentation.base.ViewEvent
+import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentRegisterBinding
 import com.example.objectdetection.ext.showToast
-import com.example.objectdetection.ui.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 
 
 @AndroidEntryPoint

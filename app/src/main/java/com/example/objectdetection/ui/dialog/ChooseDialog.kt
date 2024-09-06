@@ -3,7 +3,7 @@ package com.example.objectdetection.ui.dialog
 import android.os.Bundle
 import android.view.View
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseDialogFragment
+import com.example.presentation.base.BaseDialogFragment
 import com.example.objectdetection.databinding.DialogChooseBinding
 import dagger.hilt.android.AndroidEntryPoint
 

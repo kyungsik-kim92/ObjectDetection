@@ -1,8 +1,7 @@
 package com.example.objectdetection.ui.search.word
 
-import android.app.Application
 import androidx.lifecycle.viewModelScope
-import com.example.objectdetection.base.BaseViewModel
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.objectdetection.ui.adapter.WordItem
 import dagger.hilt.android.lifecycle.HiltViewModel

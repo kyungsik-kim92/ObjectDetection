@@ -20,7 +20,6 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseFragment
 import com.example.objectdetection.databinding.FragmentCameraBinding
 import com.example.objectdetection.util.ObjectDetectorHelper
 import dagger.hilt.android.AndroidEntryPoint

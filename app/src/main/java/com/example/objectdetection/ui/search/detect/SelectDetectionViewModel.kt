@@ -2,7 +2,7 @@ package com.example.objectdetection.ui.search.detect
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.example.objectdetection.base.BaseViewModel
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.objectdetection.ext.addWord

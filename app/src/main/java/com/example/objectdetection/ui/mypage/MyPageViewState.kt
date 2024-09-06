@@ -1,6 +1,6 @@
 package com.example.objectdetection.ui.mypage
 
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.ViewState
 import com.example.objectdetection.data.model.BookmarkWord
 import com.prolificinteractive.materialcalendarview.CalendarDay
 

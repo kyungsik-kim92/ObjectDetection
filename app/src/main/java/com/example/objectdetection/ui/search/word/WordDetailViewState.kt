@@ -1,6 +1,6 @@
 package com.example.objectdetection.ui.search.word
 
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.ViewState
 import com.example.objectdetection.network.response.DictionaryResponseItem
 
 sealed class WordDetailViewState : ViewState {

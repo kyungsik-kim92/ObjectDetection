@@ -1,21 +1,16 @@
 package com.example.objectdetection.ui.search.word
 
-import android.app.Application
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.example.objectdetection.base.BaseViewModel
-import com.example.objectdetection.data.model.BookmarkWord
+import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.objectdetection.ext.*
 import com.example.objectdetection.ui.adapter.WordItem
 import com.example.objectdetection.util.Result
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel

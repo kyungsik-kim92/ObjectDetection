@@ -1,7 +1,7 @@
 package com.example.objectdetection.ui.login
 
-import com.example.objectdetection.base.ViewEvent
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.ViewEvent
+import com.example.presentation.base.ViewState
 
 
 sealed class LoginViewState : ViewState {

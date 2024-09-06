@@ -1,21 +1,16 @@
 package com.example.objectdetection.ui.search.word
 
 import android.media.AudioAttributes
-import android.media.MediaParser
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.objectdetection.R
-import com.example.objectdetection.base.BaseFragment
-import com.example.objectdetection.base.BaseViewModel
-import com.example.objectdetection.base.ViewEvent
-import com.example.objectdetection.base.ViewState
+import com.example.presentation.base.BaseFragment
+import com.example.presentation.base.ViewEvent
+import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentWordDetailBinding
 import com.example.objectdetection.ext.showToast
 import com.example.objectdetection.ui.adapter.WordItem
