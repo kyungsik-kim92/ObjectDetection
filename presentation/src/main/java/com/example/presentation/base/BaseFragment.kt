@@ -30,7 +30,7 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutId
         binding.setVariable(BR.viewModel, viewModel)
         initUi()
         viewModel.viewState.map(::onChangedViewState).launchIn(viewLifecycleOwner.lifecycleScope)
-        // 처음에 flow를 사용하는데 collect 하는 부분이 없어서 의아했는데 launchIn 내부에 collect가 있다는 것을 알게 됨
+
 
         viewModel.viewEvent.map(::onChangeViewEvent).launchIn(viewLifecycleOwner.lifecycleScope)
         return binding.root
