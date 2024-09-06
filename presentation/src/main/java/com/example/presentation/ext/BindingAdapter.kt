@@ -1,4 +1,4 @@
-package com.example.objectdetection.ext
+package com.example.presentation.ext
 
 import android.animation.Animator
 import androidx.databinding.BindingAdapter

@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.objectdetection.BR
+import com.example.presentation.BR
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
@@ -35,6 +35,7 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutId
         viewModel.viewEvent.map(::onChangeViewEvent).launchIn(viewLifecycleOwner.lifecycleScope)
         return binding.root
     }
+
     abstract fun initUi()
 
     abstract fun onChangedViewState(state: ViewState)

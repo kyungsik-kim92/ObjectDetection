@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.splash
+package com.example.presentation.ui.splash
 
 import com.example.presentation.base.ViewState
 

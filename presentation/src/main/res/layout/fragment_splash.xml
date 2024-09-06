@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.objectdetection.ui.splash.SplashViewModel" />
+            type="com.example.presentation.ui.splash.SplashViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

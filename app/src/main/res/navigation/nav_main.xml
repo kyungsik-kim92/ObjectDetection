@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.objectdetection.ui.splash.SplashFragment"
+        android:name="com.example.presentation.ui.splash.SplashFragment"
         android:label="SplashFragment" >
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"

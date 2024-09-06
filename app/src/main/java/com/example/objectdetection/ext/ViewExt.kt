@@ -8,8 +8,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.objectdetection.ui.splash.SplashFragmentDirections
 import com.google.android.material.textfield.TextInputLayout
 
 fun AppCompatActivity.showToast(context: Context = this, message: String) {
@@ -20,9 +18,9 @@ fun Fragment.showToast(context: Context = this.requireContext(), message: String
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
-fun Fragment.routeLoginFragment() {
-    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
-}
+//fun Fragment.routeLoginFragment() {
+//    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+//}
 
 
 fun View.hideKeyboard(context: Context = this.context) {

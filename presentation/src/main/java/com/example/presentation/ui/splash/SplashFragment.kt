@@ -1,15 +1,13 @@
-package com.example.objectdetection.ui.splash
+package com.example.presentation.ui.splash
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.example.objectdetection.R
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentSplashBinding
-import com.example.objectdetection.ext.routeLoginFragment
-import com.example.objectdetection.ui.mypage.MyPageFragment.Companion.KEY_LOGOUT
+import com.example.presentation.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -20,16 +18,16 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(R.layout.fragment_spl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (requireActivity().intent.getBooleanExtra(KEY_LOGOUT, false)) {
-            routeLoginFragment()
-        }
+//        if (requireActivity().intent.getBooleanExtra(KEY_LOGOUT, false)) {
+//            routeLoginFragment()
+//        }
     }
 
     override fun initUi() {}
 
     override fun onChangedViewState(state: ViewState) {
         when (state) {
-            is SplashViewState.RouteLogin -> routeLoginFragment()
+//            is SplashViewState.RouteLogin -> routeLoginFragment()
         }
     }
 
