@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.login
+package com.example.presentation.ui.login
 
 import android.os.Bundle
 import android.view.View
@@ -7,11 +7,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.objectdetection.R
+import com.example.objectdetection.ext.showToast
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentLoginBinding
-import com.example.objectdetection.ext.showToast
+import com.example.presentation.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 

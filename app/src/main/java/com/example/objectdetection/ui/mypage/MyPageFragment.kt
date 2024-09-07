@@ -15,7 +15,7 @@ import com.example.objectdetection.databinding.FragmentMyPageBinding
 import com.example.objectdetection.ui.dialog.ChooseDialog
 import com.example.objectdetection.ui.dialog.ChooseItem
 import com.example.objectdetection.ui.dialog.WithdrawDialog
-import com.example.objectdetection.ui.login.LoginFragment
+import com.example.presentation.ui.login.LoginFragment
 import com.example.objectdetection.util.EventDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

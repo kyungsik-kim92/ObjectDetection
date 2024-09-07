@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.login
+package com.example.presentation.ui.login
 
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState

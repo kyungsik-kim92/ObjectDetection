@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.login
+package com.example.presentation.ui.login
 
 import androidx.lifecycle.viewModelScope
 import com.example.presentation.base.BaseViewModel

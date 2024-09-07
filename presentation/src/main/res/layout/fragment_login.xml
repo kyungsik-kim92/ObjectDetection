@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.objectdetection.ui.login.LoginViewModel" />
+            type="com.example.presentation.ui.login.LoginViewModel" />
 
     </data>
 
