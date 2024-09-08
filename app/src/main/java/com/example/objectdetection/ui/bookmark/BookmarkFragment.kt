@@ -10,7 +10,7 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentBookmarkBinding
-import com.example.objectdetection.ext.showToast
+import com.example.presentation.ext.showToast
 import com.example.objectdetection.ui.adapter.BookmarkAdapter
 import com.example.objectdetection.ui.home.HomeViewEvent
 import com.example.objectdetection.ui.home.HomeViewModel

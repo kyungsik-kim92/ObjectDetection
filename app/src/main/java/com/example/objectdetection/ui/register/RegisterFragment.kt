@@ -11,7 +11,7 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentRegisterBinding
-import com.example.objectdetection.ext.showToast
+import com.example.presentation.ext.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 
