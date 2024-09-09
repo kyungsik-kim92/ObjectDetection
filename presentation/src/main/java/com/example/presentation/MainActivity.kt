@@ -1,8 +1,8 @@
-package com.example.objectdetection
+package com.example.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.objectdetection.databinding.ActivityMainBinding
+import com.example.presentation.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
