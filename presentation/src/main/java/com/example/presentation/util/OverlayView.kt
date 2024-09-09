@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.tensorflow.lite.examples.objectdetection
+package com.example.presentation.util
 
 import android.annotation.SuppressLint
 import android.content.Context

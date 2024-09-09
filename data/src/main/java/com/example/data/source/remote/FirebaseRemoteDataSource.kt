@@ -1,6 +1,5 @@
-package com.example.objectdetection.data.source.remote
+package com.example.data.source.remote
 
-import com.example.objectdetection.data.model.BookmarkWord
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +26,7 @@ interface FirebaseRemoteDataSource {
         resetPassToId: String
     ): Task<Void>
 
-    suspend fun delete() : Task<Void>?
+    suspend fun delete(): Task<Void>?
 
     suspend fun createWordDB(
         id: String
@@ -35,12 +34,12 @@ interface FirebaseRemoteDataSource {
 
     suspend fun addWordItem(
         id: String,
-        wordItem: BookmarkWord
+        wordItem: com.example.domain.model.BookmarkWord
     ): Task<Void>
 
     suspend fun deleteWordItem(
         id: String,
-        wordItem: BookmarkWord
+        wordItem: com.example.domain.model.BookmarkWord
     ): Task<Void>
 
     fun getFirebaseAuth(): FirebaseAuth

@@ -1,7 +1,7 @@
 package com.example.presentation.ui.search.word
 
+import com.example.data.network.response.DictionaryResponseItem
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.network.response.DictionaryResponseItem
 
 sealed class WordDetailViewState : ViewState {
     data class GetSearchWord(val word: DictionaryResponseItem) : WordDetailViewState()

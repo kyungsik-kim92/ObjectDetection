@@ -1,7 +1,6 @@
-package com.example.objectdetection.data.repo
+package com.example.data.repo
 
-import com.example.objectdetection.data.source.remote.FirebaseRemoteDataSource
-import com.example.objectdetection.data.model.BookmarkWord
+import com.example.data.source.remote.FirebaseRemoteDataSource
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -10,7 +9,7 @@ import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(
     private val firebaseRemoteDataSource: FirebaseRemoteDataSource
-) : FirebaseRepository {
+) : com.example.domain.repo.FirebaseRepository {
     override suspend fun login(id: String, password: String): Task<AuthResult> =
         firebaseRemoteDataSource.login(id, password)
 
@@ -29,10 +28,16 @@ class FirebaseRepositoryImpl @Inject constructor(
     override suspend fun createWordDB(id: String): Task<Void> =
         firebaseRemoteDataSource.createWordDB(id)
 
-    override suspend fun addWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override suspend fun addWordItem(
+        id: String,
+        wordItem: com.example.domain.model.BookmarkWord
+    ): Task<Void> =
         firebaseRemoteDataSource.addWordItem(id, wordItem)
 
-    override suspend fun deleteWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override suspend fun deleteWordItem(
+        id: String,
+        wordItem: com.example.domain.model.BookmarkWord
+    ): Task<Void> =
         firebaseRemoteDataSource.deleteWordItem(id, wordItem)
 
     override fun getFirebaseAuth(): FirebaseAuth =

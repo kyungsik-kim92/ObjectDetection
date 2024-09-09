@@ -1,4 +1,4 @@
-package com.example.objectdetection.util
+package com.example.data.util
 
 import java.lang.Exception
 

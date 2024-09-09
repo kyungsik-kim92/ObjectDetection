@@ -3,7 +3,6 @@ package com.example.presentation.ui.search.detect
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +16,12 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import com.example.objectdetection.R
-import com.example.objectdetection.databinding.FragmentCameraBinding
-import com.example.objectdetection.util.ObjectDetectorHelper
+import com.example.presentation.R
+import com.example.presentation.databinding.FragmentCameraBinding
+import com.example.presentation.util.ObjectDetectorHelper
 import dagger.hilt.android.AndroidEntryPoint
 import org.tensorflow.lite.task.vision.detector.Detection
 import java.util.LinkedList
@@ -32,7 +32,7 @@ import java.util.concurrent.Executors
 @AndroidEntryPoint
 class CameraFragment : Fragment(),
     ObjectDetectorHelper.DetectorListener {
-        lateinit var binding :FragmentCameraBinding
+    lateinit var binding: FragmentCameraBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,6 +1,7 @@
 package com.example.presentation.ui.search.word
 
 import androidx.lifecycle.viewModelScope
+import com.example.domain.repo.SearchWordRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.SearchWordRepository
 import com.example.presentation.ui.adapter.WordItem

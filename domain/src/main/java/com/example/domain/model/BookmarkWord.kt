@@ -1,4 +1,4 @@
-package com.example.objectdetection.data.model
+package com.example.domain.model
 
 import com.example.presentation.ui.adapter.WordItem
 import java.util.Calendar

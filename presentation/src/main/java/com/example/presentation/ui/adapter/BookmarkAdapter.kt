@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.objectdetection.databinding.ItemWordBinding
-import com.example.objectdetection.data.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 import com.example.presentation.databinding.ItemWordBinding
 import kotlinx.parcelize.Parcelize
 
@@ -82,7 +81,7 @@ class BookmarkViewHolder(private val binding: ItemWordBinding) :
 data class WordItem(
     val word: String,
     val mean: String
-) :Parcelable {
+) : Parcelable {
     fun toBookmarkWord(): BookmarkWord =
         BookmarkWord(
             word = word,

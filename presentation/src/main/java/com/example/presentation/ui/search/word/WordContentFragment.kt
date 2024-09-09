@@ -8,11 +8,11 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.objectdetection.R
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentWordContentBinding
+import com.example.presentation.databinding.FragmentWordContentBinding
 import com.example.presentation.ext.showToast
 import com.example.presentation.ui.adapter.WordAdapter
 import dagger.hilt.android.AndroidEntryPoint

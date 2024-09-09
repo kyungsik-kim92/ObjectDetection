@@ -40,7 +40,7 @@
             android:layout_marginTop="?android:attr/actionBarSize"
             app:scaleType="fillStart" />
 
-        <org.tensorflow.lite.examples.objectdetection.OverlayView
+        <com.example.presentation.util.OverlayView
             android:id="@+id/overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

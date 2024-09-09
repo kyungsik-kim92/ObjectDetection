@@ -1,4 +1,4 @@
-package com.example.objectdetection.network.response
+package com.example.data.network.response
 
 class DictionaryResponse : ArrayList<DictionaryResponseItem>()
 

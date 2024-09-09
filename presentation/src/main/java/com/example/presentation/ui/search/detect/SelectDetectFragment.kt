@@ -7,11 +7,11 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.objectdetection.R
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentSelectDetectBinding
+import com.example.presentation.databinding.FragmentSelectDetectBinding
 import com.example.presentation.ext.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -33,7 +33,7 @@ class SelectDetectFragment :
         super.onCreate(savedInstanceState)
         arguments?.let {
             selectDetectionItem = it.getString(ARG_SELECT_ITEM)
-            // 이 부분 어떤걸 의미 하는 건지 잘 모르겠습니다...
+
         }
     }
 
@@ -42,7 +42,6 @@ class SelectDetectFragment :
         initUi()
 
     }
-
 
 
     override fun initUi() {
@@ -135,7 +134,6 @@ class SelectDetectFragment :
     override fun onChangeViewEvent(event: ViewEvent) {
 
     }
-
 
 
     private fun playSound(url: String) {

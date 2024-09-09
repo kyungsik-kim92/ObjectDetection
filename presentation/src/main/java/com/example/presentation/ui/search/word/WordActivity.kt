@@ -1,8 +1,7 @@
 package com.example.presentation.ui.search.word
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.example.objectdetection.R
+import com.example.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 
 

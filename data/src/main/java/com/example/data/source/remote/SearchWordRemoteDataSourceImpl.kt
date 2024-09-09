@@ -1,21 +1,18 @@
-package com.example.objectdetection.data.source.remote
+package com.example.data.source.remote
 
-import com.example.objectdetection.network.DictionaryApi
-import com.example.objectdetection.network.SheetApi
-import com.example.objectdetection.network.response.DictionaryResponse
-import com.example.objectdetection.network.response.ExcelResponse
-import com.example.objectdetection.util.Result
+import com.example.data.network.response.DictionaryResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import com.example.data.util.Result
 
 class SearchWordRemoteDataSourceImpl @Inject constructor(
-    private val dictionaryApi: DictionaryApi,
-    private val sheetApi: SheetApi
+    private val dictionaryApi: com.example.data.network.DictionaryApi,
+    private val sheetApi: com.example.data.network.SheetApi
 ) : SearchWordRemoteDataSource {
 
 
-    override val excelList: Flow<List<ExcelResponse>>
+    override val excelList: Flow<List<com.example.data.network.response.ExcelResponse>>
         get() = flow { emit(sheetApi.getSheetExcelData()) }
 
 

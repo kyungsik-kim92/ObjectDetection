@@ -2,13 +2,13 @@ package com.example.presentation.ui.search.detect
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.data.repo.SearchWordRepository
+import com.example.domain.repo.FirebaseRepository
+import com.example.domain.repo.SearchWordRepository
 import com.example.objectdetection.ext.addWord
 import com.example.objectdetection.ext.deleteWord
 import com.example.objectdetection.ext.getWordList
 import com.example.objectdetection.network.response.DictionaryResponseItem
+import com.example.presentation.base.BaseViewModel
 import com.example.presentation.ui.adapter.WordItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

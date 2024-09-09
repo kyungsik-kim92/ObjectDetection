@@ -12,6 +12,8 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentWordDetailBinding
+import com.example.presentation.R
+import com.example.presentation.databinding.FragmentWordDetailBinding
 import com.example.presentation.ext.showToast
 import com.example.presentation.ui.adapter.WordItem
 import dagger.hilt.android.AndroidEntryPoint

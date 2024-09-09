@@ -1,4 +1,4 @@
-package com.example.objectdetection.network.response
+package com.example.data.network.response
 
 import com.example.presentation.ui.adapter.WordItem
 

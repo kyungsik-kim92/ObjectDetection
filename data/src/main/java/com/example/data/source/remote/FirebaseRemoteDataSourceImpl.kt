@@ -1,6 +1,5 @@
-package com.example.objectdetection.data.source.remote
+package com.example.data.source.remote
 
-import com.example.objectdetection.data.model.BookmarkWord
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -30,12 +29,19 @@ class FirebaseRemoteDataSourceImpl @Inject constructor(
         firebaseAuth.currentUser?.delete()
 
     override suspend fun createWordDB(id: String): Task<Void> =
-        fireStore.collection(id).document("word").set(emptyMap<String, BookmarkWord>())
+        fireStore.collection(id).document("word")
+            .set(emptyMap<String, com.example.domain.model.BookmarkWord>())
 
-    override suspend fun addWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override suspend fun addWordItem(
+        id: String,
+        wordItem: com.example.domain.model.BookmarkWord
+    ): Task<Void> =
         fireStore.collection(id).document("word").update("list", FieldValue.arrayUnion(wordItem))
 
-    override suspend fun deleteWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override suspend fun deleteWordItem(
+        id: String,
+        wordItem: com.example.domain.model.BookmarkWord
+    ): Task<Void> =
         fireStore.collection(id).document("word").update("list", FieldValue.arrayRemove(wordItem))
 
 

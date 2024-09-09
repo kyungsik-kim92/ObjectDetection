@@ -1,13 +1,13 @@
 package com.example.objectdetection.di
 
-import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.data.repo.FirebaseRepositoryImpl
-import com.example.objectdetection.data.repo.SearchWordRepository
-import com.example.objectdetection.data.repo.SearchWordRepositoryImpl
-import com.example.objectdetection.data.source.remote.FirebaseRemoteDataSource
-import com.example.objectdetection.data.source.remote.FirebaseRemoteDataSourceImpl
-import com.example.objectdetection.data.source.remote.SearchWordRemoteDataSource
-import com.example.objectdetection.data.source.remote.SearchWordRemoteDataSourceImpl
+import com.example.domain.repo.FirebaseRepository
+import com.example.data.repo.FirebaseRepositoryImpl
+import com.example.domain.repo.SearchWordRepository
+import com.example.data.repo.SearchWordRepositoryImpl
+import com.example.data.source.remote.FirebaseRemoteDataSource
+import com.example.data.source.remote.FirebaseRemoteDataSourceImpl
+import com.example.data.source.remote.SearchWordRemoteDataSource
+import com.example.data.source.remote.SearchWordRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -20,18 +20,18 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindFirebaseRepository(firebaseRepositoryImpl: FirebaseRepositoryImpl): FirebaseRepository
+    abstract fun bindFirebaseRepository(firebaseRepositoryImpl: com.example.data.repo.FirebaseRepositoryImpl): com.example.domain.repo.FirebaseRepository
 
     @Binds
     @Singleton
-    abstract fun bindFirebaseRemoteDataSource(firebaseRemoteDataSourceImpl: FirebaseRemoteDataSourceImpl): FirebaseRemoteDataSource
+    abstract fun bindFirebaseRemoteDataSource(firebaseRemoteDataSourceImpl: com.example.data.source.remote.FirebaseRemoteDataSourceImpl): com.example.data.source.remote.FirebaseRemoteDataSource
 
     @Singleton
     @Binds
-    abstract fun bindSearchWordRepository(searchWordRepositoryImpl: SearchWordRepositoryImpl): SearchWordRepository
+    abstract fun bindSearchWordRepository(searchWordRepositoryImpl: com.example.data.repo.SearchWordRepositoryImpl): com.example.domain.repo.SearchWordRepository
 
     @Singleton
     @Binds
-    abstract fun bindSearchWordRemoteDataSource(searchWordRemoteDataSourceImpl: SearchWordRemoteDataSourceImpl): SearchWordRemoteDataSource
+    abstract fun bindSearchWordRemoteDataSource(searchWordRemoteDataSourceImpl: com.example.data.source.remote.SearchWordRemoteDataSourceImpl): com.example.data.source.remote.SearchWordRemoteDataSource
 
 }

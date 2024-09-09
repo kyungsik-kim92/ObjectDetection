@@ -5,11 +5,11 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.objectdetection.R
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentBookmarkBinding
+import com.example.presentation.databinding.FragmentBookmarkBinding
 import com.example.presentation.ext.showToast
 import com.example.presentation.ui.adapter.BookmarkAdapter
 import com.example.presentation.ui.home.HomeViewEvent

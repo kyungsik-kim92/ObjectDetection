@@ -1,6 +1,7 @@
 package com.example.presentation.ui.login
 
 import androidx.lifecycle.viewModelScope
+import com.example.domain.repo.FirebaseRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

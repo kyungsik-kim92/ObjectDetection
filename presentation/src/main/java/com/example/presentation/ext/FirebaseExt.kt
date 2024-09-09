@@ -1,5 +1,6 @@
 package com.example.presentation.ext
 
+import com.example.domain.repo.FirebaseRepository
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.data.model.BookmarkWord
 import com.example.objectdetection.data.model.toBookmarkWord

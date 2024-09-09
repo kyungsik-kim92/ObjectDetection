@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import com.example.objectdetection.R
+import com.example.presentation.R
 
 private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
 
@@ -30,7 +30,6 @@ class PermissionFragment : Fragment() {
         }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         when {
@@ -40,6 +39,7 @@ class PermissionFragment : Fragment() {
             ) == PackageManager.PERMISSION_GRANTED -> {
                 navigateToCamera()
             }
+
             else -> {
                 requestPermissionLauncher.launch(
                     Manifest.permission.CAMERA

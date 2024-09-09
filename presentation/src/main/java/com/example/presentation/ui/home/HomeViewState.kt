@@ -1,7 +1,7 @@
 package com.example.presentation.ui.home
 
+import com.example.domain.model.BookmarkWord
 import com.example.presentation.base.ViewEvent
-import com.example.objectdetection.data.model.BookmarkWord
 
 
 //sealed class HomeViewState : ViewState

@@ -1,6 +1,7 @@
 package com.example.presentation.ui.bookmark
 
 import androidx.lifecycle.viewModelScope
+import com.example.domain.repo.FirebaseRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.ext.getWordList

@@ -2,10 +2,10 @@ package com.example.presentation.ui.search.word
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.data.repo.SearchWordRepository
+import com.example.domain.repo.FirebaseRepository
+import com.example.domain.repo.SearchWordRepository
 import com.example.objectdetection.ext.*
+import com.example.presentation.base.BaseViewModel
 import com.example.presentation.ui.adapter.WordItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +19,6 @@ class WordDetailViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val wordItemObservableField = ObservableField<WordItem>()
-    // ObservableField의 사용 이유를 검색해보고, LiveData와의 차이는 수명주기를 아느냐 모르느냐 인 것 같음.
-    // LiveData를 쓰지않고 ObservableField를 사용한 이유가 궁금합니다.
 
     fun searchMeanWord() {
 
@@ -53,14 +51,14 @@ class WordDetailViewModel @Inject constructor(
     fun checkBookmark() {
         firebaseRepository.getWordList { bookmarkList ->
 
-            if(bookmarkList!= null){
+            if (bookmarkList != null) {
                 val filterList =
                     bookmarkList.filter {
                         (it.word == wordItemObservableField.get()!!.word) &&
                                 (it.mean == wordItemObservableField.get()!!.mean)
                     }
                 onChangedViewState(WordDetailViewState.BookmarkState(filterList.isNotEmpty()))
-            }else{
+            } else {
                 onChangedViewState(WordDetailViewState.BookmarkState(false))
             }
         }

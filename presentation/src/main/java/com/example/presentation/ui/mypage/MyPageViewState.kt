@@ -1,7 +1,7 @@
 package com.example.presentation.ui.mypage
 
+import com.example.domain.model.BookmarkWord
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.data.model.BookmarkWord
 import com.prolificinteractive.materialcalendarview.CalendarDay
 
 sealed class MyPageViewState : ViewState {
