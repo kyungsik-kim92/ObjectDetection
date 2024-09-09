@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.objectdetection.ui.dialog.ChooseItem" />
+            type="com.example.presentation.ui.dialog.ChooseItem" />
     </data>
 
     <LinearLayout

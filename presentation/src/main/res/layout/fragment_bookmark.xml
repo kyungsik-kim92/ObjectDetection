@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.bookmark.BookmarkFragment">
+        tools:context="com.example.presentation.ui.bookmark.BookmarkFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container_switch"
