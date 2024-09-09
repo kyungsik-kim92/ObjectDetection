@@ -1,9 +1,9 @@
-package com.example.objectdetection.ui.adapter
+package com.example.presentation.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.objectdetection.databinding.ItemWordBinding
+import com.example.presentation.databinding.ItemWordBinding
 
 class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 

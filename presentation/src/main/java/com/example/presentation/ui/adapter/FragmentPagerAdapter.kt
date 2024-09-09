@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.adapter
+package com.example.presentation.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

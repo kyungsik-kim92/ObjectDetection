@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.adapter
+package com.example.presentation.ui.adapter
 
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.objectdetection.databinding.ItemWordBinding
 import com.example.objectdetection.data.model.BookmarkWord
+import com.example.presentation.databinding.ItemWordBinding
 import kotlinx.parcelize.Parcelize
 
 class BookmarkAdapter(private val onDelete: (BookmarkWord) -> Unit) :
