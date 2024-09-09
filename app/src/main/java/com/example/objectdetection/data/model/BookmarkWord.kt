@@ -1,6 +1,6 @@
 package com.example.objectdetection.data.model
 
-import com.example.objectdetection.ui.adapter.WordItem
+import com.example.presentation.ui.adapter.WordItem
 import java.util.Calendar
 
 data class BookmarkWord(

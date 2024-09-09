@@ -1,4 +1,4 @@
-package com.example.objectdetection.ext
+package com.example.presentation.ext
 
 import com.example.objectdetection.data.repo.FirebaseRepository
 import com.example.objectdetection.data.model.BookmarkWord
