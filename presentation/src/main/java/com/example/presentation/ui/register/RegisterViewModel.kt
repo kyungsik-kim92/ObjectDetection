@@ -1,8 +1,8 @@
 package com.example.presentation.ui.register
 
 import androidx.lifecycle.viewModelScope
+import com.example.domain.repo.FirebaseRepository
 import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -17,7 +17,7 @@ class RegisterViewModel @Inject constructor(
 ) : BaseViewModel() {
 
 
-    val inputEmailStateFlow : MutableStateFlow<String?> = MutableStateFlow("")
+    val inputEmailStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
     val inputPasswordStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
     val inputPasswordOkStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
 
@@ -26,12 +26,11 @@ class RegisterViewModel @Inject constructor(
             onChangedViewState(RegisterViewState.ShowProgress)
             onChangedViewState(RegisterViewState.EnableInput(false))
             val checkEmail = async { checkEmail() }
-            // async는 launch와는 다르게 Defferd(여기서는 데이터)를 반환해주는 함수라고 공부했습니다.
             val checkPassword = async { checkPassword() }
             val checkPasswordOk = async { checkPasswordOk() }
 
             checkUser(
-                checkEmail.await(), // async의 결과 값을 await로 접근한다.
+                checkEmail.await(),
                 checkPassword.await(),
                 checkPasswordOk.await()
             )?.let { person ->
@@ -64,6 +63,7 @@ class RegisterViewModel @Inject constructor(
             null
         }
     }
+
     private fun checkEmail(): Boolean {
         return when {
             inputEmailStateFlow.value.isNullOrEmpty() -> {

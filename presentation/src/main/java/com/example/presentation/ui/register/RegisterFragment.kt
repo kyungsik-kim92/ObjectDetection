@@ -1,4 +1,4 @@
-package com.example.presentation.ui.register
+package com.example.objectdetection.ui.register
 
 import android.os.Bundle
 import android.view.View
@@ -36,7 +36,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(R.layout.fragment
                 false
             }
         }
-//        viewModel.viewState.map(::onChangedViewState).launchIn(lifecycleScope)
     }
 
     override fun onChangedViewState(state: ViewState) {
