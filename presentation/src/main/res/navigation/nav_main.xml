@@ -33,7 +33,7 @@
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.objectdetection.ui.register.RegisterFragment"
+        android:name="com.example.presentation.ui.register.RegisterFragment"
         android:label="RegisterFragment" >
         <action
             android:id="@+id/action_registerFragment_to_homeFragment"

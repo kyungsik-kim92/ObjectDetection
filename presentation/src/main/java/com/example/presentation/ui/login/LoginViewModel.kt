@@ -2,7 +2,6 @@ package com.example.presentation.ui.login
 
 import androidx.lifecycle.viewModelScope
 import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+//    private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
     val inputEmailStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
@@ -28,17 +27,17 @@ class LoginViewModel @Inject constructor(
             val checkPassword = async { checkPassword() }
 
             checkUser(checkEmail.await(), checkPassword.await())?.let { person ->
-                firebaseRepository.login(person.email, person.password)
-                    .addOnSuccessListener {
-                        onChangedViewState(LoginViewState.RouteHome)
-                        onChangedViewState(LoginViewState.HideProgress)
-
-                    }.addOnFailureListener {
-                        onChangedViewState(LoginViewState.Error("로그인을 실패하였습니다."))
-                        onChangedViewState(LoginViewState.HideProgress)
-                        onChangedViewState(LoginViewState.EnableInput(true))
-
-                    }
+//                firebaseRepository.login(person.email, person.password)
+//                    .addOnSuccessListener {
+//                        onChangedViewState(LoginViewState.RouteHome)
+//                        onChangedViewState(LoginViewState.HideProgress)
+//
+//                    }.addOnFailureListener {
+//                        onChangedViewState(LoginViewState.Error("로그인을 실패하였습니다."))
+//                        onChangedViewState(LoginViewState.HideProgress)
+//                        onChangedViewState(LoginViewState.EnableInput(true))
+//
+//                    }
             }
         }
     }

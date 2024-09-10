@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.register
+package com.example.presentation.ui.register
 
 import android.os.Bundle
 import android.view.View
@@ -12,6 +12,7 @@ import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.objectdetection.databinding.FragmentRegisterBinding
 import com.example.objectdetection.ext.showToast
+import com.example.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 
 

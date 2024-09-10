@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.register
+package com.example.presentation.ui.register
 
 import androidx.lifecycle.viewModelScope
 import com.example.presentation.base.BaseViewModel

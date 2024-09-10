@@ -14,9 +14,7 @@ fun AppCompatActivity.showToast(context: Context = this, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
-fun Fragment.showToast(context: Context = this.requireContext(), message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-}
+
 
 //fun Fragment.routeLoginFragment() {
 //    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())

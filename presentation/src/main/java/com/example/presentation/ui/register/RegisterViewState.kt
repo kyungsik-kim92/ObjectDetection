@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.register
+package com.example.presentation.ui.register
 
 import com.example.presentation.base.ViewState
 

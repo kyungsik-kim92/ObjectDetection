@@ -6,12 +6,12 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.objectdetection.R
-import com.example.objectdetection.ext.showToast
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentLoginBinding
+import com.example.presentation.ext.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -82,9 +82,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 }
                 val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 findNavController().navigate(action)
-                // 복습으로 뒤로가기가 왜 안되었었는지 이해한 내용
-                // RouteRegister를 State로 처리하면 뒤로가기 했을 때 viewState 값이 계속 작용되어
-                // register 창으로 반복 이동 되는 것을 Event처리하여 한 번만 값을 전달하게 바꿈.
             }
         }
     }
