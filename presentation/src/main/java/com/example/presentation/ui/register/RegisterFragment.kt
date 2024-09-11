@@ -6,13 +6,14 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.objectdetection.R
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentRegisterBinding
-import com.example.objectdetection.ext.showToast
-import com.example.presentation.R
+import com.example.presentation.databinding.FragmentRegisterBinding
+import com.example.presentation.ext.showToast
+import com.example.presentation.ui.register.RegisterViewModel
+import com.example.presentation.ui.register.RegisterViewState
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -74,8 +75,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(R.layout.fragment
     }
 
     override fun onChangeViewEvent(event: ViewEvent) {}
-
-
 
 
 }
