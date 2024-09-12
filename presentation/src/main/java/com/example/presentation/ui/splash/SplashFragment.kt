@@ -8,6 +8,7 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentSplashBinding
+import com.example.presentation.ext.routeLoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -27,7 +28,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(R.layout.fragment_spl
 
     override fun onChangedViewState(state: ViewState) {
         when (state) {
-//            is SplashViewState.RouteLogin -> routeLoginFragment()
+            is SplashViewState.RouteLogin -> routeLoginFragment()
         }
     }
 
