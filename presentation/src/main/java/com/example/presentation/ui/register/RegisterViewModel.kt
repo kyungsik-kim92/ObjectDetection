@@ -1,7 +1,6 @@
 package com.example.presentation.ui.register
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.repo.FirebaseRepository
 import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+//    private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
 
@@ -34,17 +33,17 @@ class RegisterViewModel @Inject constructor(
                 checkPassword.await(),
                 checkPasswordOk.await()
             )?.let { person ->
-                firebaseRepository.register(
-                    person.email,
-                    person.password
-                ).addOnSuccessListener {
-                    onChangedViewState(RegisterViewState.RouteHome)
-                    onChangedViewState(RegisterViewState.HideProgress)
-                }.addOnFailureListener {
-                    onChangedViewState(RegisterViewState.Error("회원가입을 실패하였습니다."))
-                    onChangedViewState(RegisterViewState.EnableInput(true))
-                    onChangedViewState(RegisterViewState.HideProgress)
-                }
+//                firebaseRepository.register(
+//                    person.email,
+//                    person.password
+//                ).addOnSuccessListener {
+//                    onChangedViewState(RegisterViewState.RouteHome)
+//                    onChangedViewState(RegisterViewState.HideProgress)
+//                }.addOnFailureListener {
+//                    onChangedViewState(RegisterViewState.Error("회원가입을 실패하였습니다."))
+//                    onChangedViewState(RegisterViewState.EnableInput(true))
+//                    onChangedViewState(RegisterViewState.HideProgress)
+//                }
             }
         }
     }

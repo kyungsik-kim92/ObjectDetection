@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.register
+package com.example.presentation.ui.register
 
 import android.os.Bundle
 import android.view.View
@@ -12,8 +12,6 @@ import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentRegisterBinding
 import com.example.presentation.ext.showToast
-import com.example.presentation.ui.register.RegisterViewModel
-import com.example.presentation.ui.register.RegisterViewState
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -37,6 +35,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(R.layout.fragment
                 false
             }
         }
+
     }
 
     override fun onChangedViewState(state: ViewState) {

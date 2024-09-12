@@ -1,7 +1,7 @@
 package com.example.objectdetection.di
 
-import com.example.data.network.DictionaryApi
-import com.example.data.network.SheetApi
+import com.example.objectdetection.network.DictionaryApi
+import com.example.objectdetection.network.SheetApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,22 +17,22 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideDictionaryApi(): com.example.data.network.DictionaryApi {
+    fun provideDictionaryApi(): DictionaryApi {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(DICTIONARY_URL)
             .build()
-            .create(com.example.data.network.DictionaryApi::class.java)
+            .create(DictionaryApi::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideSheetApi(): com.example.data.network.SheetApi {
+    fun provideSheetApi(): SheetApi {
         return Retrofit.Builder()
             .baseUrl(SHEET_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(com.example.data.network.SheetApi::class.java)
+            .create(SheetApi::class.java)
     }
 
     private const val SHEET_URL = "https://sheetdb.io/"
