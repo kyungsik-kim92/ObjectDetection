@@ -1,6 +1,6 @@
-package com.example.objectdetection.network
+package com.example.data.network
 
-import com.example.objectdetection.network.response.DictionaryResponse
+import com.example.model.api.DictionaryResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,7 +15,6 @@ interface DictionaryApi {
     fun getDictionaryMean(
         @Path("word") word: String
     ): Call<DictionaryResponse>
-
 
 
 }
