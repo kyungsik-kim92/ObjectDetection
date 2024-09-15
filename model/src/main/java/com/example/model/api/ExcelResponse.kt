@@ -1,6 +1,6 @@
-package com.example.objectdetection.network.response
+package com.example.model.api
 
-import com.example.objectdetection.ui.adapter.WordItem
+import com.example.model.WordItem
 
 data class ExcelResponse(
     val word: String,

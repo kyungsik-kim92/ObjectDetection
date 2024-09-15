@@ -1,6 +1,5 @@
-package com.example.objectdetection.data.model
+package com.example.model
 
-import com.example.objectdetection.ui.adapter.WordItem
 import java.util.Calendar
 
 data class BookmarkWord(
@@ -15,7 +14,7 @@ data class BookmarkWord(
 
 }
 
-fun HashMap<String,String>.toBookmarkWord() : BookmarkWord =
+fun HashMap<String, String>.toBookmarkWord(): BookmarkWord =
     BookmarkWord(
         word = getValue("word"),
         mean = getValue("mean"),
