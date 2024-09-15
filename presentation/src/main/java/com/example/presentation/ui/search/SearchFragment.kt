@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.search
+package com.example.presentation.ui.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.objectdetection.databinding.FragmentSearchBinding
-import com.example.objectdetection.ui.search.detect.DetectActivity
-import com.example.objectdetection.ui.search.word.WordActivity
+import com.example.presentation.databinding.FragmentSearchBinding
+import com.example.presentation.ui.search.detect.DetectActivity
+import com.example.presentation.ui.search.word.WordActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

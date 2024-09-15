@@ -1,13 +1,14 @@
-package com.example.objectdetection.data.source.remote
+package com.example.data.source.remote
 
-import com.example.objectdetection.network.DictionaryApi
-import com.example.objectdetection.network.SheetApi
-import com.example.objectdetection.network.response.DictionaryResponse
-import com.example.objectdetection.network.response.ExcelResponse
-import com.example.objectdetection.util.Result
+import com.example.data.network.DictionaryApi
+import com.example.data.network.SheetApi
+import com.example.model.api.DictionaryResponse
+import com.example.model.api.ExcelResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import com.example.model.common.Result
+
 
 class SearchWordRemoteDataSourceImpl @Inject constructor(
     private val dictionaryApi: DictionaryApi,
