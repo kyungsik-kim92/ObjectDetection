@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.dialog
+package com.example.presentation.ui.dialog
 
 data class ChooseItem(
     val title: String,

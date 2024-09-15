@@ -1,10 +1,10 @@
-package com.example.objectdetection.ui.dialog
+package com.example.presentation.ui.dialog
 
 import android.os.Bundle
 import android.view.View
-import com.example.objectdetection.R
+import com.example.presentation.R
 import com.example.presentation.base.BaseDialogFragment
-import com.example.objectdetection.databinding.DialogChooseBinding
+import com.example.presentation.databinding.DialogChooseBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
