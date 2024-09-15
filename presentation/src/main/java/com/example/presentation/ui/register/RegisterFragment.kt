@@ -56,8 +56,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(R.layout.fragment
 
 
             is RegisterViewState.RouteHome -> {
-                val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
-                findNavController().navigate(action)
+//                val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
+//                findNavController().navigate(action)
             }
 
 
