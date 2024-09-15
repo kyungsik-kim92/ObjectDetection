@@ -1,9 +1,8 @@
-package com.example.objectdetection.ui.bookmark
+package com.example.presentation.ui.bookmark
 
 import androidx.lifecycle.viewModelScope
 import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.ext.getWordList
+import com.example.data.ext.getWordList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: com.example.data.repo.FirebaseRepository
 ) : BaseViewModel() {
 
     fun getBookmarkList() {

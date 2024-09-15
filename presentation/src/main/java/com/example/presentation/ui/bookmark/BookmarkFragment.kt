@@ -1,20 +1,19 @@
-package com.example.objectdetection.ui.bookmark
+package com.example.presentation.ui.bookmark
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.objectdetection.R
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentBookmarkBinding
-import com.example.objectdetection.ext.showToast
-import com.example.objectdetection.ui.adapter.BookmarkAdapter
-import com.example.objectdetection.ui.home.HomeViewEvent
-import com.example.objectdetection.ui.home.HomeViewModel
+import com.example.presentation.databinding.FragmentBookmarkBinding
 import com.example.presentation.ext.showToast
+import com.example.presentation.ui.adapter.BookmarkAdapter
+import com.example.presentation.ui.home.HomeViewEvent
+import com.example.presentation.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
