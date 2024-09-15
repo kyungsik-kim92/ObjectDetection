@@ -1,16 +1,15 @@
-package com.example.objectdetection.ui.search.detect
+package com.example.presentation.ui.search.detect
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
+import com.example.data.ext.addWord
+import com.example.data.ext.deleteWord
+import com.example.data.ext.getWordList
+import com.example.data.repo.FirebaseRepository
+import com.example.data.repo.SearchWordRepository
+import com.example.model.WordItem
+import com.example.model.common.Result
 import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.data.repo.SearchWordRepository
-import com.example.objectdetection.ext.addWord
-import com.example.objectdetection.ext.deleteWord
-import com.example.objectdetection.ext.getWordList
-import com.example.objectdetection.network.response.DictionaryResponseItem
-import com.example.objectdetection.ui.adapter.WordItem
-import com.example.objectdetection.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -155,7 +154,7 @@ class SelectDetectionViewModel @Inject constructor(
 //                    }
 //                }
 
-fun DictionaryResponseItem.toMean(): String =
+fun com.example.model.api.DictionaryResponseItem.toMean(): String =
     if (meanings.isNotEmpty()) {
         meanings.first().definitions.first().definition
     } else {
