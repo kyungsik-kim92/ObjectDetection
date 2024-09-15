@@ -1,4 +1,4 @@
-package com.example.objectdetection.di
+package com.example.data.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

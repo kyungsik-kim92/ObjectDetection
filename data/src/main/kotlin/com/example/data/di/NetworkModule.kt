@@ -1,7 +1,7 @@
-package com.example.objectdetection.di
+package com.example.data.di
 
-import com.example.objectdetection.network.DictionaryApi
-import com.example.objectdetection.network.SheetApi
+import com.example.data.network.DictionaryApi
+import com.example.data.network.SheetApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
