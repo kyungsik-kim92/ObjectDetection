@@ -1,13 +1,11 @@
-package com.example.objectdetection.ui.adapter
+package com.example.presentation.ui.adapter
 
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.objectdetection.databinding.ItemWordBinding
-import com.example.objectdetection.data.model.BookmarkWord
-import kotlinx.parcelize.Parcelize
+import com.example.model.BookmarkWord
+import com.example.presentation.databinding.ItemWordBinding
 
 class BookmarkAdapter(private val onDelete: (BookmarkWord) -> Unit) :
     RecyclerView.Adapter<BookmarkViewHolder>() {
@@ -77,15 +75,5 @@ class BookmarkViewHolder(private val binding: ItemWordBinding) :
     }
 }
 
-@Parcelize
-data class WordItem(
-    val word: String,
-    val mean: String
-) :Parcelable {
-    fun toBookmarkWord(): BookmarkWord =
-        BookmarkWord(
-            word = word,
-            mean = mean
-        )
 
-}
+

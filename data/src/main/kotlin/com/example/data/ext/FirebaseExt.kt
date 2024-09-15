@@ -1,13 +1,12 @@
-package com.example.objectdetection.ext
+package com.example.data.ext
 
-import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.data.model.BookmarkWord
-import com.example.objectdetection.data.model.toBookmarkWord
+import com.example.model.BookmarkWord
+import com.example.model.toBookmarkWord
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-fun FirebaseRepository.getWordList(callback: (list: List<BookmarkWord>?) -> Unit) {
+fun com.example.data.repo.FirebaseRepository.getWordList(callback: (list: List<BookmarkWord>?) -> Unit) {
 
     getFirebaseAuth().currentUser?.email?.let { userId ->
         getFirebaseFireStore().collection(userId).document("word").get()
@@ -41,7 +40,7 @@ fun FirebaseRepository.getWordList(callback: (list: List<BookmarkWord>?) -> Unit
 }
 
 
-suspend fun FirebaseRepository.createWordDB(callback: (isSuccess: Boolean) -> Unit) {
+suspend fun com.example.data.repo.FirebaseRepository.createWordDB(callback: (isSuccess: Boolean) -> Unit) {
     getFirebaseAuth().currentUser?.email?.let { userId ->
         createWordDB(userId).addOnCompleteListener { dbResult ->
             callback(dbResult.isSuccessful)
@@ -50,7 +49,10 @@ suspend fun FirebaseRepository.createWordDB(callback: (isSuccess: Boolean) -> Un
 }
 
 
-suspend fun FirebaseRepository.addWord(word: BookmarkWord, callback: (isSuccess: Boolean) -> Unit) {
+suspend fun com.example.data.repo.FirebaseRepository.addWord(
+    word: BookmarkWord,
+    callback: (isSuccess: Boolean) -> Unit
+) {
     getFirebaseAuth().currentUser?.email?.let { userId ->
         addWordItem(id = userId, word).addOnCompleteListener { dbResult ->
             callback(dbResult.isSuccessful)
@@ -58,7 +60,7 @@ suspend fun FirebaseRepository.addWord(word: BookmarkWord, callback: (isSuccess:
     }
 }
 
-suspend fun FirebaseRepository.deleteWord(
+suspend fun com.example.data.repo.FirebaseRepository.deleteWord(
     word: BookmarkWord,
     callback: (isSuccess: Boolean) -> Unit
 ) {
