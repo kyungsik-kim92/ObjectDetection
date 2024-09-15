@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/word_content_fragment"
-        android:name="com.example.objectdetection.ui.search.word.WordContentFragment"
+        android:name="com.example.presentation.ui.search.word.WordContentFragment"
         android:label="WordContentFragment"
         tools:layout="@layout/fragment_word_content">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/word_detail_fragment"
-        android:name="com.example.objectdetection.ui.search.word.WordDetailFragment"
+        android:name="com.example.presentation.ui.search.word.WordDetailFragment"
         android:label="WordDetailFragment"
         tools:layout="@layout/fragment_word_detail">
 
