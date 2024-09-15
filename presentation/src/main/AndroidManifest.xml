@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <application>
+
+        <activity
+            android:name="com.example.presentation.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.presentation.ui.search.detect.DetectActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.example.presentation.ui.search.word.WordActivity"
+            android:exported="false" />
+    </application>
 </manifest>
