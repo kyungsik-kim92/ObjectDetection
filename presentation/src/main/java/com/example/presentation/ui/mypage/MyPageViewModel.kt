@@ -1,10 +1,9 @@
-package com.example.objectdetection.ui.mypage
+package com.example.presentation.ui.mypage
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
 import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.FirebaseRepository
-import com.example.objectdetection.ext.getWordList
+import com.example.data.ext.getWordList
 import com.google.firebase.auth.FirebaseAuth
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: com.example.data.repo.FirebaseRepository
 
 ) : BaseViewModel() {
     private val auth = FirebaseAuth.getInstance()

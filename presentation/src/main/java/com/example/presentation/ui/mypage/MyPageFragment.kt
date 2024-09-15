@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.mypage
+package com.example.presentation.ui.mypage
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,15 +6,15 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.objectdetection.MainActivity
-import com.example.objectdetection.R
+import com.example.presentation.MainActivity
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentMyPageBinding
-import com.example.objectdetection.ui.dialog.ChooseDialog
-import com.example.objectdetection.ui.dialog.ChooseItem
-import com.example.objectdetection.ui.dialog.WithdrawDialog
+import com.example.presentation.databinding.FragmentMyPageBinding
+import com.example.presentation.ui.dialog.ChooseDialog
+import com.example.presentation.ui.dialog.ChooseItem
+import com.example.presentation.ui.dialog.WithdrawDialog
 import com.example.presentation.ui.login.LoginFragment
 import com.example.presentation.util.EventDecorator
 import dagger.hilt.android.AndroidEntryPoint
