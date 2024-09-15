@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.tensorflow.lite.examples.objectdetection
+package com.example.presentation.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -27,10 +27,10 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.example.objectdetection.R
+import com.example.presentation.R
+import org.tensorflow.lite.task.vision.detector.Detection
 import java.util.LinkedList
 import kotlin.math.max
-import org.tensorflow.lite.task.vision.detector.Detection
 
 class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -76,7 +76,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
         for (result in results) {
 
-            if (result.categories[0].score > 0.5){
+            if (result.categories[0].score > 0.5) {
 
                 val drawableRect = getDrawableRect(result)
 
