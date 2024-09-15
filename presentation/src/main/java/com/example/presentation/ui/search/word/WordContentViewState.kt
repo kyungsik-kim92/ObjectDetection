@@ -1,7 +1,8 @@
-package com.example.objectdetection.ui.search.word
+package com.example.presentation.ui.search.word
 
+import com.example.model.WordItem
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.ui.adapter.WordItem
+
 
 sealed class WordContentViewState : ViewState {
     data class GetSearchResult(val list: List<WordItem>) : WordContentViewState()

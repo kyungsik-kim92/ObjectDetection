@@ -1,9 +1,9 @@
-package com.example.objectdetection.ui.search.word
+package com.example.presentation.ui.search.word
 
 import androidx.lifecycle.viewModelScope
+import com.example.data.repo.SearchWordRepository
+import com.example.model.WordItem
 import com.example.presentation.base.BaseViewModel
-import com.example.objectdetection.data.repo.SearchWordRepository
-import com.example.objectdetection.ui.adapter.WordItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

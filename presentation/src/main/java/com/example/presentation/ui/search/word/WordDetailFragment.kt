@@ -1,4 +1,4 @@
-package com.example.objectdetection.ui.search.word
+package com.example.presentation.ui.search.word
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -7,13 +7,12 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.example.objectdetection.R
+import com.example.model.WordItem
+import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
-import com.example.objectdetection.databinding.FragmentWordDetailBinding
-import com.example.objectdetection.ext.showToast
-import com.example.objectdetection.ui.adapter.WordItem
+import com.example.presentation.databinding.FragmentWordDetailBinding
 import com.example.presentation.ext.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +38,6 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
         initUi()
 
     }
-
 
 
     override fun initUi() {
@@ -138,8 +136,6 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
     override fun onChangeViewEvent(event: ViewEvent) {
 
     }
-
-
 
 
     private fun playSound(url: String) {
