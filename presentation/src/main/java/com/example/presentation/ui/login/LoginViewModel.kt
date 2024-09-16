@@ -1,7 +1,7 @@
 package com.example.presentation.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.example.data.repo.FirebaseRepository
+import com.example.domain.repo.FirebaseRepository
 import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
 ) : BaseViewModel() {
 
     val inputEmailStateFlow: MutableStateFlow<String?> = MutableStateFlow("")

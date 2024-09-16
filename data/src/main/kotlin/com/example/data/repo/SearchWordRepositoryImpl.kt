@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class SearchWordRepositoryImpl @Inject constructor(
     private val searchWordRemoteDataSource: SearchWordRemoteDataSource
-) : SearchWordRepository {
+) : com.example.domain.repo.SearchWordRepository {
 
     override val excelList: Flow<List<ExcelResponse>>
         get() = searchWordRemoteDataSource.excelList

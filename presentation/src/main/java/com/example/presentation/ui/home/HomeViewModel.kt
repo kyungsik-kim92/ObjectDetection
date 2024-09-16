@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val firebaseRepository: com.example.data.repo.FirebaseRepository
+    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
 ) : BaseViewModel() {
 
     fun deleteBookmark(item: BookmarkWord) {

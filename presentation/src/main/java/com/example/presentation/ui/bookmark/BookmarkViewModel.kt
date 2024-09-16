@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val firebaseRepository: com.example.data.repo.FirebaseRepository
+    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
 ) : BaseViewModel() {
 
     fun getBookmarkList() {

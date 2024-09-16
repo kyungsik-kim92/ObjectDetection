@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(
     private val firebaseRemoteDataSource: FirebaseRemoteDataSource
-) : FirebaseRepository {
+) : com.example.domain.repo.FirebaseRepository {
     override suspend fun login(id: String, password: String): Task<AuthResult> =
         firebaseRemoteDataSource.login(id, password)
 

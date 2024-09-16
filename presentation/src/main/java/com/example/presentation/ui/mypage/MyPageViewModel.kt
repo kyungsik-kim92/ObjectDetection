@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val firebaseRepository: com.example.data.repo.FirebaseRepository
+    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
 
 ) : BaseViewModel() {
     private val auth = FirebaseAuth.getInstance()

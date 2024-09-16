@@ -1,8 +1,8 @@
 package com.example.data.di
 
-import com.example.data.repo.FirebaseRepository
+import com.example.domain.repo.FirebaseRepository
 import com.example.data.repo.FirebaseRepositoryImpl
-import com.example.data.repo.SearchWordRepository
+import com.example.domain.repo.SearchWordRepository
 import com.example.data.repo.SearchWordRepositoryImpl
 import com.example.data.source.remote.FirebaseRemoteDataSource
 import com.example.data.source.remote.FirebaseRemoteDataSourceImpl
@@ -20,7 +20,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindFirebaseRepository(firebaseRepositoryImpl: FirebaseRepositoryImpl): FirebaseRepository
+    abstract fun bindFirebaseRepository(firebaseRepositoryImpl: FirebaseRepositoryImpl): com.example.domain.repo.FirebaseRepository
 
     @Binds
     @Singleton
@@ -28,7 +28,7 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindSearchWordRepository(searchWordRepositoryImpl: SearchWordRepositoryImpl): SearchWordRepository
+    abstract fun bindSearchWordRepository(searchWordRepositoryImpl: SearchWordRepositoryImpl): com.example.domain.repo.SearchWordRepository
 
     @Singleton
     @Binds

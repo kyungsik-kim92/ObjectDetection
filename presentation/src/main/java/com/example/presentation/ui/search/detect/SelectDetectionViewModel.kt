@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.ext.addWord
 import com.example.data.ext.deleteWord
 import com.example.data.ext.getWordList
-import com.example.data.repo.FirebaseRepository
-import com.example.data.repo.SearchWordRepository
+import com.example.domain.repo.FirebaseRepository
+import com.example.domain.repo.SearchWordRepository
 import com.example.model.WordItem
 import com.example.model.common.Result
 import com.example.presentation.base.BaseViewModel
@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectDetectionViewModel @Inject constructor(
-    private val searchWordRepository: SearchWordRepository,
-    private val firebaseRepository: FirebaseRepository
+    private val searchWordRepository: com.example.domain.repo.SearchWordRepository,
+    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
 ) : BaseViewModel() {
 
     private val wordItemObservableField = ObservableField<WordItem>()

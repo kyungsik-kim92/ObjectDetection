@@ -1,7 +1,7 @@
 package com.example.presentation.ui.search.word
 
 import androidx.lifecycle.viewModelScope
-import com.example.data.repo.SearchWordRepository
+import com.example.domain.repo.SearchWordRepository
 import com.example.model.WordItem
 import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WordContentViewModel @Inject constructor(
-    searchWordRepository: SearchWordRepository
+    searchWordRepository: com.example.domain.repo.SearchWordRepository
 ) : BaseViewModel() {
 
     private val excelList = mutableListOf<WordItem>()
