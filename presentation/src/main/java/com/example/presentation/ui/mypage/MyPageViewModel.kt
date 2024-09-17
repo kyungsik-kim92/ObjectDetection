@@ -4,6 +4,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
 import com.example.presentation.base.BaseViewModel
 import com.example.data.ext.getWordList
+import com.example.domain.repo.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
+    private val firebaseRepository: FirebaseRepository
 
 ) : BaseViewModel() {
     private val auth = FirebaseAuth.getInstance()

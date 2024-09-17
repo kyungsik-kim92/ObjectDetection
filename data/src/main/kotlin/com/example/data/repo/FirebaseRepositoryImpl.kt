@@ -1,6 +1,7 @@
 package com.example.data.repo
 
 import com.example.data.source.remote.FirebaseRemoteDataSource
+import com.example.domain.repo.FirebaseRepository
 import com.example.model.BookmarkWord
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(
     private val firebaseRemoteDataSource: FirebaseRemoteDataSource
-) : com.example.domain.repo.FirebaseRepository {
+) : FirebaseRepository {
     override suspend fun login(id: String, password: String): Task<AuthResult> =
         firebaseRemoteDataSource.login(id, password)
 

@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
+    private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
     val inputEmailStateFlow: MutableStateFlow<String?> = MutableStateFlow("")

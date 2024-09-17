@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
+    private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
 

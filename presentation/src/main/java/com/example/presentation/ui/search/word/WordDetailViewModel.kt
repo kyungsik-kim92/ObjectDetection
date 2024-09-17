@@ -17,8 +17,8 @@ import com.example.model.common.Result
 
 @HiltViewModel
 class WordDetailViewModel @Inject constructor(
-    private val searchWordRepository: com.example.domain.repo.SearchWordRepository,
-    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
+    private val searchWordRepository: SearchWordRepository,
+    private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
     val wordItemObservableField = ObservableField<WordItem>()

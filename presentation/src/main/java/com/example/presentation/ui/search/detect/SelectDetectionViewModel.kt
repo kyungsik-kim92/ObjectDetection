@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectDetectionViewModel @Inject constructor(
-    private val searchWordRepository: com.example.domain.repo.SearchWordRepository,
-    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
+    private val searchWordRepository: SearchWordRepository,
+    private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
     private val wordItemObservableField = ObservableField<WordItem>()

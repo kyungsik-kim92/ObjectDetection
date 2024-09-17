@@ -20,7 +20,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindFirebaseRepository(firebaseRepositoryImpl: FirebaseRepositoryImpl): com.example.domain.repo.FirebaseRepository
+    abstract fun bindFirebaseRepository(firebaseRepositoryImpl: FirebaseRepositoryImpl): FirebaseRepository
 
     @Binds
     @Singleton
@@ -28,7 +28,7 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindSearchWordRepository(searchWordRepositoryImpl: SearchWordRepositoryImpl): com.example.domain.repo.SearchWordRepository
+    abstract fun bindSearchWordRepository(searchWordRepositoryImpl: SearchWordRepositoryImpl): SearchWordRepository
 
     @Singleton
     @Binds

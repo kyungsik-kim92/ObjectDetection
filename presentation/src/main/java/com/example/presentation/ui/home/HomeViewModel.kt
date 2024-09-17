@@ -2,6 +2,7 @@ package com.example.presentation.ui.home
 
 import androidx.lifecycle.viewModelScope
 import com.example.data.ext.deleteWord
+import com.example.domain.repo.FirebaseRepository
 import com.example.model.BookmarkWord
 import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val firebaseRepository: com.example.domain.repo.FirebaseRepository
+    private val firebaseRepository: FirebaseRepository
 ) : BaseViewModel() {
 
     fun deleteBookmark(item: BookmarkWord) {
