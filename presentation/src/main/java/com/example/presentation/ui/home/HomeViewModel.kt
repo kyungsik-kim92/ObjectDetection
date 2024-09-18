@@ -1,7 +1,7 @@
 package com.example.presentation.ui.home
 
 import androidx.lifecycle.viewModelScope
-import com.example.data.ext.deleteWord
+import com.example.domain.ext.deleteWord
 import com.example.domain.repo.FirebaseRepository
 import com.example.model.BookmarkWord
 import com.example.presentation.base.BaseViewModel

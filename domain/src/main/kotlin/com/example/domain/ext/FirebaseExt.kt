@@ -1,12 +1,13 @@
-package com.example.data.ext
+package com.example.domain.ext
 
+import com.example.domain.repo.FirebaseRepository
 import com.example.model.BookmarkWord
 import com.example.model.toBookmarkWord
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-fun com.example.domain.repo.FirebaseRepository.getWordList(callback: (list: List<BookmarkWord>?) -> Unit) {
+fun FirebaseRepository.getWordList(callback: (list: List<BookmarkWord>?) -> Unit) {
 
     getFirebaseAuth().currentUser?.email?.let { userId ->
         getFirebaseFireStore().collection(userId).document("word").get()
@@ -40,7 +41,7 @@ fun com.example.domain.repo.FirebaseRepository.getWordList(callback: (list: List
 }
 
 
-suspend fun com.example.domain.repo.FirebaseRepository.createWordDB(callback: (isSuccess: Boolean) -> Unit) {
+suspend fun FirebaseRepository.createWordDB(callback: (isSuccess: Boolean) -> Unit) {
     getFirebaseAuth().currentUser?.email?.let { userId ->
         createWordDB(userId).addOnCompleteListener { dbResult ->
             callback(dbResult.isSuccessful)
@@ -49,7 +50,7 @@ suspend fun com.example.domain.repo.FirebaseRepository.createWordDB(callback: (i
 }
 
 
-suspend fun com.example.domain.repo.FirebaseRepository.addWord(
+suspend fun FirebaseRepository.addWord(
     word: BookmarkWord,
     callback: (isSuccess: Boolean) -> Unit
 ) {
@@ -60,7 +61,7 @@ suspend fun com.example.domain.repo.FirebaseRepository.addWord(
     }
 }
 
-suspend fun com.example.domain.repo.FirebaseRepository.deleteWord(
+suspend fun FirebaseRepository.deleteWord(
     word: BookmarkWord,
     callback: (isSuccess: Boolean) -> Unit
 ) {

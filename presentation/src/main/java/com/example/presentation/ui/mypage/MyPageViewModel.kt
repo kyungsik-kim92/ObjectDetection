@@ -3,7 +3,7 @@ package com.example.presentation.ui.mypage
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
 import com.example.presentation.base.BaseViewModel
-import com.example.data.ext.getWordList
+import com.example.domain.ext.getWordList
 import com.example.domain.repo.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.prolificinteractive.materialcalendarview.CalendarDay

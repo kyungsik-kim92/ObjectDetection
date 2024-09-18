@@ -2,9 +2,9 @@ package com.example.presentation.ui.search.word
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.example.data.ext.addWord
-import com.example.data.ext.deleteWord
-import com.example.data.ext.getWordList
+import com.example.domain.ext.addWord
+import com.example.domain.ext.deleteWord
+import com.example.domain.ext.getWordList
 import com.example.domain.repo.FirebaseRepository
 import com.example.domain.repo.SearchWordRepository
 import com.example.model.WordItem
