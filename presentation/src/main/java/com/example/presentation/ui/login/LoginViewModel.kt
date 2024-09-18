@@ -1,18 +1,22 @@
 package com.example.presentation.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.repo.FirebaseRepository
+import com.example.domain.usecase.firebase.FirebaseLoginUseCase
 import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseLoginUseCase: FirebaseLoginUseCase
 ) : BaseViewModel() {
 
     val inputEmailStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
@@ -21,24 +25,24 @@ class LoginViewModel @Inject constructor(
 
     fun login() {
         viewModelScope.launch(Dispatchers.IO) {
-            onChangedViewState(LoginViewState.ShowProgress)
-            onChangedViewState(LoginViewState.EnableInput(false))
-
             val checkEmail = async { checkEmail() }
             val checkPassword = async { checkPassword() }
-
             checkUser(checkEmail.await(), checkPassword.await())?.let { person ->
-                firebaseRepository.login(person.email, person.password)
-                    .addOnSuccessListener {
+                firebaseLoginUseCase(person.email, person.password).onStart {
+                    onChangedViewState(LoginViewState.ShowProgress)
+                    onChangedViewState(LoginViewState.EnableInput(false))
+                }.map { isSuccessful ->
+                    if (isSuccessful) {
                         onChangedViewState(LoginViewState.RouteHome)
-                        onChangedViewState(LoginViewState.HideProgress)
-
-                    }.addOnFailureListener {
+                    } else {
                         onChangedViewState(LoginViewState.Error("로그인을 실패하였습니다."))
-                        onChangedViewState(LoginViewState.HideProgress)
-                        onChangedViewState(LoginViewState.EnableInput(true))
-
                     }
+
+                }.onCompletion {
+                    onChangedViewState(LoginViewState.HideProgress)
+                    onChangedViewState(LoginViewState.EnableInput(true))
+                }.launchIn(viewModelScope)
+
             }
         }
     }
