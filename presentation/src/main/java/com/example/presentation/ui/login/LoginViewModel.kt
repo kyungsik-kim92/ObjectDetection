@@ -25,22 +25,22 @@ class LoginViewModel @Inject constructor(
 
     fun login() {
         viewModelScope.launch(Dispatchers.IO) {
+            onChangedViewState(LoginViewState.ShowProgress)
+            onChangedViewState(LoginViewState.EnableInput(false))
             val checkEmail = async { checkEmail() }
             val checkPassword = async { checkPassword() }
             checkUser(checkEmail.await(), checkPassword.await())?.let { person ->
-                firebaseLoginUseCase(person.email, person.password).onStart {
-                    onChangedViewState(LoginViewState.ShowProgress)
-                    onChangedViewState(LoginViewState.EnableInput(false))
-                }.map { isSuccessful ->
+                firebaseLoginUseCase(person.email, person.password).map { isSuccessful ->
                     if (isSuccessful) {
                         onChangedViewState(LoginViewState.RouteHome)
                     } else {
                         onChangedViewState(LoginViewState.Error("로그인을 실패하였습니다."))
+                        onChangedViewState(LoginViewState.EnableInput(true))
                     }
 
                 }.onCompletion {
                     onChangedViewState(LoginViewState.HideProgress)
-                    onChangedViewState(LoginViewState.EnableInput(true))
+
                 }.launchIn(viewModelScope)
 
             }

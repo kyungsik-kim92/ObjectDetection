@@ -51,6 +51,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 with(binding) {
                     inputEmailLogin.isEnabled = state.isEnable
                     inputPassLogin.isEnabled = state.isEnable
+                    btnLogin.isEnabled = state.isEnable
+                    btnRegister.isEnabled = state.isEnable
                 }
             }
 
