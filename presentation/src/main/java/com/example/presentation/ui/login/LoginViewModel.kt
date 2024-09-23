@@ -1,11 +1,12 @@
 package com.example.presentation.ui.login
 
 import androidx.lifecycle.viewModelScope
+import com.example.domain.usecase.firebase.CheckInputLoginUseCase
+import com.example.domain.usecase.firebase.CheckLoginState
 import com.example.domain.usecase.firebase.FirebaseLoginUseCase
+import com.example.domain.usecase.firebase.LoginErrorType
 import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    private val checkInputLoginUseCase: CheckInputLoginUseCase,
     private val firebaseLoginUseCase: FirebaseLoginUseCase
 ) : BaseViewModel() {
 
@@ -24,13 +26,22 @@ class LoginViewModel @Inject constructor(
 
 
     fun login() {
-        viewModelScope.launch(Dispatchers.IO) {
-            onChangedViewState(LoginViewState.ShowProgress)
-            onChangedViewState(LoginViewState.EnableInput(false))
-            val checkEmail = async { checkEmail() }
-            val checkPassword = async { checkPassword() }
-            checkUser(checkEmail.await(), checkPassword.await())?.let { person ->
-                firebaseLoginUseCase(person.email, person.password).map { isSuccessful ->
+        when (val result = checkInputLoginUseCase(
+            inputEmailStateFlow.value.orEmpty(),
+            inputPasswordStateFlow.value.orEmpty()
+        )) {
+            is CheckLoginState.Failure -> {
+                processLoginError(result.type)
+            }
+
+            CheckLoginState.Success -> {
+                firebaseLoginUseCase(
+                    inputEmailStateFlow.value.orEmpty(),
+                    inputPasswordStateFlow.value.orEmpty()
+                ).onStart {
+                    onChangedViewState(LoginViewState.ShowProgress)
+                    onChangedViewState(LoginViewState.EnableInput(false))
+                }.map { isSuccessful ->
                     if (isSuccessful) {
                         onChangedViewState(LoginViewState.RouteHome)
                     } else {
@@ -42,7 +53,24 @@ class LoginViewModel @Inject constructor(
                     onChangedViewState(LoginViewState.HideProgress)
 
                 }.launchIn(viewModelScope)
+            }
+        }
+    }
 
+    private fun processLoginError(type: LoginErrorType) {
+        viewModelScope.launch {
+            when (type) {
+                LoginErrorType.NotInputEmail -> {
+                    onChangedViewState(LoginViewState.Error("이메일을 입력해주세요."))
+                }
+
+                LoginErrorType.InvalidEmail -> {
+                    onChangedViewState(LoginViewState.Error("이메일 형식이 올바르지 않습니다."))
+                }
+
+                LoginErrorType.NotInputPassword -> {
+                    onChangedViewState(LoginViewState.Error("비밀번호를 입력해주세요."))
+                }
             }
         }
     }
@@ -53,51 +81,4 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    private fun checkUser(
-        checkEmail: Boolean,
-        checkPassword: Boolean
-    ): Person? {
-        return if (checkEmail && checkPassword) {
-            Person(
-                inputEmailStateFlow.value!!,
-                inputPasswordStateFlow.value!!
-            )
-        } else {
-            onChangedViewState(LoginViewState.EnableInput(true))
-            onChangedViewState(LoginViewState.HideProgress)
-            null
-        }
-    }
-
-    private fun checkEmail(): Boolean {
-        return when {
-            inputEmailStateFlow.value.isNullOrEmpty() -> {
-                onChangedViewState(LoginViewState.Error("이메일을 입력해주세요."))
-                false
-            }
-
-            !android.util.Patterns.EMAIL_ADDRESS.matcher(inputEmailStateFlow.value).matches() -> {
-                onChangedViewState(LoginViewState.Error("이메일 형식이 올바르지 않습니다."))
-                false
-            }
-
-            else -> true
-        }
-    }
-
-    private fun checkPassword(): Boolean {
-        return when {
-            inputPasswordStateFlow.value.isNullOrEmpty() -> {
-                onChangedViewState(LoginViewState.Error("비밀번호를 입력해주세요."))
-                false
-            }
-
-            else -> true
-        }
-    }
-
-    data class Person(
-        val email: String,
-        val password: String
-    )
 }

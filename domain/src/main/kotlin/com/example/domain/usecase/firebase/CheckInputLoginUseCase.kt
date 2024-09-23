@@ -1,6 +1,8 @@
 package com.example.domain.usecase.firebase
 
-class CheckInputLoginUseCase {
+import javax.inject.Inject
+
+class CheckInputLoginUseCase @Inject constructor() {
     operator fun invoke(email: String, password: String): CheckLoginState {
         if (email.isEmpty()) {
             return CheckLoginState.Failure(LoginErrorType.NotInputEmail)
