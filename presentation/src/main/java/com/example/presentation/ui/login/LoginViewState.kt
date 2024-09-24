@@ -4,17 +4,13 @@ import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 
 
-sealed class LoginViewState : ViewState {
-    object RouteHome : LoginViewState()
-    data class Error(val message: String) : LoginViewState()
-    data class EnableInput(val isEnable: Boolean) : LoginViewState()
-    object ShowProgress : LoginViewState()
-    object HideProgress : LoginViewState()
-}
+data class LoginViewState(
+    val isEnable: Boolean = true,
+    val isProgress: Boolean = false
+) : ViewState
 
 sealed interface LoginViewEvent : ViewEvent {
-
-    object RouteRegister : LoginViewEvent
-
-
+    data object RouteRegister : LoginViewEvent
+    data class Error(val message: String) : LoginViewEvent
+    data object RouteHome : LoginViewEvent
 }

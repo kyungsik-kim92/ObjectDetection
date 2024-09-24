@@ -41,36 +41,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     override fun onChangedViewState(state: ViewState) {
         when (state) {
 
-
-            is LoginViewState.Error -> {
-                showToast(message = state.message)
-            }
-
-
-            is LoginViewState.EnableInput -> {
+            is LoginViewState -> {
+                binding.progressbar.bringToFront()
+                binding.progressbar.isVisible = state.isProgress
                 with(binding) {
                     inputEmailLogin.isEnabled = state.isEnable
                     inputPassLogin.isEnabled = state.isEnable
                     btnLogin.isEnabled = state.isEnable
                     btnRegister.isEnabled = state.isEnable
                 }
-            }
-
-
-            is LoginViewState.RouteHome -> {
-                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                findNavController().navigate(action)
-            }
-
-
-            is LoginViewState.ShowProgress -> {
-                binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = true
-            }
-
-
-            is LoginViewState.HideProgress -> {
-                binding.progressbar.isVisible = false
             }
         }
     }
@@ -83,6 +62,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                     inputPassLogin.text.clear()
                 }
                 val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                findNavController().navigate(action)
+            }
+
+            is LoginViewEvent.Error -> {
+                showToast(message = event.message)
+            }
+
+            is LoginViewEvent.RouteHome -> {
+                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                 findNavController().navigate(action)
             }
         }
