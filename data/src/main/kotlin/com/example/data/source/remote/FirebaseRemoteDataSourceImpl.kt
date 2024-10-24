@@ -12,30 +12,30 @@ class FirebaseRemoteDataSourceImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ) : FirebaseRemoteDataSource {
-    override suspend fun login(id: String, password: String): Task<AuthResult> =
+    override fun login(id: String, password: String): Task<AuthResult> =
         firebaseAuth.signInWithEmailAndPassword(id, password)
 
-    override suspend fun logout(): Boolean {
+    override  fun logout(): Boolean {
         firebaseAuth.signOut()
         return firebaseAuth.currentUser == null
     }
 
-    override suspend fun register(id: String, password: String): Task<AuthResult> =
+    override fun register(id: String, password: String): Task<AuthResult> =
         firebaseAuth.createUserWithEmailAndPassword(id, password)
 
-    override suspend fun resetPass(resetPassToId: String): Task<Void> =
+    override  fun resetPass(resetPassToId: String): Task<Void> =
         firebaseAuth.sendPasswordResetEmail(resetPassToId)
 
-    override suspend fun delete(): Task<Void>? =
+    override  fun delete(): Task<Void>? =
         firebaseAuth.currentUser?.delete()
 
-    override suspend fun createWordDB(id: String): Task<Void> =
+    override  fun createWordDB(id: String): Task<Void> =
         fireStore.collection(id).document("word").set(emptyMap<String, BookmarkWord>())
 
-    override suspend fun addWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override  fun addWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
         fireStore.collection(id).document("word").update("list", FieldValue.arrayUnion(wordItem))
 
-    override suspend fun deleteWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override  fun deleteWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
         fireStore.collection(id).document("word").update("list", FieldValue.arrayRemove(wordItem))
 
 

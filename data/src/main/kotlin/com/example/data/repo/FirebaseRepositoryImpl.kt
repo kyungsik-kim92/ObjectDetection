@@ -12,28 +12,28 @@ import javax.inject.Inject
 class FirebaseRepositoryImpl @Inject constructor(
     private val firebaseRemoteDataSource: FirebaseRemoteDataSource
 ) : FirebaseRepository {
-    override suspend fun login(id: String, password: String): Task<AuthResult> =
+    override fun login(id: String, password: String): Task<AuthResult> =
         firebaseRemoteDataSource.login(id, password)
 
 
-    override suspend fun logout(): Boolean = firebaseRemoteDataSource.logout()
+    override  fun logout(): Boolean = firebaseRemoteDataSource.logout()
 
-    override suspend fun register(id: String, password: String): Task<AuthResult> =
+    override fun register(id: String, password: String): Task<AuthResult> =
         firebaseRemoteDataSource.register(id, password)
 
-    override suspend fun resetPass(resetPassToId: String): Task<Void> =
+    override  fun resetPass(resetPassToId: String): Task<Void> =
         firebaseRemoteDataSource.resetPass(resetPassToId)
 
-    override suspend fun delete(): Task<Void>? =
+    override  fun delete(): Task<Void>? =
         firebaseRemoteDataSource.delete()
 
-    override suspend fun createWordDB(id: String): Task<Void> =
+    override  fun createWordDB(id: String): Task<Void> =
         firebaseRemoteDataSource.createWordDB(id)
 
-    override suspend fun addWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override  fun addWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
         firebaseRemoteDataSource.addWordItem(id, wordItem)
 
-    override suspend fun deleteWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
+    override  fun deleteWordItem(id: String, wordItem: BookmarkWord): Task<Void> =
         firebaseRemoteDataSource.deleteWordItem(id, wordItem)
 
     override fun getFirebaseAuth(): FirebaseAuth =

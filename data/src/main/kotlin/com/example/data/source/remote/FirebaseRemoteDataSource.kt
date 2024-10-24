@@ -8,37 +8,36 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 interface FirebaseRemoteDataSource {
 
-
-    suspend fun login(
+    fun login(
         id: String,
         password: String
     ): Task<AuthResult>
 
-    suspend fun logout(): Boolean
+     fun logout(): Boolean
 
 
-    suspend fun register(
+    fun register(
         id: String,
         password: String
     ): Task<AuthResult>
 
 
-    suspend fun resetPass(
+     fun resetPass(
         resetPassToId: String
     ): Task<Void>
 
-    suspend fun delete(): Task<Void>?
+     fun delete(): Task<Void>?
 
-    suspend fun createWordDB(
+     fun createWordDB(
         id: String
     ): Task<Void>
 
-    suspend fun addWordItem(
+     fun addWordItem(
         id: String,
         wordItem: BookmarkWord
     ): Task<Void>
 
-    suspend fun deleteWordItem(
+     fun deleteWordItem(
         id: String,
         wordItem: BookmarkWord
     ): Task<Void>
