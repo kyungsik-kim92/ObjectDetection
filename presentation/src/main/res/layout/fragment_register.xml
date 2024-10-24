@@ -100,6 +100,7 @@
                 android:paddingStart="16sp"
                 android:paddingEnd="16sp"
                 android:text="@={viewModel.inputPasswordOkStateFlow}"
+                app:onEditorAction="@{()->viewModel.register()}"
                 app:layout_constraintDimensionRatio="W,1:8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
