@@ -6,6 +6,7 @@ import com.example.domain.usecase.firebase.CheckLoginState
 import com.example.domain.usecase.firebase.FirebaseLoginUseCase
 import com.example.domain.usecase.firebase.LoginErrorType
 import com.example.presentation.base.BaseViewModel
+import com.example.presentation.base.ViewEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -41,18 +42,18 @@ class LoginViewModel @Inject constructor(
                     onChangedViewState(
                         LoginViewState(
                             isEnable = false,
-                            isProgress = true
+                            isLoading = true
                         )
                     )
                 }.map { isSuccessful ->
                     if (isSuccessful) {
                         onChangedViewEvent(LoginViewEvent.RouteHome)
                     } else {
-                        onChangedViewEvent(LoginViewEvent.Error("로그인을 실패하였습니다."))
+                        onChangedViewEvent(ViewEvent.ShowToast("로그인을 실패하였습니다."))
                         onChangedViewState(
                             LoginViewState(
                                 isEnable = true,
-                                isProgress = false
+                                isLoading = false
                             )
                         )
                     }
@@ -66,15 +67,15 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             when (type) {
                 LoginErrorType.NotInputEmail -> {
-                    onChangedViewEvent(LoginViewEvent.Error("이메일을 입력해주세요."))
+                    onChangedViewEvent(ViewEvent.ShowToast("이메일을 입력해주세요."))
                 }
 
                 LoginErrorType.InvalidEmail -> {
-                    onChangedViewEvent(LoginViewEvent.Error("이메일 형식이 올바르지 않습니다."))
+                    onChangedViewEvent(ViewEvent.ShowToast("이메일 형식이 올바르지 않습니다."))
                 }
 
                 LoginErrorType.NotInputPassword -> {
-                    onChangedViewEvent(LoginViewEvent.Error("비밀번호를 입력해주세요."))
+                    onChangedViewEvent(ViewEvent.ShowToast("비밀번호를 입력해주세요."))
                 }
             }
         }

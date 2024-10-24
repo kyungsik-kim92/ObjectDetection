@@ -6,6 +6,7 @@ import com.example.domain.usecase.firebase.CheckRegisterState
 import com.example.domain.usecase.firebase.FirebaseRegisterUseCase
 import com.example.domain.usecase.firebase.RegisterErrorType
 import com.example.presentation.base.BaseViewModel
+import com.example.presentation.base.ViewEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -52,7 +53,7 @@ class RegisterViewModel @Inject constructor(
                     if (isSuccessful) {
                         onChangedViewEvent(RegisterViewEvent.RouteHome)
                     } else {
-                        onChangedViewEvent(RegisterViewEvent.Error("회원가입을 실패하였습니다."))
+                        onChangedViewEvent(ViewEvent.ShowToast("회원가입을 실패하였습니다."))
                         onChangedViewState(
                             RegisterViewState(
                                 isEnable = true,
@@ -70,15 +71,15 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             when (type) {
                 RegisterErrorType.NotInputEmail -> {
-                    onChangedViewEvent(RegisterViewEvent.Error("이메일을 입력해주세요."))
+                    onChangedViewEvent(ViewEvent.ShowToast("이메일을 입력해주세요."))
                 }
 
                 RegisterErrorType.NotInputPassword -> {
-                    onChangedViewEvent(RegisterViewEvent.Error("비밀번호를 입력해 주세요."))
+                    onChangedViewEvent(ViewEvent.ShowToast("비밀번호를 입력해 주세요."))
                 }
 
                 RegisterErrorType.NotMatchPassword -> {
-                    onChangedViewEvent(RegisterViewEvent.Error("비밀번호 재입력을 올바르게 입력해 주세요."))
+                    onChangedViewEvent(ViewEvent.ShowToast("비밀번호 재입력을 올바르게 입력해 주세요."))
                 }
             }
         }

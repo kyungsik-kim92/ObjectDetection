@@ -11,5 +11,4 @@ data class RegisterViewState(
 
 sealed interface RegisterViewEvent : ViewEvent {
     data object RouteHome : RegisterViewEvent
-    data class Error(val message: String) : RegisterViewEvent
 }

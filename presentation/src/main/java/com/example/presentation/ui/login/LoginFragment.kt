@@ -11,7 +11,6 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentLoginBinding
-import com.example.presentation.ext.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -43,7 +42,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
 
             is LoginViewState -> {
                 binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = state.isProgress
+                binding.progressbar.isVisible = state.isLoading
                 with(binding) {
                     inputEmailLogin.isEnabled = state.isEnable
                     inputPassLogin.isEnabled = state.isEnable
@@ -55,6 +54,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     }
 
     override fun onChangeViewEvent(event: ViewEvent) {
+        super.onChangeViewEvent(event)
         when (event) {
             is LoginViewEvent.RouteRegister -> {
                 with(binding) {
@@ -63,10 +63,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 }
                 val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 findNavController().navigate(action)
-            }
-
-            is LoginViewEvent.Error -> {
-                showToast(message = event.message)
             }
 
             is LoginViewEvent.RouteHome -> {

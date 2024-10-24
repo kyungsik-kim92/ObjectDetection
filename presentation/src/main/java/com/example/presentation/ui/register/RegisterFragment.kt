@@ -42,11 +42,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(R.layout.fragment
     }
 
     override fun onChangeViewEvent(event: ViewEvent) {
+        super.onChangeViewEvent(event)
         when (event) {
-            is RegisterViewEvent.Error -> {
-                showToast(message = event.message)
-            }
-
             is RegisterViewEvent.RouteHome -> {
                 val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
                 findNavController().navigate(action)

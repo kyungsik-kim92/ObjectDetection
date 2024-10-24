@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.presentation.BR
+import com.example.presentation.ext.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
@@ -40,6 +41,12 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutId
 
     abstract fun onChangedViewState(state: ViewState)
 
-    abstract fun onChangeViewEvent(event: ViewEvent)
+    open fun onChangeViewEvent(event: ViewEvent) {
+        when (event) {
+            is ViewEvent.ShowToast -> {
+                showToast(message = event.message)
+            }
+        }
+    }
 
 }
