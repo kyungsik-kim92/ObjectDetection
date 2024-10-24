@@ -5,7 +5,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
 
-fun <T> Task<T>.toCallbackFlow() = callbackFlow {
+fun <T> Task<T>.toVoidCallbackFlow() = callbackFlow {
     addOnSuccessListener {
         trySend(true)
     }.addOnFailureListener {
