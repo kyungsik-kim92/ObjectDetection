@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.presentation.databinding.FragmentSearchBinding
 import com.example.presentation.ui.search.detect.DetectActivity
@@ -27,10 +28,15 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ivDetect.setOnClickListener {
-            startActivity(Intent(requireActivity(), DetectActivity::class.java))
+            startActivity<DetectActivity>()
+
         }
         binding.ivWord.setOnClickListener {
-            startActivity(Intent(requireActivity(), WordActivity::class.java))
+            startActivity<WordActivity>()
         }
+    }
+
+    private inline fun <reified T : AppCompatActivity> startActivity() {
+        startActivity(Intent(requireActivity(), T::class.java))
     }
 }
