@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.example.presentation.MainActivity
 import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
@@ -18,14 +17,10 @@ import com.example.presentation.ui.dialog.WithdrawDialog
 import com.example.presentation.ui.login.LoginFragment
 import com.example.presentation.util.EventDecorator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 
 
 @AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
-
-
     override val viewModel by viewModels<MyPageViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,45 +29,34 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
     }
 
 
-    override fun initUi() {
-        viewModel.viewState.map(::onChangedViewState).launchIn(lifecycleScope)
-    }
+    override fun initUi() {}
 
     override fun onChangedViewState(state: ViewState) {
         when (state) {
-            is MyPageViewState.GetBookmarkList -> {
-                state.list
-            }
-
-            is MyPageViewState.GetCalendarList -> {
-
-                state.list.forEach {
-                    binding.calendarView.addDecorator(
-                        EventDecorator(
-                            listOf(it.first),
-                            requireActivity(),
-                            it.second.convertLevel()
+            is MyPageViewState -> {
+                if (state.bookmarkList.isNotEmpty()) {
+                    state.calendarList.forEach {
+                        binding.calendarView.addDecorator(
+                            EventDecorator(
+                                listOf(it.first),
+                                requireActivity(),
+                                it.second.convertLevel()
+                            )
                         )
-                    )
-                }
-            }
-
-
-            is MyPageViewState.ShowLogoutDialog -> {
-                ChooseDialog(
-                    ChooseItem(
-                        title = "로그아웃",
-                        content = "로그아웃 하시겠습니까?",
-                        negativeString = "취소",
-                        positiveString = "로그아웃"
-                    ),
-                    dismissCallback = {
-                        viewModel.logout()
                     }
-                ).show(childFragmentManager, "ChooseDialog")
+                } else {
+                    binding.calendarView.removeDecorators()
+                }
+                binding.progressbar.isVisible = state.isLoading
             }
 
-            is MyPageViewState.ShowWithdrawDialog -> {
+        }
+    }
+
+    override fun onChangeViewEvent(event: ViewEvent) {
+        super.onChangeViewEvent(event)
+        when (event) {
+            is MyPageViewEvent.ShowWithdrawDialog -> {
                 ChooseDialog(
                     ChooseItem(
                         title = "회원탈퇴",
@@ -102,38 +86,27 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
                 ).show(childFragmentManager, "ChooseDialog")
             }
 
-            is MyPageViewState.Logout -> {
+            is MyPageViewEvent.ShowLogoutDialog -> {
+                ChooseDialog(
+                    ChooseItem(
+                        title = "로그아웃",
+                        content = "로그아웃 하시겠습니까?",
+                        negativeString = "취소",
+                        positiveString = "로그아웃"
+                    ),
+                    dismissCallback = {
+                        viewModel.logout()
+                    }
+                ).show(childFragmentManager, "ChooseDialog")
+            }
+
+            is MyPageViewEvent.Logout -> {
                 startActivity(Intent(requireActivity(), MainActivity::class.java).apply {
                     putExtra(KEY_LOGOUT, true)
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 })
             }
-
-            is MyPageViewState.ShowProgress -> {
-                binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = true
-            }
-
-            is MyPageViewState.HideProgress -> {
-                binding.progressbar.isVisible = false
-            }
-
-            is MyPageViewState.EmptyBookmarkList -> {
-                binding.calendarView.removeDecorators()
-            }
-
-            is MyPageViewState.ShowToast -> {
-
-            }
-
-            MyPageViewState.WithDraw -> {
-
-            }
         }
-    }
-
-    override fun onChangeViewEvent(event: ViewEvent) {
-
     }
 
     override fun onResume() {

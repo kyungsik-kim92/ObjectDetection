@@ -2,14 +2,17 @@ package com.example.presentation.ui.mypage
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
-import com.example.presentation.base.BaseViewModel
-import com.example.domain.ext.getWordList
 import com.example.domain.repo.FirebaseRepository
+import com.example.domain.usecase.firebase.FirebaseLogoutUseCase
+import com.example.domain.usecase.firebase.GetWordListUseCase
+import com.example.presentation.base.BaseViewModel
+import com.example.presentation.base.ViewEvent
 import com.google.firebase.auth.FirebaseAuth
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
@@ -17,11 +20,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseLogoutUseCase: FirebaseLogoutUseCase,
+    private val getWordListUseCase: GetWordListUseCase,
+    firebaseRepository: FirebaseRepository
 
 ) : BaseViewModel() {
-    private val auth = FirebaseAuth.getInstance()
-
     private val authListener = FirebaseAuth.AuthStateListener {
         it.currentUser?.let { currentUser ->
             val formatter = SimpleDateFormat("yyyy.MM.dd")
@@ -40,60 +43,49 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun getBookmarkList() {
-        onChangedViewState(MyPageViewState.ShowProgress)
-        viewModelScope.launch(Dispatchers.IO){
-            firebaseRepository.getWordList { list ->
-                if (!list.isNullOrEmpty()) {
-                    onChangedViewState(MyPageViewState.GetBookmarkList(list))
-
-                    val calendarDayList = mutableListOf<Pair<CalendarDay, Int>>()
-
-                    val toCalendarDayList =
-                        list.groupBy { it.year }.map { it.value.groupBy { it.month } }
-                            .map { it.entries.map { it.value.groupBy { it.day } } }
-
-                    toCalendarDayList.forEach { yearGroup ->
-                        yearGroup.forEach { monthGroup ->
-                            monthGroup.forEach {
-                                val calendarDay = CalendarDay.from(
-                                    it.value[0].year.toInt(),
-                                    it.value[0].month.toInt(),
-                                    it.value[0].day.toInt()
-                                )
-                                val getCount = it.value.size
-                                calendarDayList.add(Pair(calendarDay, getCount))
-                            }
-                        }
+        getWordListUseCase().onStart {
+            onChangedViewState(MyPageViewState(isLoading = true))
+        }.map { wordList ->
+            val calendarDayList = mutableListOf<Pair<CalendarDay, Int>>()
+            val toCalendarDayList =
+                wordList.groupBy { it.year }.map { it.value.groupBy { it.month } }
+                    .map { it.entries.map { it.value.groupBy { it.day } } }
+            toCalendarDayList.forEach { yearGroup ->
+                yearGroup.forEach { monthGroup ->
+                    monthGroup.forEach {
+                        val calendarDay = CalendarDay.from(
+                            it.value[0].year.toInt(),
+                            it.value[0].month.toInt(),
+                            it.value[0].day.toInt()
+                        )
+                        val getCount = it.value.size
+                        calendarDayList.add(Pair(calendarDay, getCount))
                     }
-
-                    if (calendarDayList.isNotEmpty()) {
-                        onChangedViewState(MyPageViewState.GetCalendarList(calendarDayList))
-                    } else {
-                        onChangedViewState(MyPageViewState.EmptyBookmarkList)
-                    }
-                } else {
-                    onChangedViewState(MyPageViewState.EmptyBookmarkList)
                 }
             }
-        }
-        onChangedViewState(MyPageViewState.HideProgress)
+            onChangedViewState(
+                MyPageViewState(
+                    bookmarkList = wordList,
+                    calendarList = calendarDayList,
+                    isLoading = false
+                )
+            )
+        }.launchIn(viewModelScope)
     }
 
     fun logout() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (firebaseRepository.logout()) {
-                onChangedViewState(MyPageViewState.Logout)
-            } else {
-                onChangedViewState(MyPageViewState.ShowToast("로그아웃을 실패하였습니다."))
-            }
+        if (firebaseLogoutUseCase()) {
+            onChangedViewEvent(MyPageViewEvent.Logout)
+        } else {
+            onChangedViewEvent(ViewEvent.ShowToast("로그아웃을 실패하였습니다."))
         }
     }
 
     fun showWithdrawDialog() {
-        onChangedViewState(MyPageViewState.ShowWithdrawDialog)
+        onChangedViewEvent(MyPageViewEvent.ShowWithdrawDialog)
     }
 
     fun showLogoutDialog() {
-        onChangedViewState(MyPageViewState.ShowLogoutDialog)
+        onChangedViewEvent(MyPageViewEvent.ShowLogoutDialog)
     }
 }
