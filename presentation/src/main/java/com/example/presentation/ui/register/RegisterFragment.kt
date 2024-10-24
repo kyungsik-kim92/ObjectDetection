@@ -2,7 +2,6 @@ package com.example.presentation.ui.register
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -26,54 +25,35 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(R.layout.fragment
     }
 
 
-    override fun initUi() {
-        binding.inputPassRegisterOk.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.register()
-                true
-            } else {
-                false
-            }
-        }
-
-    }
+    override fun initUi() {}
 
     override fun onChangedViewState(state: ViewState) {
         when (state) {
-
-            is RegisterViewState.Error -> {
-                showToast(message = state.message)
-            }
-
-
-            is RegisterViewState.EnableInput -> {
+            is RegisterViewState -> {
+                binding.progressbar.bringToFront()
+                binding.progressbar.isVisible = state.isLoading
                 with(binding) {
                     inputEmailRegister.isEnabled = state.isEnable
                     inputPassRegisterOk.isEnabled = state.isEnable
                     inputPassRegister.isEnabled = state.isEnable
                 }
             }
-
-
-            is RegisterViewState.RouteHome -> {
-//                val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
-//                findNavController().navigate(action)
-            }
-
-
-            is RegisterViewState.ShowProgress -> {
-                binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = true
-            }
-
-
-            is RegisterViewState.HideProgress -> {
-                binding.progressbar.isVisible = false
-            }
         }
     }
 
-    override fun onChangeViewEvent(event: ViewEvent) {}
+    override fun onChangeViewEvent(event: ViewEvent) {
+        when (event) {
+            is RegisterViewEvent.Error -> {
+                showToast(message = event.message)
+            }
+
+            is RegisterViewEvent.RouteHome -> {
+                val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
+                findNavController().navigate(action)
+            }
+
+        }
+    }
 
 
 }
