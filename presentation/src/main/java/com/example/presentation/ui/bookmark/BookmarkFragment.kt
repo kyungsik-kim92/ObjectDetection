@@ -74,7 +74,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(R.layout.fragment
             }
 
             is HomeViewEvent.AddBookmark -> {}
-            is HomeViewEvent.ShowToast -> {}
+
         }
     }
 
