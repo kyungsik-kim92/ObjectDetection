@@ -1,29 +1,24 @@
 package com.example.presentation.ui.bookmark
 
 import androidx.lifecycle.viewModelScope
-import com.example.presentation.base.BaseViewModel
-import com.example.domain.ext.getWordList
 import com.example.domain.repo.FirebaseRepository
+import com.example.domain.usecase.firebase.GetWordListUseCase
+import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    private val getWordListUseCase: GetWordListUseCase
 ) : BaseViewModel() {
 
     fun getBookmarkList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            firebaseRepository.getWordList {list->
-                if (!list.isNullOrEmpty()) {
-                    onChangedViewState(BookmarkViewState.GetBookmarkList(list))
-                } else {
-                    onChangedViewState(BookmarkViewState.EmptyBookmarkList)
-                }
-            }
-        }
+        getWordListUseCase().onEach { bookmarkList ->
+            onChangedViewState(BookmarkViewState(bookmarkList))
+        }.launchIn(viewModelScope)
     }
 }

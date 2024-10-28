@@ -10,7 +10,6 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentBookmarkBinding
-import com.example.presentation.ext.showToast
 import com.example.presentation.ui.adapter.BookmarkAdapter
 import com.example.presentation.ui.home.HomeViewEvent
 import com.example.presentation.ui.home.HomeViewModel
@@ -43,26 +42,16 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(R.layout.fragment
                 bookmarkAdapter.toggleMean(isShowMean)
             }
         }
-        viewModel.viewState.map(::onChangedViewState).launchIn(lifecycleScope)
         homeViewModel.viewEvent.map(::onChangeViewEvent).launchIn(lifecycleScope)
 
     }
 
     override fun onChangedViewState(state: ViewState) {
         when (state) {
-            is BookmarkViewState.EmptyBookmarkList -> {
-                binding.rvBookmark.isVisible = false
-                binding.notBookmark.isVisible = true
-            }
-
-            is BookmarkViewState.ShowToast -> {
-                showToast(message = state.message)
-            }
-
-            is BookmarkViewState.GetBookmarkList -> {
-                binding.rvBookmark.isVisible = true
-                binding.notBookmark.isVisible = false
-                bookmarkAdapter.addAll(state.list)
+            is BookmarkViewState -> {
+                binding.rvBookmark.isVisible = state.bookmarkList.isNotEmpty()
+                binding.notBookmark.isVisible = state.bookmarkList.isNotEmpty()
+                bookmarkAdapter.addAll(state.bookmarkList)
             }
         }
     }
