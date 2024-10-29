@@ -16,14 +16,10 @@ class GetWordListUseCase @Inject constructor(
         firebaseRepository.getFirebaseFireStore()
             .collection(getCurrentFirebaseUserUseCase()?.email.orEmpty())
             .document("word")
-            .get()
-            .addOnSuccessListener {
-                trySend(Gson().fromJson(it["list"]))
+            .addSnapshotListener { value, error ->
+                if (error != null) trySend(emptyList())
+                else if (value?.exists() == true) trySend(Gson().fromJson(value["list"]))
             }
-            .addOnFailureListener {
-                trySend(emptyList())
-            }
-
         awaitClose()
     }
 

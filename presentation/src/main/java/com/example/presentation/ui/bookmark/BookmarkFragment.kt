@@ -67,9 +67,4 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(R.layout.fragment
         }
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getBookmarkList()
-    }
 }
