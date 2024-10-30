@@ -50,7 +50,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(R.layout.fragment
         when (state) {
             is BookmarkViewState -> {
                 binding.rvBookmark.isVisible = state.bookmarkList.isNotEmpty()
-                binding.notBookmark.isVisible = state.bookmarkList.isNotEmpty()
+                binding.notBookmark.isVisible = state.bookmarkList.isEmpty()
                 bookmarkAdapter.addAll(state.bookmarkList)
             }
         }
