@@ -11,12 +11,13 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentMyPageBinding
-import com.example.presentation.ui.dialog.ChooseDialog
-import com.example.presentation.ui.dialog.ChooseItem
-import com.example.presentation.ui.dialog.WithdrawDialog
+import com.example.presentation.ui.dialog.ChooseDialogFactory
+import com.example.presentation.ui.dialog.ChooseDialogType
 import com.example.presentation.ui.login.LoginFragment
 import com.example.presentation.util.EventDecorator
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 @AndroidEntryPoint
@@ -34,22 +35,30 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
     override fun onChangedViewState(state: ViewState) {
         when (state) {
             is MyPageViewState -> {
-                if (state.bookmarkList.isNotEmpty()) {
-                    state.calendarList.forEach {
-                        binding.calendarView.addDecorator(
-                            EventDecorator(
-                                listOf(it.first),
-                                requireActivity(),
-                                it.second.convertLevel()
-                            )
-                        )
+                with(binding) {
+                    state.currentUser?.let {
+                        val formatter = SimpleDateFormat("yyyy.MM.dd")
+                        val createTime =
+                            formatter.format(Date(it.metadata!!.creationTimestamp))
+                        email.text = it.email
+                        register.text = createTime
                     }
-                } else {
-                    binding.calendarView.removeDecorators()
+                    if (state.calendarList.isNotEmpty()) {
+                        state.calendarList.forEach {
+                            calendarView.addDecorator(
+                                EventDecorator(
+                                    listOf(it.first),
+                                    requireActivity(),
+                                    it.second.convertLevel()
+                                )
+                            )
+                        }
+                    } else {
+                        calendarView.removeDecorators()
+                    }
+                    progressbar.isVisible = state.isLoading
                 }
-                binding.progressbar.isVisible = state.isLoading
             }
-
         }
     }
 
@@ -57,61 +66,38 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         super.onChangeViewEvent(event)
         when (event) {
             is MyPageViewEvent.ShowWithdrawDialog -> {
-                ChooseDialog(
-                    ChooseItem(
-                        title = "회원탈퇴",
-                        content = "회원탈퇴 하시겠습니까?",
-                        negativeString = "취소",
-                        positiveString = "탈퇴"
-                    ),
-                    dismissCallback = {
-                        WithdrawDialog(
-                            ChooseItem(
-                                title = "회원탈퇴",
-                                content = "",
-                                negativeString = "취소",
-                                positiveString = "탈퇴"
-                            ),
-                            dismissCallback = {
-                                startActivity(
-                                    Intent(
-                                        requireActivity(),
-                                        LoginFragment::class.java
-                                    ).apply {
-                                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    })
-                            }
-                        ).show(childFragmentManager, "WithdrawDialog")
-                    }
-                ).show(childFragmentManager, "ChooseDialog")
+                ChooseDialogFactory(ChooseDialogType.WithDraw, childFragmentManager, ::routeLogin)
             }
 
             is MyPageViewEvent.ShowLogoutDialog -> {
-                ChooseDialog(
-                    ChooseItem(
-                        title = "로그아웃",
-                        content = "로그아웃 하시겠습니까?",
-                        negativeString = "취소",
-                        positiveString = "로그아웃"
-                    ),
-                    dismissCallback = {
-                        viewModel.logout()
-                    }
-                ).show(childFragmentManager, "ChooseDialog")
+                ChooseDialogFactory(
+                    ChooseDialogType.Logout,
+                    childFragmentManager,
+                    viewModel::logout
+                )
             }
 
             is MyPageViewEvent.Logout -> {
-                startActivity(Intent(requireActivity(), MainActivity::class.java).apply {
-                    putExtra(KEY_LOGOUT, true)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                })
+                logout()
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getBookmarkList()
+    private fun logout() {
+        startActivity(Intent(requireActivity(), MainActivity::class.java).apply {
+            putExtra(KEY_LOGOUT, true)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        })
+    }
+
+    private fun routeLogin() {
+        startActivity(
+            Intent(
+                requireActivity(),
+                LoginFragment::class.java
+            ).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
     }
 
     private fun Int.convertLevel(): String {

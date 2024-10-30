@@ -1,13 +1,13 @@
 package com.example.presentation.ui.mypage
 
-import com.example.model.BookmarkWord
 import com.example.presentation.base.ViewEvent
 import com.example.presentation.base.ViewState
+import com.google.firebase.auth.FirebaseUser
 import com.prolificinteractive.materialcalendarview.CalendarDay
 
 
 data class MyPageViewState(
-    val bookmarkList: List<BookmarkWord> = emptyList(),
+    val currentUser: FirebaseUser? = null,
     val calendarList: List<Pair<CalendarDay, Int>> = emptyList(),
     val isLoading: Boolean = false
 ) : ViewState
