@@ -1,13 +1,15 @@
 package com.example.data.di
 
-import com.example.domain.repo.FirebaseRepository
 import com.example.data.repo.FirebaseRepositoryImpl
-import com.example.domain.repo.SearchWordRepository
 import com.example.data.repo.SearchWordRepositoryImpl
+import com.example.data.source.local.SearchWordLocalDataSource
+import com.example.data.source.local.SearchWordLocalDataSourceImpl
 import com.example.data.source.remote.FirebaseRemoteDataSource
 import com.example.data.source.remote.FirebaseRemoteDataSourceImpl
 import com.example.data.source.remote.SearchWordRemoteDataSource
 import com.example.data.source.remote.SearchWordRemoteDataSourceImpl
+import com.example.domain.repo.FirebaseRepository
+import com.example.domain.repo.SearchWordRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,4 +36,7 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindSearchWordRemoteDataSource(searchWordRemoteDataSourceImpl: SearchWordRemoteDataSourceImpl): SearchWordRemoteDataSource
 
+    @Singleton
+    @Binds
+    abstract fun bindSearchWordLocalDataSource(searchWordLocalDataSourceImpl: SearchWordLocalDataSourceImpl): SearchWordLocalDataSource
 }
