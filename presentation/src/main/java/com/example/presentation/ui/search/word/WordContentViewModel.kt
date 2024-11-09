@@ -17,9 +17,9 @@ class WordContentViewModel @Inject constructor(
     private val excelList = mutableListOf<WordItem>()
 
     init {
-        searchWordRepository.excelList.onEach {
-            excelList.addAll(it.map { it.toWordItem() })
-        }.launchIn(viewModelScope)
+//        searchWordRepository.excelList.onEach {
+//            excelList.addAll(it.map { it.toWordItem() })
+//        }.launchIn(viewModelScope)
     }
 
     fun searchWord(word: String) {
