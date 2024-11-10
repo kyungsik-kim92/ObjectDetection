@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.presentation.ui.search.word.WordContentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +39,7 @@
             android:lines="1"
             android:paddingStart="30dp"
             android:paddingEnd="10dp"
+            android:text="@={viewModel.inputTextFlow}"
             android:textColor="@color/black"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
