@@ -1,7 +1,5 @@
 package com.example.presentation.ui.search.word
 
-import android.os.Bundle
-import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -38,8 +36,6 @@ class WordContentFragment :
                 wordAdapter.addAll(state.searchList)
                 binding.rvWord.isVisible = state.searchList.isNotEmpty()
                 binding.tvNotResult.isVisible = state.searchList.isEmpty()
-                binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = state.visibleProgress
             }
         }
     }
