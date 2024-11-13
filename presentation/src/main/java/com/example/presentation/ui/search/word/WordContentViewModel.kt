@@ -18,7 +18,7 @@ class WordContentViewModel @Inject constructor(
     val inputTextFlow = MutableStateFlow("")
 
     init {
-        inputTextFlow.debounce(400L).onEach { searchText ->
+        inputTextFlow.onEach { searchText ->
             val searchList = searchWordRepository.excelList.first()
                 .filter { it.word.length >= searchText.length }
                 .filter { it.word.substring(searchText.indices).contains(searchText) }

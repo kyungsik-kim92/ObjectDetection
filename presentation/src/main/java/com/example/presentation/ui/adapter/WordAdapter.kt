@@ -2,15 +2,15 @@ package com.example.presentation.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.model.WordItem
 import com.example.presentation.databinding.ItemWordBinding
 
-class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
-
-    private val wordList = mutableListOf<WordItem>()
-
-    private lateinit var onClick: (WordItem) -> Unit
+class WordAdapter(
+    private val onItemClick: (WordItem) -> Unit
+) : ListAdapter<WordItem, WordViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -18,36 +18,37 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
     ): WordViewHolder {
         val binding =
             ItemWordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return WordViewHolder(binding)
+        return WordViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        holder.bind(wordList[position], onClick)
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int =
-        wordList.size
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<WordItem>() {
+            override fun areItemsTheSame(oldItem: WordItem, newItem: WordItem): Boolean =
+                oldItem === newItem
 
-    fun addAll(list: List<WordItem>) {
-        wordList.clear()
-        wordList.addAll(list)
-        notifyDataSetChanged()
-    }
 
-    fun setOnItemClickListener(listener: (WordItem) -> Unit) {
-        onClick = listener
+            override fun areContentsTheSame(oldItem: WordItem, newItem: WordItem): Boolean =
+                oldItem.word == newItem.word
+        }
     }
 }
 
 
-class WordViewHolder(private val binding: ItemWordBinding) :
+class WordViewHolder(
+    private val binding: ItemWordBinding,
+    private val onItemClick: (WordItem) -> Unit
+) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: WordItem, onClick: (WordItem) -> Unit) {
+    fun bind(item: WordItem) {
         binding.item = item
 
         itemView.setOnClickListener {
-            onClick(item)
+            onItemClick(item)
         }
     }
 }
