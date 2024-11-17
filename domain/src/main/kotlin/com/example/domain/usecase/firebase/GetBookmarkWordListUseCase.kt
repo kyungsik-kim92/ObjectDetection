@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-class GetWordListUseCase @Inject constructor(
+class GetBookmarkWordListUseCase @Inject constructor(
     private val getCurrentFirebaseUserUseCase: GetCurrentFirebaseUserUseCase,
     private val firebaseRepository: FirebaseRepository
 ) {

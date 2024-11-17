@@ -1,7 +1,7 @@
 package com.example.presentation.ui.bookmark
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.usecase.firebase.GetWordListUseCase
+import com.example.domain.usecase.firebase.GetBookmarkWordListUseCase
 import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -12,11 +12,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    getWordListUseCase: GetWordListUseCase
+    getBookmarkWordListUseCase: GetBookmarkWordListUseCase
 ) : BaseViewModel() {
 
     init {
-        getWordListUseCase()
+        getBookmarkWordListUseCase()
             .map { BookmarkViewState(it) }
             .onEach(::onChangedViewState)
             .launchIn(viewModelScope)

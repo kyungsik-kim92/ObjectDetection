@@ -20,17 +20,7 @@ const val ARG_WORD = "item_word"
 
 @AndroidEntryPoint
 class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.fragment_word_detail) {
-    private var wordItem: WordItem? = null
-
     override val viewModel by viewModels<WordDetailViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            wordItem = it.getParcelable(ARG_WORD)
-        }
-        viewModel.wordItemObservableField.set(wordItem)
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,41 +37,33 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
                 viewModel.toggleBookmark(bookmarkState)
             }
         }
-        viewModel.searchMeanWord()
-
     }
 
     override fun onChangedViewState(state: ViewState) {
         when (state) {
 
-            is WordDetailViewState.BookmarkState -> {
+            is WordDetailViewState -> {
                 binding.viewWordDetail.itemBookmark.isChecked = state.isBookmark
-            }
-
-            is WordDetailViewState.GetSearchWord -> {
                 binding.notResult.isVisible = false
                 binding.containerWordDetail.isVisible = true
 
-                binding.viewWordDetail.item = state.word
+                binding.viewWordDetail.item = state.item
 
-                binding.viewWordDetail.phonetic.text = state.word.phonetic
+                binding.viewWordDetail.phonetic.text = state.item?.phonetic
 
-                val getSoundUrl = state.word.phonetics.filter { it.audio != "" }
+                val getSoundUrl = state.item?.phonetics?.filter { it.audio != "" }
 
-                getSoundUrl.forEach {
-                    Log.d("결과", it.audio)
-                }
 
-                binding.viewWordDetail.sound.isVisible = getSoundUrl.isNotEmpty()
+                binding.viewWordDetail.sound.isVisible = getSoundUrl?.isNotEmpty() ?: false
 
                 binding.viewWordDetail.sound.setOnClickListener {
-                    playSound(getSoundUrl[0].audio)
+                    getSoundUrl?.get(0)?.audio?.let(::playSound)
                 }
                 binding.viewWordDetail.sound.setOnClickListener {
-                    playSound(state.word.phonetics[0].audio)
+                    state.item?.phonetics?.get(0)?.audio?.let(::playSound)
                 }
 
-                state.word.meanings.forEach { meaning ->
+                state.item?.meanings?.forEach { meaning ->
 
                     when (meaning.partOfSpeech) {
 
@@ -109,33 +91,14 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
                         else -> {}
                     }
                 }
-                viewModel.checkBookmark()
-
-            }
-
-            is WordDetailViewState.ShowToast -> {
-                showToast(message = state.message)
-            }
-
-            is WordDetailViewState.NotSearchWord -> {
-                binding.notResult.isVisible = true
-                binding.containerWordDetail.isVisible = false
-            }
-
-            is WordDetailViewState.ShowProgress -> {
+                binding.notResult.isVisible = (state.item == null)
                 binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = true
-            }
-
-            is WordDetailViewState.HideProgress -> {
-                binding.progressbar.isVisible = false
+                binding.progressbar.isVisible = state.isLoading
             }
         }
     }
 
-    override fun onChangeViewEvent(event: ViewEvent) {
-
-    }
+    override fun onChangeViewEvent(event: ViewEvent) {}
 
 
     private fun playSound(url: String) {
