@@ -30,52 +30,52 @@ class SelectDetectionViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 when (val result = searchWordRepository.searchMeanWord(word)) {
 
-                    is Result.Success -> {
-
-                        val getData = result.data.filter { it.word == word }
-
-                        if (getData.isNotEmpty()) {
-                            when (val result =
-                                searchWordRepository.searchMeanWord(getData[0].word)) {
-                                is Result.Success -> {
-                                    if (result.data.isNotEmpty()) {
-                                        result.data[0].word
-
-
-                                        wordItemObservableField.set(
-                                            WordItem(
-                                                result.data[0].word,
-                                                result.data[0].toMean(),
-                                            )
-                                        )
-                                        onChangedViewState(
-                                            SelectDetectionViewState.GetSearchWord(
-                                                result.data[0]
-                                            )
-                                        )
-                                    } else {
-                                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
-                                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-                                    }
-                                }
-
-                                is Result.Error -> {
-                                    onChangedViewState(SelectDetectionViewState.NotSearchWord)
-                                    onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-                                }
-                            }
-
-                        } else {
-                            onChangedViewState(SelectDetectionViewState.NotSearchWord)
-                            onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-                        }
-
-                    }
-
-                    is Result.Error -> {
-                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
-                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-                    }
+//                    is Result.Success -> {
+//
+//                        val getData = result.data.filter { it.word == word }
+//
+//                        if (getData.isNotEmpty()) {
+//                            when (val result =
+//                                searchWordRepository.searchMeanWord(getData[0].word)) {
+//                                is Result.Success -> {
+//                                    if (result.data.isNotEmpty()) {
+//                                        result.data[0].word
+//
+//
+//                                        wordItemObservableField.set(
+//                                            WordItem(
+//                                                result.data[0].word,
+//                                                result.data[0].toMean(),
+//                                            )
+//                                        )
+//                                        onChangedViewState(
+//                                            SelectDetectionViewState.GetSearchWord(
+//                                                result.data[0]
+//                                            )
+//                                        )
+//                                    } else {
+//                                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
+//                                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+//                                    }
+//                                }
+//
+//                                is Result.Error -> {
+//                                    onChangedViewState(SelectDetectionViewState.NotSearchWord)
+//                                    onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+//                                }
+//                            }
+//
+//                        } else {
+//                            onChangedViewState(SelectDetectionViewState.NotSearchWord)
+//                            onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+//                        }
+//
+//                    }
+//
+//                    is Result.Error -> {
+//                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
+//                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
+//                    }
 
                 }
             }

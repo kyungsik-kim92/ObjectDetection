@@ -1,5 +1,6 @@
 package com.example.presentation.ui.search.word
 
+import com.example.model.api.DictionaryResponse
 import com.example.model.api.DictionaryResponseItem
 import com.example.presentation.base.ViewState
 

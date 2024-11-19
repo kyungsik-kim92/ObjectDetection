@@ -11,7 +11,6 @@ import com.example.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,18 +26,15 @@ class WordDetailViewModel @Inject constructor(
     private val getRouteItem = savedStateHandle.get<WordItem>(ARG_WORD)
 
     init {
-
         combine(
             searchWordUseCase(getRouteItem?.word.orEmpty()),
             getBookmarkWordListUseCase()
         ) { item, list ->
             onChangedViewState(
                 WordDetailViewState(
-                    item = item,
+                    item = item.first(),
                     isBookmark = list.any { it.word == getRouteItem?.word.orEmpty() })
             )
-        }.onStart {
-            onChangedViewState((viewState.value as WordDetailViewState).copy(isLoading = true))
         }.launchIn(viewModelScope)
     }
 
