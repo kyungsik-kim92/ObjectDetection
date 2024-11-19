@@ -2,8 +2,8 @@ package com.example.presentation.ui.mypage
 
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.firebase.FirebaseLogoutUseCase
+import com.example.domain.usecase.firebase.GetBookmarkWordListUseCase
 import com.example.domain.usecase.firebase.GetCurrentFirebaseUserUseCase
-import com.example.domain.usecase.firebase.GetWordListUseCase
 import com.example.model.BookmarkWord
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.base.ViewEvent
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     currentFirebaseUserUseCase: GetCurrentFirebaseUserUseCase,
-    getWordListUseCase: GetWordListUseCase,
+    getBookmarkWordListUseCase: GetBookmarkWordListUseCase,
     private val firebaseLogoutUseCase: FirebaseLogoutUseCase,
 ) : BaseViewModel() {
 
@@ -27,24 +27,8 @@ class MyPageViewModel @Inject constructor(
         currentUser = currentFirebaseUserUseCase(),
     )
 
-
-//    private val authListener = FirebaseAuth.AuthStateListener {
-//        it.currentUser?.let { currentUser ->
-//            val formatter = SimpleDateFormat("yyyy.MM.dd")
-//            val createTime =
-//                formatter.format(Date(currentUser.metadata!!.creationTimestamp))
-//            registerDateObservableField.set(createTime)
-//            emailObservableField.set(currentUser.email)
-//        }
-//    }
-//
-//    val emailObservableField = ObservableField("")
-//    val registerDateObservableField = ObservableField("")
-
     init {
-//        firebaseRepository.getFirebaseAuth().addAuthStateListener(authListener)
-
-        getWordListUseCase().onStart {
+        getBookmarkWordListUseCase().onStart {
             onChangedViewState(myPageViewState.copy(isLoading = true))
         }.map { wordList ->
             myPageViewState.copy(isLoading = false, calendarList = wordList.toCalendarDayList())
