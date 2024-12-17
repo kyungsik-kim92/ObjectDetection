@@ -35,6 +35,7 @@ class BookmarkAdapter(private val onDelete: (BookmarkWord) -> Unit) :
         bookmarkList.clear()
         bookmarkList.addAll(list)
         notifyDataSetChanged()
+
     }
 
     fun delete(item: BookmarkWord) {

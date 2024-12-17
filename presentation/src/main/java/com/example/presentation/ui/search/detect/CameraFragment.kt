@@ -15,12 +15,10 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import com.example.presentation.R
 import com.example.presentation.databinding.FragmentCameraBinding
+import com.example.presentation.ext.routePermission
+import com.example.presentation.ext.routeSelectItem
 import com.example.presentation.util.ObjectDetectorHelper
 import dagger.hilt.android.AndroidEntryPoint
 import org.tensorflow.lite.task.vision.detector.Detection
@@ -38,7 +36,7 @@ class CameraFragment : Fragment(),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCameraBinding.inflate(inflater)
         return binding.root
     }
@@ -50,15 +48,12 @@ class CameraFragment : Fragment(),
 
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-
-
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onResume() {
         super.onResume()
         if (!PermissionFragment.hasPermissions(requireContext())) {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container)
-                .navigate(CameraFragmentDirections.actionCameraToPermissions())
+            routePermission()
         }
     }
 
@@ -69,16 +64,18 @@ class CameraFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        objectDetectorHelper =
-            ObjectDetectorHelper(context = requireContext(), objectDetectorListener = this)
-
-        cameraExecutor = Executors.newSingleThreadExecutor()
-
+        initObject()
         binding.viewFinder.post {
             setUpCamera()
         }
 
+    }
+
+    private fun initObject() {
+        objectDetectorHelper =
+            ObjectDetectorHelper(context = requireContext(), objectDetectorListener = this)
+
+        cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     private fun setUpCamera() {
@@ -165,23 +162,13 @@ class CameraFragment : Fragment(),
     ) {
 
         with(binding.overlay) {
-
             setResults(
                 results ?: LinkedList<Detection>(),
                 imageHeight,
                 imageWidth
             )
-
-            getTouchItem {
-                findNavController().navigate(
-                    R.id.action_camera_to_select_detect_item,
-                    bundleOf(com.example.presentation.ui.search.detect.ARG_SELECT_ITEM to it)
-                )
-            }
-
+            getTouchItem { routeSelectItem(it) }
             invalidate()
         }
     }
-
-
 }

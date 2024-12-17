@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.example.model.WordItem
 import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.base.ViewEvent
@@ -57,9 +56,6 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
                 binding.viewWordDetail.sound.isVisible = getSoundUrl?.isNotEmpty() ?: false
 
                 binding.viewWordDetail.sound.setOnClickListener {
-                    getSoundUrl?.get(0)?.audio?.let(::playSound)
-                }
-                binding.viewWordDetail.sound.setOnClickListener {
                     state.item?.phonetics?.get(0)?.audio?.let(::playSound)
                 }
 
@@ -101,7 +97,7 @@ class WordDetailFragment : BaseFragment<FragmentWordDetailBinding>(R.layout.frag
     override fun onChangeViewEvent(event: ViewEvent) {}
 
 
-    private fun playSound(url: String) {
+    private fun playSound(url: String?) {
         try {
             val mediaPlayer = MediaPlayer().apply {
                 setAudioAttributes(
