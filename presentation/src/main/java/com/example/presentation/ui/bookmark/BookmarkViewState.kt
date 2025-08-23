@@ -1,12 +1,14 @@
 package com.example.presentation.ui.bookmark
 
 import com.example.model.BookmarkWord
-import com.example.presentation.base.ViewState
 
-data class BookmarkViewState(
-    val bookmarkList: List<BookmarkWord> = emptyList()
-) : ViewState
+sealed class BookmarkUiState {
+    data object Loading : BookmarkUiState()
+    data class Success(val bookmarkList: List<BookmarkWord>) : BookmarkUiState()
+    data object Empty : BookmarkUiState()
+}
 
-//    data class GetBookmarkList(val list: List<BookmarkWord>) : BookmarkViewState()
-//    object EmptyBookmarkList : BookmarkViewState()
-//    data class ShowToast(val message: String) : BookmarkViewState()
+sealed class BookmarkUiEvent {
+    data class ShowToast(val message: String) : BookmarkUiEvent()
+    data object BookmarkDeleted : BookmarkUiEvent()
+}

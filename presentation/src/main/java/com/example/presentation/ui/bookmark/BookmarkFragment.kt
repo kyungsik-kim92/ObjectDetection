@@ -1,70 +1,104 @@
 package com.example.presentation.ui.bookmark
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.presentation.R
-import com.example.presentation.base.BaseFragment
-import com.example.presentation.base.ViewEvent
-import com.example.presentation.base.ViewState
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.FragmentBookmarkBinding
 import com.example.presentation.ui.adapter.BookmarkAdapter
-import com.example.presentation.ui.home.HomeViewEvent
+import com.example.presentation.ui.home.HomeUiEvent
 import com.example.presentation.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(R.layout.fragment_bookmark) {
+class BookmarkFragment : Fragment() {
+    private var _binding: FragmentBookmarkBinding? = null
+    private val binding get() = _binding!!
 
     private val homeViewModel by viewModels<HomeViewModel>()
-
-    override val viewModel by viewModels<BookmarkViewModel>()
+    private val bookmarkViewModel by viewModels<BookmarkViewModel>()
 
     private val bookmarkAdapter = BookmarkAdapter {
         homeViewModel.deleteBookmark(it)
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
+        observeUiState()
+        observeEvents()
     }
 
-
-    override fun initUi() {
+    private fun initUi() {
         with(binding) {
             rvBookmark.adapter = bookmarkAdapter
             switchMean.setOnCheckedChangeListener { _, isShowMean ->
                 bookmarkAdapter.toggleMean(isShowMean)
             }
         }
-        homeViewModel.viewEvent.map(::onChangeViewEvent).launchIn(lifecycleScope)
-
     }
 
-    override fun onChangedViewState(state: ViewState) {
-        when (state) {
-            is BookmarkViewState -> {
-                binding.rvBookmark.isVisible = state.bookmarkList.isNotEmpty()
-                binding.notBookmark.isVisible = state.bookmarkList.isEmpty()
-                bookmarkAdapter.addAll(state.bookmarkList)
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                bookmarkViewModel.uiState.collect { state ->
+                    when (state) {
+                        is BookmarkUiState.Loading -> {}
+
+                        is BookmarkUiState.Success -> {
+                            binding.rvBookmark.isVisible = true
+                            binding.notBookmark.isVisible = false
+                            bookmarkAdapter.addAll(state.bookmarkList)
+                        }
+
+                        is BookmarkUiState.Empty -> {
+                            binding.rvBookmark.isVisible = false
+                            binding.notBookmark.isVisible = true
+                            bookmarkAdapter.addAll(emptyList())
+                        }
+                    }
+                }
             }
         }
     }
 
-    override fun onChangeViewEvent(event: ViewEvent) {
-        when (event) {
-            is HomeViewEvent.DeleteBookmark -> {
-                bookmarkAdapter.delete(event.item)
+
+    private fun observeEvents() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.uiEvent.collect { event ->
+                    when (event) {
+                        is HomeUiEvent.DeleteBookmark -> {
+                            bookmarkAdapter.delete(event.item)
+                        }
+
+                        is HomeUiEvent.AddBookmark -> {}
+                    }
+                }
             }
-
-            is HomeViewEvent.AddBookmark -> {}
-
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
