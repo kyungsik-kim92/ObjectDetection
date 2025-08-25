@@ -1,6 +1,7 @@
 package com.example.presentation.ui.search.detect
 
 import androidx.databinding.ObservableField
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.ext.addWord
 import com.example.domain.ext.deleteWord
@@ -8,10 +9,12 @@ import com.example.domain.ext.getWordList
 import com.example.domain.repo.FirebaseRepository
 import com.example.domain.repo.SearchWordRepository
 import com.example.model.WordItem
-import com.example.model.common.Result
-import com.example.presentation.base.BaseViewModel
+import com.example.model.api.DictionaryResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,142 +22,82 @@ import javax.inject.Inject
 class SelectDetectionViewModel @Inject constructor(
     private val searchWordRepository: SearchWordRepository,
     private val firebaseRepository: FirebaseRepository
-) : BaseViewModel() {
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow<SelectDetectionUiState>(SelectDetectionUiState.Loading)
+    val uiState: StateFlow<SelectDetectionUiState> = _uiState.asStateFlow()
 
     private val wordItemObservableField = ObservableField<WordItem>()
+    private var currentWord: DictionaryResponseItem? = null
 
     fun searchMeanWord(word: String?) {
         word?.let {
-            onChangedViewState(SelectDetectionViewState.ShowProgress)
+            _uiState.value = SelectDetectionUiState.Loading
 
             viewModelScope.launch(Dispatchers.IO) {
-                when (val result = searchWordRepository.searchMeanWord(word)) {
+                try {
+                    val dictionaryResponse = searchWordRepository.searchMeanWord(word)
+                    val getData = dictionaryResponse.filter { it.word == word }
 
-//                    is Result.Success -> {
-//
-//                        val getData = result.data.filter { it.word == word }
-//
-//                        if (getData.isNotEmpty()) {
-//                            when (val result =
-//                                searchWordRepository.searchMeanWord(getData[0].word)) {
-//                                is Result.Success -> {
-//                                    if (result.data.isNotEmpty()) {
-//                                        result.data[0].word
-//
-//
-//                                        wordItemObservableField.set(
-//                                            WordItem(
-//                                                result.data[0].word,
-//                                                result.data[0].toMean(),
-//                                            )
-//                                        )
-//                                        onChangedViewState(
-//                                            SelectDetectionViewState.GetSearchWord(
-//                                                result.data[0]
-//                                            )
-//                                        )
-//                                    } else {
-//                                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
-//                                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-//                                    }
-//                                }
-//
-//                                is Result.Error -> {
-//                                    onChangedViewState(SelectDetectionViewState.NotSearchWord)
-//                                    onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-//                                }
-//                            }
-//
-//                        } else {
-//                            onChangedViewState(SelectDetectionViewState.NotSearchWord)
-//                            onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-//                        }
-//
-//                    }
-//
-//                    is Result.Error -> {
-//                        onChangedViewState(SelectDetectionViewState.NotSearchWord)
-//                        onChangedViewState(SelectDetectionViewState.ShowToast("단어를 찾을 수 없습니다."))
-//                    }
-
+                    if (getData.isNotEmpty()) {
+                        currentWord = getData[0]
+                        wordItemObservableField.set(
+                            WordItem(
+                                getData[0].word,
+                                getData[0].toMean(),
+                            )
+                        )
+                        _uiState.value = SelectDetectionUiState.Success(getData[0])
+                    } else {
+                        _uiState.value = SelectDetectionUiState.NotFound
+                    }
+                } catch (e: Exception) {
+                    _uiState.value = SelectDetectionUiState.Error("단어를 찾을 수 없습니다.")
                 }
             }
-
-            onChangedViewState(SelectDetectionViewState.HideProgress)
         }
     }
 
-    fun checkBookmark() {
-        firebaseRepository.getWordList { bookmarkList ->
-            if (bookmarkList != null) {
-                val filterList =
-                    bookmarkList.filter {
-                        (it.word == wordItemObservableField.get()!!.word) && (it.mean == wordItemObservableField.get()!!.mean)
-                    }
-                onChangedViewState(SelectDetectionViewState.BookmarkState(filterList.isNotEmpty()))
-            } else {
-                onChangedViewState(SelectDetectionViewState.BookmarkState(false))
+
+
+fun checkBookmark() {
+    firebaseRepository.getWordList { bookmarkList ->
+        if (bookmarkList != null && wordItemObservableField.get() != null) {
+            val filterList = bookmarkList.filter {
+                (it.word == wordItemObservableField.get()!!.word) &&
+                        (it.mean == wordItemObservableField.get()!!.mean)
             }
+            _uiState.value = SelectDetectionUiState.BookmarkUpdated(filterList.isNotEmpty())
+        } else {
+            _uiState.value = SelectDetectionUiState.BookmarkUpdated(false)
         }
     }
+}
 
-
-    fun toggleBookmark(state: Boolean) {
+fun toggleBookmark(state: Boolean) {
+    wordItemObservableField.get()?.let { wordItem ->
         if (state) {
             viewModelScope.launch(Dispatchers.IO) {
-                firebaseRepository.addWord(
-                    wordItemObservableField.get()!!.toBookmarkWord()
-                ) { isAddBookmark ->
+                firebaseRepository.addWord(wordItem.toBookmarkWord()) { isAddBookmark ->
                     if (!isAddBookmark) {
-                        onChangedViewState(SelectDetectionViewState.ShowToast("즐겨찾기 추가를 실패하였습니다."))
+                        _uiState.value = SelectDetectionUiState.Error("즐겨찾기 추가를 실패하였습니다.")
                     }
                 }
             }
         } else {
             viewModelScope.launch(Dispatchers.IO) {
-                firebaseRepository.deleteWord(
-                    wordItemObservableField.get()!!.toBookmarkWord()
-                ) { isDeleteBookmark ->
+                firebaseRepository.deleteWord(wordItem.toBookmarkWord()) { isDeleteBookmark ->
                     if (!isDeleteBookmark) {
-                        onChangedViewState(SelectDetectionViewState.ShowToast("즐겨찾기 제거를 실패하였습니다."))
+                        _uiState.value = SelectDetectionUiState.Error("즐겨찾기 제거를 실패하였습니다.")
                     }
                 }
             }
         }
     }
-
+}
 }
 
-//viewState.word.meanings.forEach { meaning ->
-//
-//                    when (meaning.partOfSpeech) {
-//
-//                        "noun" -> {
-//                            binding.viewWordDetail.containerNoun.isVisible = true
-//                            binding.viewWordDetail.noun.text = meaning.definitions[0].definition
-//                        }
-//
-//                        "verb" -> {
-//                            binding.viewWordDetail.containerVerb.isVisible = true
-//                            binding.viewWordDetail.verb.text = meaning.definitions[0].definition
-//                        }
-//
-//                        "adjective" -> {
-//                            binding.viewWordDetail.containerAdjective.isVisible = true
-//                            binding.viewWordDetail.adjective.text =
-//                                meaning.definitions[0].definition
-//                        }
-//
-//                        "adverb" -> {
-//                            binding.viewWordDetail.containerAdverb.isVisible = true
-//                            binding.viewWordDetail.adverb.text = meaning.definitions[0].definition
-//                        }
-//
-//                        else -> {}
-//                    }
-//                }
-
-fun com.example.model.api.DictionaryResponseItem.toMean(): String =
+fun DictionaryResponseItem.toMean(): String =
     if (meanings.isNotEmpty()) {
         meanings.first().definitions.first().definition
     } else {
