@@ -1,11 +1,14 @@
 package com.example.presentation.ui.splash
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.word.UpdateWordListUseCase
-import com.example.presentation.base.BaseViewModel
 import com.example.presentation.ext.LottieAnimateState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.plus
 import javax.inject.Inject
@@ -13,9 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val updateWordListUseCase: UpdateWordListUseCase
-) :
-    BaseViewModel() {
-
+) : ViewModel() {
+    private val _uiState = MutableStateFlow<SplashUiState>(SplashUiState.Loading)
+    val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
 
     val animateState: Function1<LottieAnimateState, Unit> = ::onAnimationState
 
@@ -27,8 +30,7 @@ class SplashViewModel @Inject constructor(
             }
 
             LottieAnimateState.End -> {
-                onChangedViewState(SplashViewState.RouteLogin)
-
+                _uiState.value = SplashUiState.RouteLogin
             }
 
             LottieAnimateState.Cancel -> {}
