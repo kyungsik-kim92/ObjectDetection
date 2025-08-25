@@ -1,12 +1,12 @@
 package com.example.presentation.ui.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.presentation.R
-import com.example.presentation.base.BaseFragment
-import com.example.presentation.base.ViewEvent
-import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentHomeBinding
 import com.example.presentation.ui.adapter.FragmentPagerAdapter
 import com.example.presentation.ui.bookmark.BookmarkFragment
@@ -17,9 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : Fragment() {
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
-    override val viewModel by viewModels<HomeViewModel>()
+    val viewModel by viewModels<HomeViewModel>()
 
     private val tabConfigurationStrategy =
         TabLayoutMediator.TabConfigurationStrategy { tab, position ->
@@ -27,12 +29,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             tab.icon = resources.obtainTypedArray(R.array.array_home_icon).getDrawable(position)
         }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
     }
 
-    override fun initUi() {
+    private fun initUi() {
         val list = listOf(
             SearchFragment(),
             BookmarkFragment(),
@@ -48,10 +59,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    override fun onChangedViewState(state: ViewState) {}
-
-    override fun onChangeViewEvent(event: ViewEvent) {}
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 
