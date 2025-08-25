@@ -1,35 +1,54 @@
 package com.example.presentation.ui.login
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.presentation.R
-import com.example.presentation.base.BaseFragment
-import com.example.presentation.base.ViewEvent
-import com.example.presentation.base.ViewState
 import com.example.presentation.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login) {
+class LoginFragment : Fragment() {
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
 
-    override val viewModel by viewModels<LoginViewModel>()
+    private val loginViewModel by viewModels<LoginViewModel>()
 
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding.viewModel = loginViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
+        observeUiState()
+        observeEvents()
     }
 
 
-    override fun initUi() {
+    private fun initUi() {
         binding.inputPassLogin.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.login()
+                loginViewModel.login()
                 true
             } else {
                 false
@@ -37,40 +56,79 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         }
     }
 
-    override fun onChangedViewState(state: ViewState) {
-        when (state) {
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginViewModel.uiState.collect { state ->
+                    when (state) {
+                        is LoginUiState.Idle -> {
+                            binding.progressbar.isVisible = false
+                            setInputsEnabled(true)
+                        }
 
-            is LoginViewState -> {
-                binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = state.isLoading
-                with(binding) {
-                    inputEmailLogin.isEnabled = state.isEnable
-                    inputPassLogin.isEnabled = state.isEnable
-                    btnLogin.isEnabled = state.isEnable
-                    btnRegister.isEnabled = state.isEnable
+                        is LoginUiState.Loading -> {
+                            binding.progressbar.bringToFront()
+                            binding.progressbar.isVisible = true
+                            setInputsEnabled(false)
+                        }
+
+                        is LoginUiState.Success -> {
+                            binding.progressbar.isVisible = false
+                            setInputsEnabled(true)
+                        }
+                    }
                 }
             }
         }
     }
 
-    override fun onChangeViewEvent(event: ViewEvent) {
-        super.onChangeViewEvent(event)
-        when (event) {
-            is LoginViewEvent.RouteRegister -> {
-                with(binding) {
-                    inputEmailLogin.text.clear()
-                    inputPassLogin.text.clear()
-                }
-                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-                findNavController().navigate(action)
-            }
+    private fun observeEvents() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginViewModel.uiEvent.collect { event ->
+                    when (event) {
+                        is LoginUiEvent.RouteRegister -> {
+                            clearInputs()
+                            val action =
+                                LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                            findNavController().navigate(action)
+                        }
 
-            is LoginViewEvent.RouteHome -> {
-                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                findNavController().navigate(action)
+                        is LoginUiEvent.RouteHome -> {
+                            val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                            findNavController().navigate(action)
+                        }
+
+                        is LoginUiEvent.ShowToast -> {
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
             }
         }
     }
 
+    private fun setInputsEnabled(enabled: Boolean) {
+        with(binding) {
+            inputEmailLogin.isEnabled = enabled
+            inputPassLogin.isEnabled = enabled
+            btnLogin.isEnabled = enabled
+            btnRegister.isEnabled = enabled
+        }
+    }
+
+    private fun clearInputs() {
+        with(binding) {
+            inputEmailLogin.text.clear()
+            inputPassLogin.text.clear()
+        }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }
