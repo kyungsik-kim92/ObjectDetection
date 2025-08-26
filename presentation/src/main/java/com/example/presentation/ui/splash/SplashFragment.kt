@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.FragmentSplashBinding
+import com.example.presentation.ext.LottieAnimateState
 import com.example.presentation.ext.routeLoginFragment
 import com.example.presentation.ui.mypage.MyPageFragment.Companion.KEY_LOGOUT
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +31,8 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        binding.viewModel = splashViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
