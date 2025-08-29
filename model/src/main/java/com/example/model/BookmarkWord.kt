@@ -9,7 +9,7 @@ data class BookmarkWord(
     var month: String = (Calendar.getInstance().get(Calendar.MONTH) + 1).toString(),
     var day: String = (Calendar.getInstance().get(Calendar.DATE)).toString()
 ) {
-    fun foWordItem(): WordItem =
+    fun toWordItem(): WordItem =
         WordItem(word, mean)
 
 }

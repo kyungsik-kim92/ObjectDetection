@@ -25,7 +25,7 @@ class WordDetailFragment : Fragment() {
     private var _binding: FragmentWordDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val wordDetailViewModel by viewModels<WordDetailViewModel>()
+    private val viewModel by viewModels<WordDetailViewModel>()
 
 
     override fun onCreateView(
@@ -46,14 +46,14 @@ class WordDetailFragment : Fragment() {
 
     private fun initUi() {
         binding.viewWordDetail.itemBookmark.setOnCheckedChangeListener { _, bookmarkState ->
-            wordDetailViewModel.toggleBookmark(bookmarkState)
+            viewModel.toggleBookmark(bookmarkState)
         }
     }
 
     private fun observeUiState() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                wordDetailViewModel.uiState.collect { state ->
+                viewModel.uiState.collect { state ->
                     when (state) {
                         is WordDetailUiState.Loading -> {
                             binding.progressbar.bringToFront()

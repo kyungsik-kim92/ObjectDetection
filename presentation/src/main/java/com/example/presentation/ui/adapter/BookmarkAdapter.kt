@@ -66,7 +66,7 @@ class BookmarkViewHolder(private val binding: ItemWordBinding) :
         onDelete: (BookmarkWord) -> Unit,
         toggleMean: Boolean
     ) {
-        binding.item = item.foWordItem()
+        binding.item = item.toWordItem()
 
         itemView.setOnClickListener {
             onDelete(item)
