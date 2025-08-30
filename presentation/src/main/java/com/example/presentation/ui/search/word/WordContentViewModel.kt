@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +23,16 @@ class WordContentViewModel @Inject constructor(
     val inputTextFlow = MutableStateFlow("")
 
     init {
+
+        viewModelScope.launch {
+            val initialList = searchWordRepository.excelList.first()
+            if (initialList.isNotEmpty()) {
+                _uiState.value = WordContentUiState.Success(initialList)
+            } else {
+                _uiState.value = WordContentUiState.Empty
+            }
+        }
+
         inputTextFlow.onEach { searchText ->
             if (searchText.isEmpty()) {
                 _uiState.value = WordContentUiState.Empty

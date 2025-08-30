@@ -31,6 +31,8 @@ class WordContentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWordContentBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
