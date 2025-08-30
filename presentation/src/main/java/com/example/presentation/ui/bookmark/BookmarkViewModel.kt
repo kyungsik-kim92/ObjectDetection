@@ -25,10 +25,9 @@ class BookmarkViewModel @Inject constructor(
         getBookmarkWordListUseCase()
             .onStart { _uiState.value = BookmarkUiState.Loading }
             .map { bookmarkList ->
-                if (bookmarkList.isEmpty()) {
-                    BookmarkUiState.Empty
-                } else {
-                    BookmarkUiState.Success(bookmarkList)
+                when {
+                    bookmarkList.isNullOrEmpty() -> BookmarkUiState.Empty
+                    else -> BookmarkUiState.Success(bookmarkList)
                 }
             }
             .onEach { _uiState.value = it }

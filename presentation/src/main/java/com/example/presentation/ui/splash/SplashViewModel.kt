@@ -9,9 +9,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.plus
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
@@ -25,7 +30,16 @@ class SplashViewModel @Inject constructor(
     private fun onAnimationState(state: LottieAnimateState) {
         when (state) {
             LottieAnimateState.Start -> {
-                updateWordListUseCase().launchIn(viewModelScope.plus(Dispatchers.IO))
+                updateWordListUseCase()
+                    .onStart { _uiState.value = SplashUiState.Loading }
+                    .timeout(10.seconds)
+                    .onEach {
+                        _uiState.value = SplashUiState.RouteLogin
+                    }
+                    .catch {
+                        _uiState.value = SplashUiState.RouteLogin
+                    }
+                    .launchIn(viewModelScope.plus(Dispatchers.IO))
 
             }
 

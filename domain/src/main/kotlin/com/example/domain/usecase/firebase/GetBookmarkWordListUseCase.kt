@@ -13,12 +13,34 @@ class GetBookmarkWordListUseCase @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) {
     operator fun invoke() = callbackFlow<List<BookmarkWord>> {
+        val currentUser = getCurrentFirebaseUserUseCase()
+
+        if (currentUser == null) {
+            trySend(emptyList())
+            close()
+            return@callbackFlow
+        }
+
         firebaseRepository.getFirebaseFireStore()
-            .collection(getCurrentFirebaseUserUseCase()?.email.orEmpty())
+            .collection(currentUser.email ?: "")
             .document("word")
             .addSnapshotListener { value, error ->
-                if (error != null) trySend(emptyList())
-                else if (value?.exists() == true) trySend(Gson().fromJson(value["list"]))
+                if (error != null) {
+                    trySend(emptyList())
+                } else if (value?.exists() == true) {
+                    try {
+                        val list = value["list"]
+                        if (list != null) {
+                            trySend(Gson().fromJson<List<BookmarkWord>>(list))
+                        } else {
+                            trySend(emptyList())
+                        }
+                    } catch (e: Exception) {
+                        trySend(emptyList())
+                    }
+                } else {
+                    trySend(emptyList())
+                }
             }
         awaitClose()
     }
