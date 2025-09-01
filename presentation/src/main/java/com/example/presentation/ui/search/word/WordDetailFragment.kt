@@ -46,7 +46,10 @@ class WordDetailFragment : Fragment() {
 
     private fun initUi() {
         binding.viewWordDetail.itemBookmark.setOnCheckedChangeListener { _, bookmarkState ->
-            viewModel.toggleBookmark(bookmarkState)
+            val currentState = viewModel.uiState.value
+            if (currentState is WordDetailUiState.Success && currentState.isBookmark != bookmarkState) {
+                viewModel.toggleBookmark(bookmarkState)
+            }
         }
     }
 
@@ -73,9 +76,7 @@ class WordDetailFragment : Fragment() {
                             binding.containerWordDetail.isVisible = false
                         }
 
-                        is WordDetailUiState.BookmarkUpdated -> {
-                            binding.viewWordDetail.itemBookmark.isChecked = state.isBookmark
-                        }
+                        is WordDetailUiState.BookmarkUpdated -> {}
 
                         is WordDetailUiState.Error -> {
                             binding.progressbar.isVisible = false

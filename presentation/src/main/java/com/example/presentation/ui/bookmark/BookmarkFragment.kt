@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.FragmentBookmarkBinding
+import com.example.presentation.ext.routeWordDetailFromMain
 import com.example.presentation.ui.adapter.BookmarkAdapter
 import com.example.presentation.ui.home.HomeUiEvent
 import com.example.presentation.ui.home.HomeViewModel
@@ -26,9 +27,14 @@ class BookmarkFragment : Fragment() {
     private val homeViewModel by viewModels<HomeViewModel>()
     private val bookmarkViewModel by viewModels<BookmarkViewModel>()
 
-    private val bookmarkAdapter = BookmarkAdapter {
-        homeViewModel.deleteBookmark(it)
-    }
+    private val bookmarkAdapter = BookmarkAdapter(
+        onDelete = { bookmarkWord ->
+            homeViewModel.deleteBookmark(bookmarkWord)
+        },
+        onItemClick = { bookmarkWord ->
+            routeWordDetailFromMain(bookmarkWord.word)
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,

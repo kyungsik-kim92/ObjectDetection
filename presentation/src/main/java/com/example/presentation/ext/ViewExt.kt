@@ -1,7 +1,5 @@
 package com.example.presentation.ext
 
-import android.content.Context
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -36,7 +34,11 @@ fun Fragment.routeSelectItem(item: String) {
     )
 }
 
-fun Fragment.showToast(context: Context = this.requireContext(), message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+fun Fragment.routeWordDetailFromMain(word: String) {
+    val wordItem = WordItem(word = word, mean = "")
+    findNavController().navigate(
+        R.id.action_homeFragment_to_wordDetail,
+        bundleOf(ARG_WORD to wordItem)
+    )
 }
 

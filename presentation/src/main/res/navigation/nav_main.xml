@@ -30,7 +30,12 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.presentation.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_wordDetail"
+            app:destination="@id/wordDetailFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.presentation.ui.register.RegisterFragment"
@@ -40,5 +45,15 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/wordDetailFragment"
+        android:name="com.example.presentation.ui.search.word.WordDetailFragment"
+        android:label="WordDetailFragment">
+
+        <argument
+            android:name="word"
+            app:argType="string" />
     </fragment>
 </navigation>

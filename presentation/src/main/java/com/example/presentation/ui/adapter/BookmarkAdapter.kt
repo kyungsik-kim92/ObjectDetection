@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.model.BookmarkWord
 import com.example.presentation.databinding.ItemWordBinding
 
-class BookmarkAdapter(private val onDelete: (BookmarkWord) -> Unit) :
-    RecyclerView.Adapter<BookmarkViewHolder>() {
-
+class BookmarkAdapter(
+    private val onDelete: (BookmarkWord) -> Unit,
+    private val onItemClick: (BookmarkWord) -> Unit
+) : RecyclerView.Adapter<BookmarkViewHolder>() {
     private val bookmarkList = mutableListOf<BookmarkWord>()
 
     private var toggleMean: Boolean = true
@@ -21,11 +22,11 @@ class BookmarkAdapter(private val onDelete: (BookmarkWord) -> Unit) :
     ): BookmarkViewHolder {
         val binding =
             ItemWordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BookmarkViewHolder(binding)
+        return BookmarkViewHolder(binding, onDelete, onItemClick)
     }
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
-        holder.bind(bookmarkList[position], onDelete, toggleMean)
+        holder.bind(bookmarkList[position], onDelete, onItemClick, toggleMean)
     }
 
     override fun getItemCount(): Int =
@@ -35,44 +36,44 @@ class BookmarkAdapter(private val onDelete: (BookmarkWord) -> Unit) :
         bookmarkList.clear()
         bookmarkList.addAll(list)
         notifyDataSetChanged()
-
     }
 
     fun delete(item: BookmarkWord) {
         if (bookmarkList.contains(item)) {
-            val index = bookmarkList.indexOf(item)
-            bookmarkList.removeAt(index)
-            notifyItemChanged(index)
+            bookmarkList.remove(item)
+            notifyDataSetChanged()
         }
-    }
-
-    fun add(item: BookmarkWord) {
-        bookmarkList.add(item)
-        notifyItemChanged(bookmarkList.lastIndex)
     }
 
 
     fun toggleMean(isShow: Boolean) {
-        toggleMean = isShow
-        notifyDataSetChanged()
+        if (toggleMean != isShow) {
+            toggleMean = isShow
+            notifyDataSetChanged()
+        }
     }
 }
 
-class BookmarkViewHolder(private val binding: ItemWordBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-
+class BookmarkViewHolder(
+    private val binding: ItemWordBinding,
+    private val onDelete: (BookmarkWord) -> Unit,
+    private val onItemClick: (BookmarkWord) -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
     fun bind(
         item: BookmarkWord,
         onDelete: (BookmarkWord) -> Unit,
+        onItemClick: (BookmarkWord) -> Unit,
         toggleMean: Boolean
     ) {
         binding.item = item.toWordItem()
 
         itemView.setOnClickListener {
+            onItemClick(item)
+        }
+        binding.mean.isVisible = toggleMean
+        binding.deleteBookmark.setOnClickListener {
             onDelete(item)
         }
-
-        binding.mean.isVisible = toggleMean
     }
 }
 
