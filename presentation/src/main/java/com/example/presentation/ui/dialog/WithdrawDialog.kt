@@ -46,19 +46,22 @@ class WithdrawDialog(
                 binding.password.text.toString()
             ).addOnSuccessListener {
                 firebaseAuth.currentUser?.delete()?.addOnSuccessListener {
+                    Toast.makeText(requireContext(), "회원탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     dismissCallback.invoke()
                     dismiss()
+
                     startActivity(Intent(requireContext(), MainActivity::class.java).apply {
                         putExtra(KEY_LOGIN_DIRECT, true)
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
-                }?.addOnCanceledListener {
-                    Toast.makeText(requireContext(), "회원탈퇴를 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }?.addOnFailureListener { exception ->
+                    Toast.makeText(requireContext(), "회원탈퇴를 실패하였습니다: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }
-
-            }.addOnCanceledListener {
-                Toast.makeText(requireContext(), "올바른 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener { exception ->
+                Toast.makeText(requireContext(), "비밀번호가 일치하지 않습니다: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
+        } ?: run {
+            Toast.makeText(requireContext(), "로그인된 사용자가 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
