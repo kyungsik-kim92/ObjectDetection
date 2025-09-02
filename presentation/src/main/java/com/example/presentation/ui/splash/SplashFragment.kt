@@ -10,8 +10,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.FragmentSplashBinding
-import com.example.presentation.ext.LottieAnimateState
 import com.example.presentation.ext.routeLoginFragment
+import com.example.presentation.ui.dialog.WithdrawDialog.Companion.KEY_LOGIN_DIRECT
 import com.example.presentation.ui.mypage.MyPageFragment.Companion.KEY_LOGOUT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,8 +43,13 @@ class SplashFragment : Fragment() {
     }
 
     private fun checkLogoutIntent() {
-        if (requireActivity().intent.getBooleanExtra(KEY_LOGOUT, false)) {
-            routeLoginFragment()
+        when {
+            requireActivity().intent.getBooleanExtra(KEY_LOGOUT, false) -> {
+                routeLoginFragment()
+            }
+            requireActivity().intent.getBooleanExtra(KEY_LOGIN_DIRECT, false) -> {
+                routeLoginFragment()
+            }
         }
     }
 

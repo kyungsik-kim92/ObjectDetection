@@ -16,7 +16,6 @@ import com.example.presentation.MainActivity
 import com.example.presentation.databinding.FragmentMyPageBinding
 import com.example.presentation.ui.dialog.ChooseDialogFactory
 import com.example.presentation.ui.dialog.ChooseDialogType
-import com.example.presentation.ui.login.LoginFragment
 import com.example.presentation.util.EventDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -138,13 +137,9 @@ class MyPageFragment : Fragment() {
     }
 
     private fun routeLogin() {
-        startActivity(
-            Intent(
-                requireActivity(),
-                LoginFragment::class.java
-            ).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+        startActivity(Intent(requireActivity(), MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
     }
 
     private fun Int.convertLevel(): String {
