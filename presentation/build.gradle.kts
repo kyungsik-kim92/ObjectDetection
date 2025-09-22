@@ -1,10 +1,10 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.dagger.hilt.android")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.gms.google-services")
-    kotlin("kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -71,7 +71,7 @@ dependencies {
     implementation(libs.tensorflow.lite.gpu.old)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     implementation(libs.material.calendarview)
 
