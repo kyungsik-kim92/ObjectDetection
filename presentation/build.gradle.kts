@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.navigation.safe.args)
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.ksp)
+    kotlin("kapt")
 }
 
 android {
@@ -91,4 +92,7 @@ dependencies {
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
+}
+kapt {
+    correctErrorTypes = true
 }
