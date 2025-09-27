@@ -6,7 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class WordItem(
     val word: String,
-    val mean: String
+    val mean: String,
+    val isBookmark: Boolean = false
 ) : Parcelable {
     fun toBookmarkWord(): BookmarkWord =
         BookmarkWord(
