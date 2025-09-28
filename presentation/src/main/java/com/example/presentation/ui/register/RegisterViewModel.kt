@@ -2,6 +2,7 @@ package com.example.presentation.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.repo.FirebaseRepository
 import com.example.domain.usecase.firebase.CheckInputRegisterUseCase
 import com.example.domain.usecase.firebase.CheckRegisterState
 import com.example.domain.usecase.firebase.FirebaseRegisterUseCase
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val checkInputRegisterUseCase: CheckInputRegisterUseCase,
-    private val firebaseRegisterUseCase: FirebaseRegisterUseCase
+    private val firebaseRegisterUseCase: FirebaseRegisterUseCase,
+    private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<RegisterUiState>(RegisterUiState.Idle)
     val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
@@ -48,15 +50,12 @@ class RegisterViewModel @Inject constructor(
             CheckRegisterState.Success -> {
                 firebaseRegisterUseCase(
                     inputEmailStateFlow.value.orEmpty(),
-                    inputPasswordStateFlow.value.orEmpty()
+                    inputPasswordStateFlow.value.orEmpty(),
                 ).onStart {
                     _uiState.value = RegisterUiState.Loading
                 }.map { isSuccessful ->
                     if (isSuccessful) {
-                        _uiState.value = RegisterUiState.Success
-                        viewModelScope.launch {
-                            _uiEvent.emit(RegisterUiEvent.RouteHome)
-                        }
+                        createUserWordDB()
                     } else {
                         _uiState.value = RegisterUiState.Idle
                         viewModelScope.launch {
@@ -64,6 +63,26 @@ class RegisterViewModel @Inject constructor(
                         }
                     }
                 }.launchIn(viewModelScope)
+            }
+        }
+    }
+
+    private fun createUserWordDB() {
+        viewModelScope.launch {
+            firebaseRepository.createWordDB(
+                inputEmailStateFlow.value.orEmpty()
+            ).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    _uiState.value = RegisterUiState.Success
+                    viewModelScope.launch {
+                        _uiEvent.emit(RegisterUiEvent.RouteHome)
+                    }
+                } else {
+                    _uiState.value = RegisterUiState.Idle
+                    viewModelScope.launch {
+                        _uiEvent.emit(RegisterUiEvent.ShowToast("데이터베이스 생성에 실패했습니다."))
+                    }
+                }
             }
         }
     }
