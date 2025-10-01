@@ -22,12 +22,6 @@ interface FirebaseRepository {
     ): Task<AuthResult>
 
 
-    fun resetPass(
-        resetPassToId: String
-    ): Task<Void>
-
-    fun delete(): Task<Void>?
-
     fun createWordDB(
         id: String
     ): Task<Void>

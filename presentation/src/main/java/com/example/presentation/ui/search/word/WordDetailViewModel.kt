@@ -71,11 +71,6 @@ class WordDetailViewModel @Inject constructor(
                     }
                     .launchIn(viewModelScope)
             }
-
-//            val currentState = _uiState.value
-//            if (currentState is WordDetailUiState.Success) {
-//                _uiState.value = WordDetailUiState.BookmarkUpdated(state)
-//            }
         }
     }
 }
