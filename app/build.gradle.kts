@@ -20,6 +20,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "GOOGLE_SHEETS_API_KEY", "\"${project.findProperty("GOOGLE_SHEETS_API_KEY")}\"")
+        buildConfigField("String", "DICTIONARY_API_KEY", "\"${project.findProperty("DICTIONARY_API_KEY")}\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,6 +44,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 
 }
