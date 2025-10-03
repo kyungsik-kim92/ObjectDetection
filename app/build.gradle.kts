@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +11,10 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
     id("kotlin-parcelize")
 }
+
+val localPropertiesFile = rootProject.file("local.properties")
+val properties = Properties()
+properties.load(FileInputStream(localPropertiesFile))
 
 android {
     namespace = "com.example.objectdetection"
@@ -21,7 +28,6 @@ android {
         versionName = "1.0"
 
         buildConfigField("String", "GOOGLE_SHEETS_API_KEY", "\"${project.findProperty("GOOGLE_SHEETS_API_KEY")}\"")
-        buildConfigField("String", "DICTIONARY_API_KEY", "\"${project.findProperty("DICTIONARY_API_KEY")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
