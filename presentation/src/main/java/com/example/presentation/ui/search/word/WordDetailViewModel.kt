@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,24 +50,10 @@ class WordDetailViewModel @Inject constructor(
     fun toggleBookmark(state: Boolean) {
         getRouteItem?.let { item ->
             if (state) {
-                addWordUseCase(item.toBookmarkWord()).onEach { isSuccess ->
-                    if (isSuccess) {
-                        _uiState.value = WordDetailUiState.BookmarkUpdated(true)
-                    } else {
-                        _uiState.value = WordDetailUiState.BookmarkUpdated(false)
-                    }
-                }
+                addWordUseCase(item.toBookmarkWord())
                     .launchIn(viewModelScope)
-
             } else {
                 deleteWordUseCase(item.toBookmarkWord())
-                    .onEach { isSuccess ->
-                        if (isSuccess) {
-                            _uiState.value = WordDetailUiState.BookmarkUpdated(false)
-                        } else {
-                            _uiState.value = WordDetailUiState.BookmarkUpdated(true)
-                        }
-                    }
                     .launchIn(viewModelScope)
             }
         }
