@@ -71,13 +71,13 @@ class BookmarkFragment : Fragment() {
                         is BookmarkUiState.Success -> {
                             binding.rvBookmark.isVisible = true
                             binding.notBookmark.isVisible = false
-                            bookmarkAdapter.addAll(state.bookmarkList)
+                            bookmarkAdapter.submitList(state.bookmarkList)
                         }
 
                         is BookmarkUiState.Empty -> {
                             binding.rvBookmark.isVisible = false
                             binding.notBookmark.isVisible = true
-                            bookmarkAdapter.addAll(emptyList())
+                            bookmarkAdapter.submitList(emptyList())
                         }
                     }
                 }

@@ -32,12 +32,11 @@ class BookmarkAdapter(
     override fun getItemCount(): Int =
         bookmarkList.size
 
-    fun addAll(list: List<BookmarkWord>) {
+    fun submitList(list: List<BookmarkWord>) {
         bookmarkList.clear()
         bookmarkList.addAll(list)
         notifyDataSetChanged()
     }
-
     fun delete(item: BookmarkWord) {
         if (bookmarkList.contains(item)) {
             bookmarkList.remove(item)
