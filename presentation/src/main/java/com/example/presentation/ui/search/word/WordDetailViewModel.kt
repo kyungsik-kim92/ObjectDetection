@@ -56,7 +56,7 @@ class WordDetailViewModel @Inject constructor(
             currentState.item?.let { dictionaryItem ->
                 val bookmarkWord = BookmarkWord(
                     word = dictionaryItem.word,
-                    mean = extractMean(dictionaryItem)
+                    mean = getRouteItem?.mean ?: extractMean(dictionaryItem)
                 )
 
                 if (state) {
