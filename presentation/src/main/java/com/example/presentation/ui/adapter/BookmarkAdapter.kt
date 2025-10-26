@@ -37,13 +37,6 @@ class BookmarkAdapter(
         bookmarkList.addAll(list)
         notifyDataSetChanged()
     }
-    fun delete(item: BookmarkWord) {
-        if (bookmarkList.contains(item)) {
-            bookmarkList.remove(item)
-            notifyDataSetChanged()
-        }
-    }
-
 
     fun toggleMean(isShow: Boolean) {
         if (toggleMean != isShow) {

@@ -34,8 +34,8 @@ fun Fragment.routeSelectItem(item: String) {
     )
 }
 
-fun Fragment.routeWordDetailFromMain(word: String) {
-    val wordItem = WordItem(word = word, mean = "")
+fun Fragment.routeWordDetailFromMain(word: String, mean: String) {
+    val wordItem = WordItem(word = word, mean = mean)
     findNavController().navigate(
         R.id.action_homeFragment_to_wordDetail,
         bundleOf(ARG_WORD to wordItem)

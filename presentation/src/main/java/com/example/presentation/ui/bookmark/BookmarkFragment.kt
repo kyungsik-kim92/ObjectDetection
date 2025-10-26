@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.FragmentBookmarkBinding
 import com.example.presentation.ext.routeWordDetailFromMain
 import com.example.presentation.ui.adapter.BookmarkAdapter
-import com.example.presentation.ui.home.HomeUiEvent
 import com.example.presentation.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ class BookmarkFragment : Fragment() {
             homeViewModel.deleteBookmark(bookmarkWord)
         },
         onItemClick = { bookmarkWord ->
-            routeWordDetailFromMain(bookmarkWord.word)
+            routeWordDetailFromMain(bookmarkWord.word, bookmarkWord.mean)
         }
     )
 
@@ -49,7 +48,6 @@ class BookmarkFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         observeUiState()
-        observeEvents()
     }
 
     private fun initUi() {
@@ -79,23 +77,6 @@ class BookmarkFragment : Fragment() {
                             binding.notBookmark.isVisible = true
                             bookmarkAdapter.submitList(emptyList())
                         }
-                    }
-                }
-            }
-        }
-    }
-
-
-    private fun observeEvents() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homeViewModel.uiEvent.collect { event ->
-                    when (event) {
-                        is HomeUiEvent.DeleteBookmark -> {
-                            bookmarkAdapter.delete(event.item)
-                        }
-
-                        is HomeUiEvent.AddBookmark -> {}
                     }
                 }
             }

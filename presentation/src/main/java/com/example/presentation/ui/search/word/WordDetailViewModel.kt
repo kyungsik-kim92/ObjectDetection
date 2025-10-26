@@ -9,7 +9,6 @@ import com.example.domain.usecase.firebase.GetBookmarkWordListUseCase
 import com.example.domain.usecase.word.SearchWordUseCase
 import com.example.model.BookmarkWord
 import com.example.model.WordItem
-import com.example.model.api.DictionaryResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,26 +50,16 @@ class WordDetailViewModel @Inject constructor(
 
 
     fun toggleBookmark(state: Boolean) {
-        val currentState = _uiState.value
-        if (currentState is WordDetailUiState.Success) {
-            currentState.item?.let { dictionaryItem ->
-                val bookmarkWord = BookmarkWord(
-                    word = dictionaryItem.word,
-                    mean = getRouteItem?.mean ?: extractMean(dictionaryItem)
-                )
-
-                if (state) {
-                    addWordUseCase(bookmarkWord).launchIn(viewModelScope)
-                } else {
-                    deleteWordUseCase(bookmarkWord).launchIn(viewModelScope)
-                }
+        getRouteItem?.let { wordItem ->
+            val bookmarkWord = BookmarkWord(
+                word = wordItem.word,
+                mean = wordItem.mean
+            )
+            if (state) {
+                addWordUseCase(bookmarkWord).launchIn(viewModelScope)
+            } else {
+                deleteWordUseCase(bookmarkWord).launchIn(viewModelScope)
             }
         }
-    }
-
-
-    private fun extractMean(item: DictionaryResponseItem): String {
-        return item.meanings?.firstOrNull()?.definitions?.firstOrNull()?.definition
-            ?: ""
     }
 }
