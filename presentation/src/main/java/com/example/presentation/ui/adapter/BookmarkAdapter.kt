@@ -44,6 +44,13 @@ class BookmarkAdapter(
             notifyDataSetChanged()
         }
     }
+    fun delete(item: BookmarkWord) {
+        val index = bookmarkList.indexOfFirst { it.word == item.word }
+        if (index != -1) {
+            bookmarkList.removeAt(index)
+            notifyItemRemoved(index)
+        }
+    }
 }
 
 class BookmarkViewHolder(
