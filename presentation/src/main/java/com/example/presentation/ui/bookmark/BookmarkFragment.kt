@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.FragmentBookmarkBinding
 import com.example.presentation.ext.routeWordDetailFromMain
 import com.example.presentation.ui.adapter.BookmarkAdapter
+import com.example.presentation.ui.home.HomeUiEvent
 import com.example.presentation.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -48,6 +49,7 @@ class BookmarkFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         observeUiState()
+        observeEvents()
     }
 
     private fun initUi() {
@@ -81,7 +83,22 @@ class BookmarkFragment : Fragment() {
                 }
             }
         }
+    }private fun observeEvents() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.uiEvent.collect { event ->
+                    when (event) {
+                        is HomeUiEvent.DeleteBookmark -> {
+                            bookmarkAdapter.delete(event.item)
+                        }
+                        is HomeUiEvent.AddBookmark -> {}
+                    }
+                }
+            }
+        }
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
