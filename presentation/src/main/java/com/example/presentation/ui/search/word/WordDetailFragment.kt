@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.FragmentWordDetailBinding
+import com.example.presentation.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,6 +27,7 @@ class WordDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<WordDetailViewModel>()
+    private val homeViewModel by viewModels<HomeViewModel>()
 
 
     override fun onCreateView(
@@ -49,6 +51,17 @@ class WordDetailFragment : Fragment() {
             val currentState = viewModel.uiState.value
             if (currentState is WordDetailUiState.Success && currentState.isBookmark != bookmarkState) {
                 viewModel.toggleBookmark(bookmarkState)
+
+                if (!bookmarkState) {
+                    currentState.item?.let { item ->
+                        val bookmarkWord = com.example.model.BookmarkWord(
+                            word = item.word,
+                            mean = currentState.item.meanings.firstOrNull()?.definitions?.firstOrNull()?.definition
+                                ?: ""
+                        )
+                        homeViewModel.deleteBookmark(bookmarkWord)
+                    }
+                }
             }
         }
     }
