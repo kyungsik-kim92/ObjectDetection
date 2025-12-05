@@ -31,4 +31,6 @@
     <color name="icPressed">#AAFFFFFF</color>
 
     <color name="colorGrayBasic">#E0E0E0</color>
+    <color name="orange">#FF6F00</color>
+    <color name="light_orange">#FFF3E0</color>
 </resources>
