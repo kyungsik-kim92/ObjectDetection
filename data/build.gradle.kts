@@ -36,8 +36,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":model"))
-    implementation(project(":domain"))
+    implementation(projects.model)
+    implementation(projects.domain)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
