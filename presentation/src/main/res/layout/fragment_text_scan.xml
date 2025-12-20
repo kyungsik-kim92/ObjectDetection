@@ -78,7 +78,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/tv_recognized_text"
+                android:id="@+id/tv_scanned_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -100,7 +100,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_recognized_text"
+                app:layout_constraintTop_toBottomOf="@id/tv_scanned_text"
                 tools:itemCount="5"
                 tools:visibility="visible" />
 

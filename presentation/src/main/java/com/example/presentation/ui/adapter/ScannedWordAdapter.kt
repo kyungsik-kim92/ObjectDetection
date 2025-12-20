@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.presentation.databinding.ItemRecognizedWordBinding
+import com.example.presentation.databinding.ItemScannedWordBinding
 
-class RecognizedWordAdapter(private val onWordClick: (String) -> Unit) :
-    ListAdapter<String, RecognizedWordAdapter.RecognizedWordViewHolder>(WordDiffCallback()) {
+class ScannedWordAdapter(private val onWordClick: (String) -> Unit) :
+    ListAdapter<String, ScannedWordAdapter.RecognizedWordViewHolder>(WordDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecognizedWordViewHolder {
-        val binding = ItemRecognizedWordBinding.inflate(
+        val binding = ItemScannedWordBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -24,7 +24,7 @@ class RecognizedWordAdapter(private val onWordClick: (String) -> Unit) :
     }
 
     inner class RecognizedWordViewHolder(
-        private val binding: ItemRecognizedWordBinding
+        private val binding: ItemScannedWordBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(word: String) {

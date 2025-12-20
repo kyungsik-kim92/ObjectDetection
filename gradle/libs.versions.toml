@@ -32,7 +32,7 @@ tensorflowLiteSupport = "0.1.0"
 tensorflowLiteMetadata = "0.1.0"
 tensorflowLiteGpuOld = "2.3.0"
 
-hilt = "2.48.1"
+hilt = "2.52"
 
 firebaseBom = "32.7.3"
 

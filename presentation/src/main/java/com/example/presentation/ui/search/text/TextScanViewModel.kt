@@ -2,10 +2,10 @@ package com.example.presentation.ui.search.text
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 @HiltViewModel
 class TextScanViewModel @Inject constructor() : ViewModel() {
@@ -13,10 +13,10 @@ class TextScanViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow<TextScanUiState>(TextScanUiState.Idle)
     val uiState: StateFlow<TextScanUiState> = _uiState.asStateFlow()
 
-    private val _recognizedWords = MutableStateFlow<List<String>>(emptyList())
-    val recognizedWords: StateFlow<List<String>> = _recognizedWords.asStateFlow()
+    private val _scannedWords = MutableStateFlow<List<String>>(emptyList())
+    val scannedWords: StateFlow<List<String>> = _scannedWords.asStateFlow()
 
-    fun onTextRecognized(text: String) {
+    fun onTextScanned(text: String) {
         if (text.isBlank()) {
             _uiState.value = TextScanUiState.Error("텍스트를 찾을 수 없습니다")
             return
@@ -32,7 +32,7 @@ class TextScanViewModel @Inject constructor() : ViewModel() {
             return
         }
 
-        _recognizedWords.value = words
+        _scannedWords.value = words
         _uiState.value = TextScanUiState.Success(text)
     }
 
