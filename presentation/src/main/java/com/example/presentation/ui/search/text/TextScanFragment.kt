@@ -1,9 +1,17 @@
 package com.example.presentation.ui.search.text
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.presentation.databinding.FragmentTextScanBinding
@@ -20,6 +28,11 @@ class TextScanFragment : Fragment() {
     private val viewModel: TextScanViewModel by viewModels()
 
     private lateinit var textRecognizer: TextRecognizer
+    private lateinit var bitmapBuffer: Bitmap
+    private var preview: Preview? = null
+    private var imageAnalyzer: ImageAnalysis? = null
+    private var camera: Camera? = null
+    private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreateView(
@@ -35,6 +48,9 @@ class TextScanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initTextRecognizer()
         initUi()
+        binding.viewFinder.post {
+            setUpCamera()
+        }
     }
 
 
@@ -54,5 +70,51 @@ class TextScanFragment : Fragment() {
         cameraExecutor.shutdown()
         textRecognizer.close()
         _binding = null
+    }
+
+    private fun setUpCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        cameraProviderFuture.addListener(
+            {
+                cameraProvider = cameraProviderFuture.get()
+                setupCameraWithPreview()
+            },
+            ContextCompat.getMainExecutor(requireContext())
+        )
+    }
+
+    private fun setupCameraWithPreview() {
+        val cameraProvider = cameraProvider
+            ?: throw IllegalStateException("Camera initialization failed.")
+
+        val cameraSelector = CameraSelector.Builder()
+            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+            .build()
+
+        preview = Preview.Builder()
+            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+            .setTargetRotation(binding.viewFinder.display.rotation)
+            .build()
+
+        imageAnalyzer = ImageAnalysis.Builder()
+            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+            .setTargetRotation(binding.viewFinder.display.rotation)
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+            .build()
+
+        cameraProvider.unbindAll()
+
+        try {
+            camera = cameraProvider.bindToLifecycle(
+                this,
+                cameraSelector,
+                preview,
+                imageAnalyzer
+            )
+            preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
