@@ -9,12 +9,15 @@ import androidx.camera.core.AspectRatio
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.presentation.databinding.FragmentTextScanBinding
+import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -34,6 +37,8 @@ class TextScanFragment : Fragment() {
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraExecutor: ExecutorService
+
+    private var isProcessing = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +60,13 @@ class TextScanFragment : Fragment() {
 
 
     private fun initUi() {
+        binding.btnCapture.setOnClickListener {
+            if (!isProcessing) {
+                isProcessing = true
+                binding.progressBar.visibility = View.VISIBLE
+            }
+        }
+
         binding.btnBack.setOnClickListener {
             requireActivity().finish()
         }
@@ -102,9 +114,19 @@ class TextScanFragment : Fragment() {
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
             .build()
-
+            .also {
+                it.setAnalyzer(cameraExecutor) { image ->
+                    if (!::bitmapBuffer.isInitialized) {
+                        bitmapBuffer = createBitmap(image.width, image.height)
+                    }
+                    if (isProcessing) {
+                        recognizeText(image)
+                    } else {
+                        image.close()
+                    }
+                }
+            }
         cameraProvider.unbindAll()
-
         try {
             camera = cameraProvider.bindToLifecycle(
                 this,
@@ -116,5 +138,26 @@ class TextScanFragment : Fragment() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun recognizeText(imageProxy: ImageProxy) {
+        imageProxy.use {
+            bitmapBuffer.copyPixelsFromBuffer(imageProxy.planes[0].buffer)
+        }
+
+        val inputImage = InputImage.fromBitmap(
+            bitmapBuffer,
+            imageProxy.imageInfo.rotationDegrees
+        )
+
+        textRecognizer.process(inputImage)
+            .addOnSuccessListener { text ->
+                viewModel.onTextScanned(text.text)
+                isProcessing = false
+            }
+            .addOnFailureListener { e ->
+                viewModel.onError(e.message ?: "텍스트 인식 실패")
+                isProcessing = false
+            }
     }
 }
