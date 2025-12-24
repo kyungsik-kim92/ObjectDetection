@@ -1,5 +1,6 @@
 package com.example.presentation.ui.search.text
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.presentation.databinding.FragmentTextScanBinding
+import com.example.presentation.ui.adapter.ScannedWordAdapter
+import com.example.presentation.ui.search.word.WordActivity
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
@@ -38,6 +42,8 @@ class TextScanFragment : Fragment() {
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraExecutor: ExecutorService
 
+    private lateinit var scannedWordAdapter: ScannedWordAdapter
+
     private var isProcessing = false
 
     override fun onCreateView(
@@ -53,6 +59,7 @@ class TextScanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initTextRecognizer()
         initUi()
+        initAdapter()
         binding.viewFinder.post {
             setUpCamera()
         }
@@ -72,9 +79,30 @@ class TextScanFragment : Fragment() {
         }
     }
 
+    private fun initAdapter() {
+        scannedWordAdapter = ScannedWordAdapter { word ->
+            navigateToWordDetail(word)
+        }
+        binding.rvWords.apply {
+            adapter = scannedWordAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+        }
+    }
+
     private fun initTextRecognizer() {
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    private fun navigateToWordDetail(word: String) {
+        val intent = Intent(requireContext(), WordActivity::class.java).apply {
+            putExtra("word", word)
+        }
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
