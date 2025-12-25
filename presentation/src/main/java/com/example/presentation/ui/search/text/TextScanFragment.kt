@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
@@ -17,6 +18,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.presentation.databinding.FragmentTextScanBinding
 import com.example.presentation.ui.adapter.ScannedWordAdapter
@@ -25,6 +29,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -90,6 +95,54 @@ class TextScanFragment : Fragment() {
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
+        }
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.uiState.collect { state ->
+                        when (state) {
+                            is TextScanUiState.Idle -> {
+                                binding.progressBar.visibility = View.GONE
+                                binding.tvScannedText.text = "카메라를 텍스트에 맞추고 촬영 버튼을 누르세요"
+                                binding.rvWords.visibility = View.GONE
+                            }
+
+                            is TextScanUiState.Processing -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
+
+                            is TextScanUiState.Success -> {
+                                binding.progressBar.visibility = View.GONE
+                                binding.tvScannedText.text = "인식된 단어를 선택하세요"
+                                binding.rvWords.visibility = View.VISIBLE
+                                isProcessing = false
+                            }
+
+                            is TextScanUiState.WordSelected -> {
+                                navigateToWordDetail(state.word)
+                                viewModel.resetState()
+                            }
+
+                            is TextScanUiState.Error -> {
+                                binding.progressBar.visibility = View.GONE
+                                binding.rvWords.visibility = View.GONE
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT)
+                                    .show()
+                                isProcessing = false
+                            }
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.scannedWords.collect { words ->
+                        scannedWordAdapter.submitList(words)
+                    }
+                }
+            }
         }
     }
 
