@@ -8,22 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.databinding.ItemScannedWordBinding
 
 class ScannedWordAdapter(private val onWordClick: (String) -> Unit) :
-    ListAdapter<String, ScannedWordAdapter.RecognizedWordViewHolder>(WordDiffCallback()) {
+    ListAdapter<String, ScannedWordAdapter.ScannedWordViewHolder>(WordDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecognizedWordViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScannedWordViewHolder {
         val binding = ItemScannedWordBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return RecognizedWordViewHolder(binding)
+        return ScannedWordViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecognizedWordViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ScannedWordViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class RecognizedWordViewHolder(
+    inner class ScannedWordViewHolder(
         private val binding: ItemScannedWordBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
