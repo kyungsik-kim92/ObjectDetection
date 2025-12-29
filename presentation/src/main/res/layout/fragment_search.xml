@@ -48,14 +48,15 @@
                 android:id="@+id/iv_word"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="48dp"
                 app:cardCornerRadius="50dp"
-                app:layout_constraintBottom_toTopOf="@id/iv_detect"
+                app:layout_constraintBottom_toTopOf="@id/iv_text_scan"
                 app:layout_constraintDimensionRatio="W,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias=".1"
-                app:layout_constraintWidth_percent=".6">
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintWidth_percent=".5">
 
 
                 <com.airbnb.lottie.LottieAnimationView
@@ -68,19 +69,18 @@
 
             </androidx.cardview.widget.CardView>
 
-
             <androidx.cardview.widget.CardView
-                android:id="@+id/iv_detect"
+                android:id="@+id/iv_text_scan"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="50dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/iv_detect"
                 app:layout_constraintDimensionRatio="W,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_word"
-                app:layout_constraintVertical_bias=".5"
-                app:layout_constraintWidth_percent=".6">
+                app:layout_constraintWidth_percent=".5">
 
 
                 <com.airbnb.lottie.LottieAnimationView
@@ -90,6 +90,32 @@
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/scan" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/iv_detect"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="48dp"
+                app:cardCornerRadius="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_text_scan"
+                app:layout_constraintWidth_percent=".5">
+
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/detection" />
 
             </androidx.cardview.widget.CardView>
 
