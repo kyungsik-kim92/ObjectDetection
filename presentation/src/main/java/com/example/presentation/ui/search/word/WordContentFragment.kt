@@ -14,6 +14,8 @@ import com.example.presentation.databinding.FragmentWordContentBinding
 import com.example.presentation.ext.routeWordDetail
 import com.example.presentation.ui.adapter.WordAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -40,6 +42,24 @@ class WordContentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         observeUiState()
+
+        requireActivity().intent.getStringExtra("word")?.let { word ->
+            viewModel.inputTextFlow.value = word
+
+            lifecycleScope.launch {
+                val successState = viewModel.uiState
+                    .filterIsInstance<WordContentUiState.Success>()
+                    .first()
+
+                val wordItem = successState.searchList.find { it.word.equals(word, ignoreCase = true) }
+                if (wordItem != null) {
+                    routeWordDetail(wordItem)
+                } else {
+                    routeWordDetail(com.example.model.WordItem(word = word, mean = ""))
+                }
+                requireActivity().intent.removeExtra("word")
+            }
+        }
     }
 
     private fun initUi() {
