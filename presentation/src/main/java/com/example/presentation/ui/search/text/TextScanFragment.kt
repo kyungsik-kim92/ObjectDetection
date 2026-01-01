@@ -65,6 +65,7 @@ class TextScanFragment : Fragment() {
         initTextRecognizer()
         initUi()
         initAdapter()
+        observeState()
         binding.viewFinder.post {
             setUpCamera()
         }

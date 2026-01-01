@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.presentation.databinding.FragmentSearchBinding
 import com.example.presentation.ui.search.detect.DetectActivity
+import com.example.presentation.ui.search.text.TextScanActivity
 import com.example.presentation.ui.search.word.WordActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,6 +38,9 @@ class SearchFragment : Fragment() {
 
         binding.ivWord.setOnClickListener {
             startActivity(Intent(requireActivity(), WordActivity::class.java))
+        }
+        binding.ivTextScan.setOnClickListener {
+            startActivity(Intent(requireActivity(), TextScanActivity::class.java))
         }
     }
 
