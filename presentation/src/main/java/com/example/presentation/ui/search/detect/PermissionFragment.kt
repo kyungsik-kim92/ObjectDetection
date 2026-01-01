@@ -9,8 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.presentation.R
+import kotlinx.coroutines.launch
 
 private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
 
@@ -49,10 +50,18 @@ class PermissionFragment : Fragment() {
     }
 
     private fun navigateToCamera() {
-        lifecycleScope.launchWhenStarted {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                PermissionFragmentDirections.actionPermissionsToCamera()
-            )
+        lifecycleScope.launch {
+            val navController = findNavController()
+
+            when (navController.graph.id) {
+                R.id.nav_detect -> {
+                    navController.navigate(R.id.action_permissions_to_camera)
+                }
+
+                R.id.nav_text_scan -> {
+                    navController.navigate(R.id.action_permission_to_textScan)
+                }
+            }
         }
     }
 
