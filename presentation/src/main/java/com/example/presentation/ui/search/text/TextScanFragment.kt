@@ -227,8 +227,27 @@ class TextScanFragment : Fragment() {
             bitmapBuffer.copyPixelsFromBuffer(imageProxy.planes[0].buffer)
         }
 
-        val inputImage = InputImage.fromBitmap(
+        val guideView = binding.scanGuide
+        val viewFinder = binding.viewFinder
+
+        val scaleX = bitmapBuffer.width.toFloat() / viewFinder.width
+        val scaleY = bitmapBuffer.height.toFloat() / viewFinder.height
+
+        val guideLeft = (guideView.left * scaleX).toInt()
+        val guideTop = (guideView.top * scaleY).toInt()
+        val guideWidth = (guideView.width * scaleX).toInt()
+        val guideHeight = (guideView.height * scaleY).toInt()
+
+        val croppedBitmap = Bitmap.createBitmap(
             bitmapBuffer,
+            guideLeft.coerceIn(0, bitmapBuffer.width),
+            guideTop.coerceIn(0, bitmapBuffer.height),
+            guideWidth.coerceAtMost(bitmapBuffer.width - guideLeft),
+            guideHeight.coerceAtMost(bitmapBuffer.height - guideTop)
+        )
+
+        val inputImage = InputImage.fromBitmap(
+            croppedBitmap,
             imageProxy.imageInfo.rotationDegrees
         )
 
