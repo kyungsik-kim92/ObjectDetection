@@ -230,20 +230,49 @@ class TextScanFragment : Fragment() {
         val guideView = binding.scanGuide
         val viewFinder = binding.viewFinder
 
-        val scaleX = bitmapBuffer.width.toFloat() / viewFinder.width
-        val scaleY = bitmapBuffer.height.toFloat() / viewFinder.height
+        val imageRatio = bitmapBuffer.width.toFloat() / bitmapBuffer.height
+        val viewRatio = viewFinder.width.toFloat() / viewFinder.height
 
-        val guideLeft = (guideView.left * scaleX).toInt()
-        val guideTop = (guideView.top * scaleY).toInt()
-        val guideWidth = (guideView.width * scaleX).toInt()
-        val guideHeight = (guideView.height * scaleY).toInt()
+        val scaleX: Float
+        val scaleY: Float
+        val offsetX: Float
+        val offsetY: Float
+
+        if (imageRatio > viewRatio) {
+            scaleY = bitmapBuffer.height.toFloat() / viewFinder.height
+            scaleX = scaleY
+            offsetX = (bitmapBuffer.width - viewFinder.width * scaleX) / 2
+            offsetY = 0f
+        } else {
+            scaleX = bitmapBuffer.width.toFloat() / viewFinder.width
+            scaleY = scaleX
+            offsetX = 0f
+            offsetY = (bitmapBuffer.height - viewFinder.height * scaleY) / 2
+        }
+
+        val location = IntArray(2)
+        guideView.getLocationInWindow(location)
+        val guideX = location[0]
+        val guideY = location[1]
+
+        viewFinder.getLocationInWindow(location)
+        val viewFinderX = location[0]
+        val viewFinderY = location[1]
+
+        val relativeLeft = guideX - viewFinderX
+        val relativeTop = guideY - viewFinderY
+
+        val cropLeft = (relativeLeft * scaleX + offsetX).toInt().coerceIn(0, bitmapBuffer.width)
+        val cropTop = (relativeTop * scaleY + offsetY).toInt().coerceIn(0, bitmapBuffer.height)
+        val cropWidth = (guideView.width * scaleX).toInt().coerceAtMost(bitmapBuffer.width - cropLeft)
+        val cropHeight = (guideView.height * scaleY).toInt().coerceAtMost(bitmapBuffer.height - cropTop)
 
         val croppedBitmap = Bitmap.createBitmap(
             bitmapBuffer,
-            guideLeft.coerceIn(0, bitmapBuffer.width),
-            guideTop.coerceIn(0, bitmapBuffer.height),
-            guideWidth.coerceAtMost(bitmapBuffer.width - guideLeft),
-            guideHeight.coerceAtMost(bitmapBuffer.height - guideTop)
+            cropLeft,
+            cropTop,
+            cropWidth,
+            cropHeight
         )
 
         val inputImage = InputImage.fromBitmap(
