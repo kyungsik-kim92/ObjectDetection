@@ -16,6 +16,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
+import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -147,6 +148,10 @@ class TextScanFragment : Fragment() {
         }
     }
 
+    private fun enhanceImage(bitmap: Bitmap): Bitmap {
+        return bitmap.scale(bitmap.width * 2, bitmap.height * 2)
+    }
+
     private fun initTextRecognizer() {
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -264,8 +269,10 @@ class TextScanFragment : Fragment() {
 
         val cropLeft = (relativeLeft * scaleX + offsetX).toInt().coerceIn(0, bitmapBuffer.width)
         val cropTop = (relativeTop * scaleY + offsetY).toInt().coerceIn(0, bitmapBuffer.height)
-        val cropWidth = (guideView.width * scaleX).toInt().coerceAtMost(bitmapBuffer.width - cropLeft)
-        val cropHeight = (guideView.height * scaleY).toInt().coerceAtMost(bitmapBuffer.height - cropTop)
+        val cropWidth =
+            (guideView.width * scaleX).toInt().coerceAtMost(bitmapBuffer.width - cropLeft)
+        val cropHeight =
+            (guideView.height * scaleY).toInt().coerceAtMost(bitmapBuffer.height - cropTop)
 
         val croppedBitmap = Bitmap.createBitmap(
             bitmapBuffer,
@@ -275,8 +282,10 @@ class TextScanFragment : Fragment() {
             cropHeight
         )
 
+        val enhanced = enhanceImage(croppedBitmap)
+
         val inputImage = InputImage.fromBitmap(
-            croppedBitmap,
+            enhanced,
             imageProxy.imageInfo.rotationDegrees
         )
 
