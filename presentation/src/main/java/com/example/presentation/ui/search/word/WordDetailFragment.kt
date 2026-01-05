@@ -3,7 +3,6 @@ package com.example.presentation.ui.search.word
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -165,7 +164,6 @@ class WordDetailFragment : Fragment() {
             mediaPlayer.prepare()
             mediaPlayer.start()
         } catch (e: Exception) {
-            Log.d("결과", e.message.toString())
             Toast.makeText(requireContext(), "발음 듣기를 실패하였습니다.", Toast.LENGTH_SHORT).show()
         }
     }
