@@ -3,6 +3,8 @@ package com.example.presentation.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.model.BookmarkWord
 import com.example.presentation.databinding.ItemWordBinding
@@ -10,11 +12,9 @@ import com.example.presentation.databinding.ItemWordBinding
 class BookmarkAdapter(
     private val onDelete: (BookmarkWord) -> Unit,
     private val onItemClick: (BookmarkWord) -> Unit
-) : RecyclerView.Adapter<BookmarkViewHolder>() {
-    private val bookmarkList = mutableListOf<BookmarkWord>()
+) : ListAdapter<BookmarkWord, BookmarkViewHolder>(diffUtil) {
 
     private var toggleMean: Boolean = true
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,17 +26,10 @@ class BookmarkAdapter(
     }
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
-        holder.bind(bookmarkList[position], onDelete, onItemClick, toggleMean)
+        android.util.Log.d("BookmarkAdapter", "onBindViewHolder: position=$position")
+        holder.bind(getItem(position), onDelete, onItemClick, toggleMean)
     }
 
-    override fun getItemCount(): Int =
-        bookmarkList.size
-
-    fun submitList(list: List<BookmarkWord>) {
-        bookmarkList.clear()
-        bookmarkList.addAll(list)
-        notifyDataSetChanged()
-    }
 
     fun toggleMean(isShow: Boolean) {
         if (toggleMean != isShow) {
@@ -44,11 +37,21 @@ class BookmarkAdapter(
             notifyDataSetChanged()
         }
     }
+
     fun delete(item: BookmarkWord) {
-        val index = bookmarkList.indexOfFirst { it.word == item.word }
-        if (index != -1) {
-            bookmarkList.removeAt(index)
-            notifyItemRemoved(index)
+        val newList = currentList.toMutableList()
+        newList.remove(item)
+        submitList(newList)
+    }
+
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<BookmarkWord>() {
+            override fun areItemsTheSame(oldItem: BookmarkWord, newItem: BookmarkWord): Boolean =
+                oldItem.word == newItem.word
+
+
+            override fun areContentsTheSame(oldItem: BookmarkWord, newItem: BookmarkWord): Boolean =
+                oldItem == newItem
         }
     }
 }
@@ -64,6 +67,7 @@ class BookmarkViewHolder(
         onItemClick: (BookmarkWord) -> Unit,
         toggleMean: Boolean
     ) {
+        android.util.Log.d("BookmarkAdapter", "bind: ${item.word}")
         binding.item = item.toWordItem()
 
         itemView.setOnClickListener {

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.databinding.ItemScannedWordBinding
 
 class ScannedWordAdapter(private val onWordClick: (String) -> Unit) :
-    ListAdapter<String, ScannedWordAdapter.ScannedWordViewHolder>(WordDiffCallback()) {
+    ListAdapter<String, ScannedWordViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScannedWordViewHolder {
         val binding = ItemScannedWordBinding.inflate(
@@ -16,32 +16,35 @@ class ScannedWordAdapter(private val onWordClick: (String) -> Unit) :
             parent,
             false
         )
-        return ScannedWordViewHolder(binding)
+        return ScannedWordViewHolder(binding, onWordClick)
     }
 
     override fun onBindViewHolder(holder: ScannedWordViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onWordClick)
     }
 
-    inner class ScannedWordViewHolder(
-        private val binding: ItemScannedWordBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<String>() {
+            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
+                oldItem == newItem
 
-        fun bind(word: String) {
-            binding.tvWord.text = word
-            binding.root.setOnClickListener {
-                onWordClick(word)
-            }
+
+            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+                oldItem == newItem
         }
+
     }
+}
 
-    private class WordDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
-        }
+class ScannedWordViewHolder(
+    private val binding: ItemScannedWordBinding,
+    onWordClick: (String) -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+    fun bind(word: String, onWordClick: (String) -> Unit) {
+        binding.tvWord.text = word
+        binding.root.setOnClickListener {
+            onWordClick(word)
         }
     }
 }
