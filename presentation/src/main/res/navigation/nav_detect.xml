@@ -41,7 +41,12 @@
         android:id="@+id/select_detect_item_fragment"
         android:name="com.example.presentation.ui.search.detect.SelectDetectFragment"
         android:label="SelectDetectItemFragment"
-        tools:layout="@layout/fragment_select_detect"/>
+        tools:layout="@layout/fragment_select_detect">
+
+        <argument
+            android:name="select_item"
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>

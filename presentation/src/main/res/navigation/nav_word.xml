@@ -23,6 +23,10 @@
         android:label="WordDetailFragment"
         tools:layout="@layout/fragment_word_detail">
 
+        <argument
+            android:name="item_word"
+            app:argType="com.example.model.WordItem" />
+
     </fragment>
 
 

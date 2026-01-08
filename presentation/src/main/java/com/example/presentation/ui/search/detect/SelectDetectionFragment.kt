@@ -13,12 +13,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import com.example.presentation.databinding.FragmentSelectDetectBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
-const val ARG_SELECT_ITEM = "item_select_detection"
 
 @AndroidEntryPoint
 class SelectDetectFragment : Fragment() {
@@ -28,14 +27,7 @@ class SelectDetectFragment : Fragment() {
 
     private val selectDetectionViewModel by viewModels<SelectDetectionViewModel>()
 
-    private var selectDetectionItem: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            selectDetectionItem = it.getString(ARG_SELECT_ITEM)
-        }
-    }
+    private val args: SelectDetectFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +42,7 @@ class SelectDetectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         observeUiState()
-        selectDetectionViewModel.searchMeanWord(selectDetectionItem)
+        selectDetectionViewModel.searchMeanWord(args.selectItem)
     }
 
 

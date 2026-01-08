@@ -13,12 +13,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import com.example.presentation.databinding.FragmentWordDetailBinding
 import com.example.presentation.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
-const val ARG_WORD = "item_word"
 
 @AndroidEntryPoint
 class WordDetailFragment : Fragment() {
@@ -27,6 +26,8 @@ class WordDetailFragment : Fragment() {
 
     private val viewModel by viewModels<WordDetailViewModel>()
     private val homeViewModel by viewModels<HomeViewModel>()
+
+    private val args: WordDetailFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -40,6 +41,7 @@ class WordDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setWordItem(args.itemWord)
         initUi()
         observeUiState()
     }

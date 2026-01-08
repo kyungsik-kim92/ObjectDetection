@@ -1,6 +1,5 @@
 package com.example.presentation.ui.search.word
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.firebase.AddWordUseCase
@@ -19,9 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WordDetailViewModel @Inject constructor(
-    searchWordUseCase: SearchWordUseCase,
-    getBookmarkWordListUseCase: GetBookmarkWordListUseCase,
-    savedStateHandle: SavedStateHandle,
+    private val searchWordUseCase: SearchWordUseCase,
+    private val getBookmarkWordListUseCase: GetBookmarkWordListUseCase,
     private val addWordUseCase: AddWordUseCase,
     private val deleteWordUseCase: DeleteWordUseCase,
 ) : ViewModel() {
@@ -29,28 +27,29 @@ class WordDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<WordDetailUiState>(WordDetailUiState.Loading)
     val uiState: StateFlow<WordDetailUiState> = _uiState.asStateFlow()
 
-    private val getRouteItem = savedStateHandle.get<WordItem>(ARG_WORD)
+    private var wordItem: WordItem? = null
 
-    init {
+
+    fun setWordItem(wordItem: WordItem) {
+        this.wordItem = wordItem
         _uiState.value = WordDetailUiState.Loading
-
         combine(
-            searchWordUseCase(getRouteItem?.word.orEmpty()),
+            searchWordUseCase(wordItem.word),
             getBookmarkWordListUseCase()
         ) { searchResult, bookmarkList ->
             if (searchResult.isNotEmpty()) {
                 val item = searchResult.first()
-                val isBookmark = bookmarkList.any { it.word == getRouteItem?.word.orEmpty() }
+                val isBookmark = bookmarkList.any { it.word == wordItem.word }
                 _uiState.value = WordDetailUiState.Success(item, isBookmark)
             } else {
                 _uiState.value = WordDetailUiState.NotFound
             }
         }.launchIn(viewModelScope)
+
     }
 
-
     fun toggleBookmark(state: Boolean) {
-        getRouteItem?.let { wordItem ->
+        wordItem?.let { wordItem ->
             val bookmarkWord = BookmarkWord(
                 word = wordItem.word,
                 mean = wordItem.mean

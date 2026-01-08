@@ -53,7 +53,7 @@
         android:label="WordDetailFragment">
 
         <argument
-            android:name="word"
-            app:argType="string" />
+            android:name="item_word"
+            app:argType="com.example.model.WordItem" />
     </fragment>
 </navigation>
