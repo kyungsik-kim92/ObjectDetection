@@ -12,8 +12,19 @@ class SearchWordRemoteDataSourceImpl @Inject constructor(
     private val sheetApi: SheetApi
 ) : SearchWordRemoteDataSource {
 
-    override suspend fun searchMeanWord(word: String): DictionaryResponse =
-        dictionaryApi.getDictionaryMean(word)
+    override suspend fun searchMeanWord(word: String): DictionaryResponse {
+        return try {
+            dictionaryApi.getDictionaryMean(word)
+        } catch (e: retrofit2.HttpException) {
+            if (e.code() == 404) {
+                DictionaryResponse()
+            } else {
+                throw e
+            }
+        } catch (e: Exception) {
+            DictionaryResponse()
+        }
+    }
 
     override suspend fun getExcelData(): List<ExcelResponse> =
         sheetApi.getSheetExcelData()

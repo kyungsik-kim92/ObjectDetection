@@ -88,6 +88,7 @@ class WordDetailFragment : Fragment() {
                             binding.progressbar.isVisible = false
                             binding.notResult.isVisible = true
                             binding.containerWordDetail.isVisible = false
+                            Toast.makeText(requireContext(), "사전에 등록되지 않은 단어입니다", Toast.LENGTH_SHORT).show()
                         }
 
                         is WordDetailUiState.BookmarkUpdated -> {}
