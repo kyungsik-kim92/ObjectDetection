@@ -1,15 +1,19 @@
 package com.example.presentation.ui.search.text
 
 import androidx.lifecycle.ViewModel
+import com.example.domain.repo.SearchWordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
-class TextScanViewModel @Inject constructor() : ViewModel() {
+class TextScanViewModel @Inject constructor(
+    private val searchWordRepository: SearchWordRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<TextScanUiState>(TextScanUiState.Idle)
     val uiState: StateFlow<TextScanUiState> = _uiState.asStateFlow()
@@ -47,5 +51,9 @@ class TextScanViewModel @Inject constructor() : ViewModel() {
 
     fun resetState() {
         _uiState.value = TextScanUiState.Idle
+    }
+
+    suspend fun getLocalWordList(): List<com.example.model.WordItem> {
+        return searchWordRepository.excelList.first()
     }
 }

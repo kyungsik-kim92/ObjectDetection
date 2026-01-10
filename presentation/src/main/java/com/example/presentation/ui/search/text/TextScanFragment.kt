@@ -30,10 +30,13 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+
+@AndroidEntryPoint
 class TextScanFragment : Fragment() {
     private var _binding: FragmentTextScanBinding? = null
     private val binding get() = _binding!!
@@ -158,10 +161,19 @@ class TextScanFragment : Fragment() {
     }
 
     private fun navigateToWordDetail(word: String) {
-        val intent = Intent(requireContext(), WordActivity::class.java).apply {
-            putExtra("word", word)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val wordList = viewModel.getLocalWordList()
+            val foundWord = wordList.find { it.word.equals(word, ignoreCase = true) }
+            if (foundWord != null) {
+                val intent = Intent(requireContext(), WordActivity::class.java).apply {
+                    putExtra("word", word)
+                }
+                startActivity(intent)
+            } else {
+                Toast.makeText(requireContext(), "단어장에 등록되지 않은 단어입니다", Toast.LENGTH_SHORT).show()
+            }
         }
-        startActivity(intent)
     }
 
     override fun onDestroyView() {
