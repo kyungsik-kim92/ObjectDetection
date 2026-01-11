@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_word_detail"
+    app:startDestination="@id/wordDetailFragment">
+
+    <fragment
+        android:id="@+id/wordDetailFragment"
+        android:name="com.example.presentation.ui.search.word.WordDetailFragment"
+        android:label="WordDetailFragment">
+
+        <argument
+            android:name="item_word"
+            app:argType="com.example.model.WordItem" />
+    </fragment>
+</navigation>
