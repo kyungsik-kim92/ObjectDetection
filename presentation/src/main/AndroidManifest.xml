@@ -23,5 +23,9 @@
         <activity
             android:name="com.example.presentation.ui.search.text.TextScanActivity"
             android:exported="false" />
+
+        <activity
+            android:name="com.example.presentation.ui.search.word.WordDetailActivity"
+            android:exported="false" />
     </application>
 </manifest>
