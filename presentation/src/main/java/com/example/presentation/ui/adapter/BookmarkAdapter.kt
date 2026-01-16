@@ -26,15 +26,14 @@ class BookmarkAdapter(
     }
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
-        android.util.Log.d("BookmarkAdapter", "onBindViewHolder: position=$position")
-        holder.bind(getItem(position), onDelete, onItemClick, toggleMean)
+        holder.bind(getItem(position), toggleMean)
     }
 
 
     fun toggleMean(isShow: Boolean) {
         if (toggleMean != isShow) {
             toggleMean = isShow
-            notifyDataSetChanged()
+            notifyItemRangeChanged(0, itemCount)
         }
     }
 
@@ -63,17 +62,14 @@ class BookmarkViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(
         item: BookmarkWord,
-        onDelete: (BookmarkWord) -> Unit,
-        onItemClick: (BookmarkWord) -> Unit,
         toggleMean: Boolean
     ) {
-        android.util.Log.d("BookmarkAdapter", "bind: ${item.word}")
         binding.item = item.toWordItem()
+        binding.mean.isVisible = toggleMean
 
         itemView.setOnClickListener {
             onItemClick(item)
         }
-        binding.mean.isVisible = toggleMean
         binding.deleteBookmark.setOnClickListener {
             onDelete(item)
         }
