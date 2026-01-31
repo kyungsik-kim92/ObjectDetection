@@ -59,6 +59,8 @@ mlkitTextRecognition = "16.0.0"
 androidGradlePlugin = "8.2.0"
 navigationFragmentKtx = "2.9.6"
 navigationUiKtx = "2.9.6"
+navigationFragmentKtxVersion = "2.9.7"
+navigationUiKtxVersion = "2.9.7"
 
 [libraries]
 # AndroidX Core
@@ -130,6 +132,8 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 google-mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-navigation-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtxVersion" }
+androidx-navigation-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtxVersion" }
 
 
 [plugins]
