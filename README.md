@@ -4,7 +4,7 @@ TensorFlow Lite 오픈소스 머신러닝 API를 이용해 카메라에 비치�
 
 ## 주요 기능
 
-- **객체 인식 단어 검색** — TensorFlow Lite Object Detection(efficientdet-lite0)과 CameraX 연동으로 카메라 이미지 해석·분류 후, 선택한 항목으로 단어 뜻 조회(권한 → 카메라 → 객체 선택).
+- **객체 인식 단어 검색** — TensorFlow Lite-Object Detection과 CameraX 연동으로 카메라 이미지 해석·분류 후, 선택한 항목으로 단어 뜻 조회(권한 → 카메라 → 객체 선택).
 - **텍스트 스캔** — ML Kit 텍스트 인식(Text Recognition)으로 이미지에서 글자 추출 후 단어 검색.
 - **단어 검색·상세** — Google SpreadSheet 연동 API로 단어 목록 수신, Room에 캐시. Dictionary API로 단어 뜻·발음 조회.
 - **즐겨찾기** — Firebase Firestore로 단어 추가·삭제, 북마크 목록 조회.
