@@ -4,10 +4,55 @@ TensorFlow Lite 오픈소스 머신러닝 API를 이용해 카메라에 비치�
 
 ## 주요 기능
 
-- **객체 인식 단어 검색** — TensorFlow Lite Object Detection(efficientdet-lite0)과 CameraX 연동으로 카메라 이미지를 해석·분류한 뒤, 선택한 항목으로 단어 뜻 조회
-- **텍스트 스캔** — ML Kit 텍스트 인식으로 이미지에서 글자 추출 후 단어 검색
-- **단어 검색·상세** — Google SpreadSheet를 JSON API로 받아 단어 목록 제공, Room으로 로컬 캐시. Dictionary API로 단어 뜻·발음 조회
-- **즐겨찾기** — Firebase Firestore로 단어 추가·삭제, 북마크 목록 조회
-- **학습 모드** — 토글 스위치로 단어 뜻 가리기/보기
-- **캘린더** — 마이페이지에서 Material CalendarView로 날짜별 표시, 그날 저장한 북마크 개수에 따라 색상 변경
-- **계정** — Firebase Auth 로그인, 회원가입, 회원탈퇴
+- **객체 인식 단어 검색** — TensorFlow Lite Object Detection(efficientdet-lite0)과 CameraX 연동으로 카메라 이미지 해석·분류 후, 선택한 항목으로 단어 뜻 조회(권한 → 카메라 → 객체 선택).
+- **텍스트 스캔** — ML Kit 텍스트 인식(Text Recognition)으로 이미지에서 글자 추출 후 단어 검색.
+- **단어 검색·상세** — Google SpreadSheet 연동 API로 단어 목록 수신, Room에 캐시. Dictionary API로 단어 뜻·발음 조회.
+- **즐겨찾기** — Firebase Firestore로 단어 추가·삭제, 북마크 목록 조회.
+- **캘린더** — 마이페이지 Material CalendarView에서 날짜별 표시, 해당 날짜 북마크 개수에 따라 EventDecorator로 색상 구간(level_0~3) 표시.
+- **계정** — Firebase Auth 로그인, 회원가입, 회원탈퇴.
+- **모니터링** — Firebase Crashlytics 연동.
+
+## 기술 스택
+
+- **Language:** Kotlin
+- **UI:** DataBinding
+- **Architecture:** Clean Architecture + MVVM
+- **Async:** Kotlin Coroutines + Flow
+- **DI:** Hilt (KSP)
+- **Jetpack:** ViewModel, Navigation Component, Lifecycle
+- **Camera:** CameraX
+- **ML:** TensorFlow Lite (Object Detection), ML Kit (Text Recognition)
+- **Network:** Retrofit + Gson
+- **Local DB:** Room (Entity, DAO)
+- **Backend:** Firebase Auth, Firestore, Crashlytics
+- **Image:** Lottie
+- **Build:** Gradle Kotlin DSL, Version Catalog (libs.versions.toml)
+
+
+## 프로젝트 구조
+ ```
+ObjectDetction/
+├── app/ # 진입점
+│ └── App.kt
+│
+├── presentation/ # UI 레이어
+│ ├── MainActivity.kt
+│ ├── ui/ # splash, search, detect, word, bookmark, mypage, login, register 등
+│ ├── util/ # ObjectDetectorHelper, OverlayView, EventDecorator
+│ ├── ext/
+│ └── adapter/
+│
+├── domain/ # 비즈니스 로직
+│ ├── repo/
+│ └── usecase/
+│
+├── data/ # 데이터 레이어
+│ ├── database/ # AppDatabase, ExcelDao, ExcelEntity
+│ ├── source/ # local, remote
+│ ├── network/ # SheetApi, DictionaryApi
+│ ├── repo/
+│ └── di/
+│
+└── model/ # WordItem, BookmarkWord, api(dto)
+
+  ```
