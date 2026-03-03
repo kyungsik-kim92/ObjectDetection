@@ -73,28 +73,21 @@ ObjectDetction/
 - **원인:** “상태”와 “한 번만 실행해야 할 이벤트”를 구분하지 않음.
 - **해결:** 토스트 등 일회성 이벤트를 ViewEvent에서 한 곳에서 관리하도록 분리해, 소비 후 다시 쓰이지 않도록 구성.
 
-### 3. API 키 노출 방지
-앱 코드에 API 키가 포함되어 노출 위험
-
-- **문제:** API 키가 소스에 포함되면 빌드 산출물에서 노출될 수 있음.
-- **원인:** API 키를 코드 또는 리소스에 직접 작성.
-- **해결:** API 키를 local.properties로 분리하고 BuildConfig 등으로만 주입해 사용. .gitignore로 local.properties 제외해 저장소에 키가 올라가지 않도록 처리.
-
-### 4. 리스트 갱신 최적화 (ListAdapter + DiffUtil)
+### 3. 리스트 갱신 최적화 (ListAdapter + DiffUtil)
 리스트 갱신 시 전체 갱신·깜빡임
 
 - **문제:** RecyclerView 어댑터로 리스트를 갱신할 때 변경 구간만 반영되지 않고 전체가 다시 그려지거나 UX가 나쁨.
 - **원인:** 기존 RecyclerViewAdapter 사용으로 아이템 단위 비교·갱신이 이뤄지지 않음.
 - **해결:** RecyclerViewAdapter를 ListAdapter + DiffUtil로 전환해 아이템 비교 기반 갱신. BookmarkAdapter 등에도 동일 방식 적용해 갱신 시 깜빡임 완화.
 
-### 5. ML Kit 텍스트 인식률 개선
+### 4. ML Kit 텍스트 인식률 개선
 텍스트 스캔 시 인식률이 낮거나 불안정한 문제
 
 - **문제:** TextScanFragment에서 ML Kit 텍스트 인식 결과가 불안정하거나 인식률이 낮음.
 - **원인:** 입력 이미지 해상도 부족 및 전체 프레임 사용으로 노이즈·배경 영향.
 - **해결:** 텍스트 인식에 사용하는 이미지 해상도 향상. 사각형 인식 영역을 두어 관심 영역만 크롭해 인식하도록 변경해 인식률 개선.
 
-### 6. KSP와 DataBinding 충돌
+### 5. KSP와 DataBinding 충돌
 presentation 모듈에서 KSP 적용 시 빌드 에러
 
 - **문제:** 프로젝트 전반에 KSP를 적용한 뒤 presentation 모듈에서 DataBinding 등과 충돌해 빌드 실패.
