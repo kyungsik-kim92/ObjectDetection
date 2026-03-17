@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -28,15 +29,33 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        binding.viewModel = registerViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUi()
         observeUiState()
         observeEvents()
+    }
+
+    private fun initUi() {
+        fun tryRegister() {
+            registerViewModel.register(
+                binding.inputEmailRegister.text.toString().trim(),
+                binding.inputPassRegister.text.toString(),
+                binding.inputPassRegisterOk.text.toString()
+            )
+        }
+
+        binding.btnLogin.setOnClickListener { tryRegister() }
+
+        binding.inputPassRegisterOk.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.root.post { tryRegister() }
+                true
+            } else false
+        }
     }
 
 

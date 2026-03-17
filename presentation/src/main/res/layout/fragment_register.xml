@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.example.presentation.ui.register.RegisterViewModel" />
-
-    </data>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -55,7 +47,6 @@
                 android:inputType="textEmailAddress"
                 android:paddingStart="16sp"
                 android:paddingEnd="16sp"
-                android:text="@={viewModel.inputEmailStateFlow}"
                 app:layout_constraintDimensionRatio="W,1:8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +68,6 @@
                 android:minLines="1"
                 android:paddingStart="16sp"
                 android:paddingEnd="16sp"
-                android:text="@={viewModel.inputPasswordStateFlow}"
                 app:layout_constraintDimensionRatio="W,1:8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,8 +89,6 @@
                 android:minLines="1"
                 android:paddingStart="16sp"
                 android:paddingEnd="16sp"
-                android:text="@={viewModel.inputPasswordOkStateFlow}"
-                app:onEditorAction="@{()->viewModel.register()}"
                 app:layout_constraintDimensionRatio="W,1:8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +103,6 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/bg_action_lorange"
-                android:onClick="@{()->viewModel.register()}"
                 android:text="회원가입하기"
                 android:textColor="@color/white"
                 android:textSize="16sp"
@@ -128,4 +115,3 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</layout>

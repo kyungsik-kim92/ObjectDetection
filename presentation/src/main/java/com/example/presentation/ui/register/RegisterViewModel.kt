@@ -14,9 +14,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,45 +31,35 @@ class RegisterViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<RegisterUiEvent>()
     val uiEvent: SharedFlow<RegisterUiEvent> = _uiEvent.asSharedFlow()
 
-    val inputEmailStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
-    val inputPasswordStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
-    val inputPasswordOkStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
-
-    fun register() {
+    fun register(email: String, password: String, passwordOk: String) {
+        val trimmedEmail = email.trim()
         when (val result = checkInputRegisterUseCase(
-            inputEmailStateFlow.value.orEmpty(),
-            inputPasswordStateFlow.value.orEmpty(),
-            inputPasswordOkStateFlow.value.orEmpty()
+            trimmedEmail,
+            password,
+            passwordOk
         )) {
             is CheckRegisterState.Failure -> {
                 processRegisterError(result.type)
             }
 
             CheckRegisterState.Success -> {
-                firebaseRegisterUseCase(
-                    inputEmailStateFlow.value.orEmpty(),
-                    inputPasswordStateFlow.value.orEmpty(),
-                ).onStart {
+                viewModelScope.launch {
                     _uiState.value = RegisterUiState.Loading
-                }.map { isSuccessful ->
+                    val isSuccessful = firebaseRegisterUseCase(trimmedEmail, password).first()
                     if (isSuccessful) {
-                        createUserWordDB()
+                        createUserWordDB(trimmedEmail)
                     } else {
                         _uiState.value = RegisterUiState.Idle
-                        viewModelScope.launch {
-                            _uiEvent.emit(RegisterUiEvent.ShowToast("회원가입을 실패하였습니다."))
-                        }
+                        _uiEvent.emit(RegisterUiEvent.ShowToast("회원가입을 실패하였습니다."))
                     }
-                }.launchIn(viewModelScope)
+                }
             }
         }
     }
 
-    private fun createUserWordDB() {
+    private fun createUserWordDB(email: String) {
         viewModelScope.launch {
-            firebaseRepository.createWordDB(
-                inputEmailStateFlow.value.orEmpty()
-            ).addOnCompleteListener { task ->
+            firebaseRepository.createWordDB(email).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _uiState.value = RegisterUiState.Success
                     viewModelScope.launch {
