@@ -1,5 +1,6 @@
 package com.example.presentation.ui.splash
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,15 +32,34 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
-        binding.viewModel = splashViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUi()
         checkLogoutIntent()
         observeUiState()
+    }
+
+    private fun initUi() {
+        binding.lottieView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+                splashViewModel.animateState(LottieAnimateState.Start)
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                splashViewModel.animateState(LottieAnimateState.End)
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+                splashViewModel.animateState(LottieAnimateState.Cancel)
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+                splashViewModel.animateState(LottieAnimateState.Repeat)
+            }
+        })
     }
 
     private fun checkLogoutIntent() {
@@ -47,6 +67,7 @@ class SplashFragment : Fragment() {
             requireActivity().intent.getBooleanExtra(KEY_LOGOUT, false) -> {
                 routeLoginFragment()
             }
+
             requireActivity().intent.getBooleanExtra(KEY_LOGIN_DIRECT, false) -> {
                 routeLoginFragment()
             }
@@ -75,4 +96,11 @@ class SplashFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+}
+
+sealed interface LottieAnimateState {
+    object Start : LottieAnimateState
+    object End : LottieAnimateState
+    object Cancel : LottieAnimateState
+    object Repeat : LottieAnimateState
 }
