@@ -31,21 +31,15 @@ class LoginViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<LoginUiEvent>()
     val uiEvent: SharedFlow<LoginUiEvent> = _uiEvent.asSharedFlow()
 
-    val inputEmailStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
-    val inputPasswordStateFlow: MutableStateFlow<String?> = MutableStateFlow("")
-
-    fun login() {
-        when (val result = checkInputLoginUseCase(
-            inputEmailStateFlow.value.orEmpty(), inputPasswordStateFlow.value.orEmpty()
-        )) {
+    fun login(email: String, password: String) {
+        when (val result = checkInputLoginUseCase(email, password)) {
             is CheckLoginState.Failure -> {
                 processLoginError(result.type)
             }
 
             CheckLoginState.Success -> {
-                firebaseLoginUseCase(
-                    inputEmailStateFlow.value.orEmpty(), inputPasswordStateFlow.value.orEmpty()
-                ).onStart {
+                firebaseLoginUseCase(email, password)
+                    .onStart {
                     _uiState.value = LoginUiState.Loading
                 }.map { isSuccessful ->
                     if (isSuccessful) {
@@ -63,7 +57,6 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun processLoginError(type: LoginErrorType) {
         viewModelScope.launch {

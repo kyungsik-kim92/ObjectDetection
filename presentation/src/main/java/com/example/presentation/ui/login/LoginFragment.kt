@@ -32,8 +32,6 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding.viewModel = loginViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -48,12 +46,22 @@ class LoginFragment : Fragment() {
     private fun initUi() {
         binding.inputPassLogin.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login()
+                binding.root.post { // 마지막 텍스트를 인식못해서 완료 버튼으로 로그인 안되는 현상 수정
+                    loginViewModel.login(
+                        binding.inputEmailLogin.text.toString().trim(),
+                        binding.inputPassLogin.text.toString()
+                    )
+                }
                 true
-            } else {
-                false
-            }
+            } else false
         }
+        binding.btnLogin.setOnClickListener {
+            loginViewModel.login(
+                binding.inputEmailLogin.text.toString(),
+                binding.inputPassLogin.text.toString()
+            )
+        }
+        binding.btnRegister.setOnClickListener { loginViewModel.register() }
     }
 
     private fun observeUiState() {
