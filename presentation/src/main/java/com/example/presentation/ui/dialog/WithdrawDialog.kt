@@ -2,10 +2,11 @@ package com.example.presentation.ui.dialog
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.example.presentation.MainActivity
-import com.example.presentation.R
 import com.example.presentation.base.BaseDialogFragment
 import com.example.presentation.databinding.DialogWithdrawBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +18,7 @@ class WithdrawDialog(
     private val chooseItem: ChooseItem,
     private val cancelable: Boolean = true,
     private val dismissCallback: () -> Unit = {}
-) : BaseDialogFragment<DialogWithdrawBinding>(R.layout.dialog_withdraw) {
+) : BaseDialogFragment<DialogWithdrawBinding>() {
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,16 +26,22 @@ class WithdrawDialog(
         isCancelable = cancelable
     }
 
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogWithdrawBinding {
+        return DialogWithdrawBinding.inflate(inflater, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUi()
+    }
+
+    fun initUi() {
         with(binding) {
-            item = chooseItem
-            tvDismiss.setOnClickListener {
-                withdraw()
-            }
-            tvCancel.setOnClickListener {
-                dismiss()
-            }
+            content1.text = chooseItem.title
+            tvCancel.text = chooseItem.negativeString
+            tvDismiss.text = chooseItem.positiveString
+            tvDismiss.setOnClickListener { withdraw() }
+            tvCancel.setOnClickListener { dismiss() }
         }
     }
 
@@ -55,10 +62,18 @@ class WithdrawDialog(
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
                 }?.addOnFailureListener { exception ->
-                    Toast.makeText(requireContext(), "회원탈퇴를 실패하였습니다: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "회원탈퇴를 실패하였습니다: ${exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }.addOnFailureListener { exception ->
-                Toast.makeText(requireContext(), "비밀번호가 일치하지 않습니다: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "비밀번호가 일치하지 않습니다: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         } ?: run {
             Toast.makeText(requireContext(), "로그인된 사용자가 없습니다.", Toast.LENGTH_SHORT).show()
