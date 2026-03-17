@@ -14,17 +14,13 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    currentFirebaseUserUseCase: GetCurrentFirebaseUserUseCase,
+    private val currentFirebaseUserUseCase: GetCurrentFirebaseUserUseCase,
     getBookmarkWordListUseCase: GetBookmarkWordListUseCase,
     private val firebaseLogoutUseCase: FirebaseLogoutUseCase,
 ) : ViewModel() {
@@ -35,21 +31,17 @@ class MyPageViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<MyPageUiEvent>()
     val uiEvent: SharedFlow<MyPageUiEvent> = _uiEvent.asSharedFlow()
 
-    private val currentUser = currentFirebaseUserUseCase()
 
     init {
-        getBookmarkWordListUseCase()
-            .onStart {
-                _uiState.value = MyPageUiState.Loading
-            }
-            .map { wordList ->
-                MyPageUiState.Success(
-                    currentUser = currentUser,
+        viewModelScope.launch {
+            _uiState.value = MyPageUiState.Loading
+            getBookmarkWordListUseCase().collect { wordList ->
+                _uiState.value = MyPageUiState.Success(
+                    currentUser = currentFirebaseUserUseCase(),
                     calendarList = wordList.toCalendarDayList()
                 )
             }
-            .onEach { _uiState.value = it }
-            .launchIn(viewModelScope)
+        }
     }
 
     fun logout() {

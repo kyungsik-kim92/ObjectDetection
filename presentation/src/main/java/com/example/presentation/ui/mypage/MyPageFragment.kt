@@ -36,15 +36,19 @@ class MyPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
-        binding.viewModel = myPageViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUi()
         observeUiState()
         observeEvents()
+    }
+
+    private fun initUi() {
+        binding.logout.setOnClickListener { myPageViewModel.showLogoutDialog() }
+        binding.withdraw.setOnClickListener { myPageViewModel.showWithdrawDialog() }
     }
 
     private fun observeUiState() {
