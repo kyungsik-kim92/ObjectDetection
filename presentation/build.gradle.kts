@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.navigation.safe.args)
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.ksp)
-    kotlin("kapt")
 }
 
 android {
@@ -38,7 +37,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-        dataBinding = true
     }
 }
 
@@ -96,7 +94,4 @@ dependencies {
     implementation(libs.androidx.camera.view)
 
     implementation(libs.google.mlkit.text.recognition)
-}
-kapt {
-    correctErrorTypes = true
 }
