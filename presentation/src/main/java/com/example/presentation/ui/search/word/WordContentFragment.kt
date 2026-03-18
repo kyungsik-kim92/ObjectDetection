@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,7 +15,6 @@ import com.example.presentation.databinding.FragmentWordContentBinding
 import com.example.presentation.ext.routeWordDetail
 import com.example.presentation.ui.adapter.WordAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -33,8 +33,6 @@ class WordContentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWordContentBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -47,6 +45,10 @@ class WordContentFragment : Fragment() {
 
     private fun initUi() {
         binding.rvWord.adapter = wordAdapter
+
+        binding.etSearch.doOnTextChanged { text, _, _, _ ->
+            viewModel.inputTextFlow.value = text?.toString().orEmpty()
+        }
     }
 
     private fun observeUiState() {
@@ -78,15 +80,19 @@ class WordContentFragment : Fragment() {
 
     private fun initScannedWordNavigation() {
         requireActivity().intent.getStringExtra("word")?.let { word ->
-            viewModel.inputTextFlow.value = word
+            binding.etSearch.setText(word)
 
             lifecycleScope.launch {
-                val successState = viewModel.uiState
-                    .filterIsInstance<WordContentUiState.Success>()
-                    .first()
-
+                val resultState = viewModel.uiState.first {
+                    it is WordContentUiState.Success || it is WordContentUiState.Empty
+                }
                 val wordItem =
-                    successState.searchList.find { it.word.equals(word, ignoreCase = true) }
+                    (resultState as? WordContentUiState.Success)?.searchList?.find {
+                        it.word.equals(
+                            word,
+                            ignoreCase = true
+                        )
+                    }
                 wordItem?.let { routeWordDetail(it) }
                 requireActivity().intent.removeExtra("word")
             }

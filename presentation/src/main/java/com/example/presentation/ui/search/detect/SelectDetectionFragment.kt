@@ -92,7 +92,6 @@ class SelectDetectFragment : Fragment() {
 
     private fun setupWordDetail(state: SelectDetectionUiState.Success) {
         with(binding.viewWordDetail) {
-            item = state.word
             phonetic.text = state.word.phonetic
 
             val soundUrls = state.word.phonetics.filter { it.audio.isNotEmpty() }

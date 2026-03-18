@@ -12,8 +12,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,21 +32,24 @@ class WordDetailViewModel @Inject constructor(
 
 
     fun setWordItem(wordItem: WordItem) {
+        val selectedWord = wordItem.word
+
         this.wordItem = wordItem
         _uiState.value = WordDetailUiState.Loading
-        combine(
-            searchWordUseCase(wordItem.word),
-            getBookmarkWordListUseCase()
-        ) { searchResult, bookmarkList ->
-            if (searchResult.isNotEmpty()) {
-                val item = searchResult.first()
-                val isBookmark = bookmarkList.any { it.word == wordItem.word }
-                _uiState.value = WordDetailUiState.Success(item, isBookmark)
-            } else {
-                _uiState.value = WordDetailUiState.NotFound
-            }
-        }.launchIn(viewModelScope)
 
+        viewModelScope.launch {
+            val searchResult = searchWordUseCase(wordItem.word).firstOrNull().orEmpty()
+            if (searchResult.isEmpty()) {
+                _uiState.value = WordDetailUiState.NotFound
+                return@launch
+            }
+            val item = searchResult.first()
+
+            getBookmarkWordListUseCase().collect { bookmarkList ->
+                val isBookmark = bookmarkList.any { it.word == selectedWord }
+                _uiState.value = WordDetailUiState.Success(item, isBookmark)
+            }
+        }
     }
 
     fun toggleBookmark(state: Boolean) {
@@ -54,10 +58,12 @@ class WordDetailViewModel @Inject constructor(
                 word = wordItem.word,
                 mean = wordItem.mean
             )
-            if (state) {
-                addWordUseCase(bookmarkWord).launchIn(viewModelScope)
-            } else {
-                deleteWordUseCase(bookmarkWord).launchIn(viewModelScope)
+            viewModelScope.launch {
+                if (state) {
+                    addWordUseCase(bookmarkWord).first()
+                } else {
+                    deleteWordUseCase(bookmarkWord).first()
+                }
             }
         }
     }

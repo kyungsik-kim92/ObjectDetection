@@ -45,7 +45,8 @@ class WordViewHolder(
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WordItem) {
-        binding.item = item
+        binding.word.text = item.word
+        binding.mean.text = item.mean
 
         itemView.setOnClickListener {
             onItemClick(item)

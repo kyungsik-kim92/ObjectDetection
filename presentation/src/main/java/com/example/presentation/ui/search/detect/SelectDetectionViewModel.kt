@@ -1,6 +1,5 @@
 package com.example.presentation.ui.search.detect
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.ext.addWord
@@ -27,7 +26,7 @@ class SelectDetectionViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<SelectDetectionUiState>(SelectDetectionUiState.Loading)
     val uiState: StateFlow<SelectDetectionUiState> = _uiState.asStateFlow()
 
-    private val wordItemObservableField = ObservableField<WordItem>()
+    private var wordItem: WordItem? = null
     private var currentWord: DictionaryResponseItem? = null
 
     fun searchMeanWord(word: String?) {
@@ -41,11 +40,9 @@ class SelectDetectionViewModel @Inject constructor(
 
                     if (getData.isNotEmpty()) {
                         currentWord = getData[0]
-                        wordItemObservableField.set(
-                            WordItem(
-                                getData[0].word,
-                                getData[0].toMean(),
-                            )
+                        wordItem = WordItem(
+                            getData[0].word,
+                            getData[0].toMean(),
                         )
                         _uiState.value = SelectDetectionUiState.Success(getData[0])
                     } else {
@@ -59,42 +56,41 @@ class SelectDetectionViewModel @Inject constructor(
     }
 
 
-
-fun checkBookmark() {
-    firebaseRepository.getWordList { bookmarkList ->
-        if (bookmarkList != null && wordItemObservableField.get() != null) {
-            val filterList = bookmarkList.filter {
-                (it.word == wordItemObservableField.get()!!.word) &&
-                        (it.mean == wordItemObservableField.get()!!.mean)
-            }
-            _uiState.value = SelectDetectionUiState.BookmarkUpdated(filterList.isNotEmpty())
-        } else {
-            _uiState.value = SelectDetectionUiState.BookmarkUpdated(false)
-        }
-    }
-}
-
-fun toggleBookmark(state: Boolean) {
-    wordItemObservableField.get()?.let { wordItem ->
-        if (state) {
-            viewModelScope.launch(Dispatchers.IO) {
-                firebaseRepository.addWord(wordItem.toBookmarkWord()) { isAddBookmark ->
-                    if (!isAddBookmark) {
-                        _uiState.value = SelectDetectionUiState.Error("즐겨찾기 추가를 실패하였습니다.")
-                    }
+    fun checkBookmark() {
+        firebaseRepository.getWordList { bookmarkList ->
+            if (bookmarkList != null && wordItem != null) {
+                val filterList = bookmarkList.filter { bookmark ->
+                    (bookmark.word == wordItem!!.word) &&
+                            (bookmark.mean == wordItem!!.mean)
                 }
-            }
-        } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                firebaseRepository.deleteWord(wordItem.toBookmarkWord()) { isDeleteBookmark ->
-                    if (!isDeleteBookmark) {
-                        _uiState.value = SelectDetectionUiState.Error("즐겨찾기 제거를 실패하였습니다.")
-                    }
-                }
+                _uiState.value = SelectDetectionUiState.BookmarkUpdated(filterList.isNotEmpty())
+            } else {
+                _uiState.value = SelectDetectionUiState.BookmarkUpdated(false)
             }
         }
     }
-}
+
+    fun toggleBookmark(state: Boolean) {
+        wordItem?.let { wordItem ->
+            if (state) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    firebaseRepository.addWord(wordItem.toBookmarkWord()) { isAddBookmark ->
+                        if (!isAddBookmark) {
+                            _uiState.value = SelectDetectionUiState.Error("즐겨찾기 추가를 실패하였습니다.")
+                        }
+                    }
+                }
+            } else {
+                viewModelScope.launch(Dispatchers.IO) {
+                    firebaseRepository.deleteWord(wordItem.toBookmarkWord()) { isDeleteBookmark ->
+                        if (!isDeleteBookmark) {
+                            _uiState.value = SelectDetectionUiState.Error("즐겨찾기 제거를 실패하였습니다.")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 fun DictionaryResponseItem.toMean(): String =

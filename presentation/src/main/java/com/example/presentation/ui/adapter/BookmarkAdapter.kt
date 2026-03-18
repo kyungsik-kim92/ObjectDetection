@@ -64,7 +64,8 @@ class BookmarkViewHolder(
         item: BookmarkWord,
         toggleMean: Boolean
     ) {
-        binding.item = item.toWordItem()
+        binding.word.text = item.toWordItem().word
+        binding.mean.text = item.toWordItem().mean
         binding.mean.isVisible = toggleMean
 
         itemView.setOnClickListener {

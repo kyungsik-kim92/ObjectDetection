@@ -108,8 +108,8 @@ class WordDetailFragment : Fragment() {
         binding.containerWordDetail.isVisible = true
 
         with(binding.viewWordDetail) {
-            item = state.item
-            phonetic.text = state.item?.phonetic
+            word.text = state.item?.word.orEmpty()
+            phonetic.text = state.item?.phonetic.orEmpty()
 
             val soundUrls = state.item?.phonetics?.filter { it.audio.isNotEmpty() } ?: emptyList()
             sound.isVisible = soundUrls.isNotEmpty()
