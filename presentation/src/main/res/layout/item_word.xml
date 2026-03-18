@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-        <variable
-            name="item"
-            type="com.example.model.WordItem" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
 
         <TextView
             android:id="@+id/word"
@@ -20,7 +12,6 @@
             android:lines="1"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="@{item.word}"
             android:textColor="@color/black"
             android:textSize="14dp"
             android:textStyle="bold"
@@ -37,7 +28,6 @@
             android:lines="1"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="@{item.mean}"
             android:textColor="@color/black"
             android:textSize="14dp"
             app:layout_constraintEnd_toStartOf="@id/delete_bookmark"
@@ -64,4 +54,3 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
