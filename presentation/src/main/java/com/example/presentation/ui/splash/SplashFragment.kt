@@ -97,10 +97,3 @@ class SplashFragment : Fragment() {
         _binding = null
     }
 }
-
-sealed interface LottieAnimateState {
-    object Start : LottieAnimateState
-    object End : LottieAnimateState
-    object Cancel : LottieAnimateState
-    object Repeat : LottieAnimateState
-}

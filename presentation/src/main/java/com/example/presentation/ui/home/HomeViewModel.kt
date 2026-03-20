@@ -8,8 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,14 +22,11 @@ class HomeViewModel @Inject constructor(
     val uiEvent: SharedFlow<HomeUiEvent> = _uiEvent.asSharedFlow()
 
     fun deleteBookmark(item: BookmarkWord) {
-        deleteWordUseCase(item)
-            .onEach { isSuccess ->
-                if (isSuccess) {
-                    viewModelScope.launch {
-                        _uiEvent.emit(HomeUiEvent.DeleteBookmark(item))
-                    }
-                }
+        viewModelScope.launch {
+            val isSuccess = deleteWordUseCase(item).first()
+            if (isSuccess) {
+                _uiEvent.emit(HomeUiEvent.DeleteBookmark(item))
             }
-            .launchIn(viewModelScope)
+        }
     }
 }

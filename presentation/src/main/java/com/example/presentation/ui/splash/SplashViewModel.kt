@@ -9,11 +9,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.timeout
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -29,17 +28,16 @@ class SplashViewModel @Inject constructor(
     private fun onAnimationState(state: LottieAnimateState) {
         when (state) {
             LottieAnimateState.Start -> {
-                updateWordListUseCase()
-                    .onStart { _uiState.value = SplashUiState.Loading }
-                    .timeout(10.seconds)
-                    .onEach {
-                        _uiState.value = SplashUiState.RouteLogin
-                    }
-                    .catch {
-                        _uiState.value = SplashUiState.RouteLogin
-                    }
-                    .launchIn(viewModelScope.plus(Dispatchers.IO))
-
+                viewModelScope.launch {
+                    updateWordListUseCase()
+                        .flowOn(Dispatchers.IO)
+                        .onStart { _uiState.value = SplashUiState.Loading }
+                        .timeout(10.seconds)
+                        .catch { _uiState.value = SplashUiState.RouteLogin }
+                        .collect {
+                            _uiState.value = SplashUiState.RouteLogin
+                        }
+                }
             }
 
             LottieAnimateState.End -> {
@@ -50,5 +48,11 @@ class SplashViewModel @Inject constructor(
             LottieAnimateState.Repeat -> {}
         }
     }
+}
 
+sealed interface LottieAnimateState {
+    object Start : LottieAnimateState
+    object End : LottieAnimateState
+    object Cancel : LottieAnimateState
+    object Repeat : LottieAnimateState
 }

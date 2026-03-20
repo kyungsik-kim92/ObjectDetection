@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +21,6 @@ class WordContentViewModel @Inject constructor(
     val inputTextFlow = MutableStateFlow("")
 
     init {
-
         viewModelScope.launch {
             val initialList = searchWordRepository.excelList.first()
             if (initialList.isNotEmpty()) {
@@ -33,20 +30,22 @@ class WordContentViewModel @Inject constructor(
             }
         }
 
-        inputTextFlow.onEach { searchText ->
-            if (searchText.isEmpty()) {
-                _uiState.value = WordContentUiState.Empty
-            } else {
-                val searchList = searchWordRepository.excelList.first()
-                    .filter { it.word.length >= searchText.length }
-                    .filter { it.word.substring(searchText.indices).contains(searchText) }
-
-                _uiState.value = if (searchList.isEmpty()) {
-                    WordContentUiState.Empty
+        viewModelScope.launch {
+            inputTextFlow.collect { searchText ->
+                if (searchText.isEmpty()) {
+                    _uiState.value = WordContentUiState.Empty
                 } else {
-                    WordContentUiState.Success(searchList)
+                    val searchList = searchWordRepository.excelList.first()
+                        .filter { it.word.length >= searchText.length }
+                        .filter { it.word.substring(searchText.indices).contains(searchText) }
+
+                    _uiState.value = if (searchList.isEmpty()) {
+                        WordContentUiState.Empty
+                    } else {
+                        WordContentUiState.Success(searchList)
+                    }
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 }

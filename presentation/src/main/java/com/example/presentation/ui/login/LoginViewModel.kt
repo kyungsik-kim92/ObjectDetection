@@ -13,9 +13,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,22 +36,19 @@ class LoginViewModel @Inject constructor(
             }
 
             CheckLoginState.Success -> {
-                firebaseLoginUseCase(email, password)
-                    .onStart {
+                viewModelScope.launch {
                     _uiState.value = LoginUiState.Loading
-                }.map { isSuccessful ->
+
+                    val isSuccessful = firebaseLoginUseCase(email, password).first()
                     if (isSuccessful) {
                         _uiState.value = LoginUiState.Success
-                        viewModelScope.launch {
-                            _uiEvent.emit(LoginUiEvent.RouteHome)
-                        }
+                        _uiEvent.emit(LoginUiEvent.RouteHome)
                     } else {
                         _uiState.value = LoginUiState.Idle
-                        viewModelScope.launch {
-                            _uiEvent.emit(LoginUiEvent.ShowToast("로그인을 실패하였습니다."))
-                        }
+                        _uiEvent.emit(LoginUiEvent.ShowToast("로그인을 실패하였습니다."))
+
                     }
-                }.launchIn(viewModelScope)
+                }
             }
         }
     }
