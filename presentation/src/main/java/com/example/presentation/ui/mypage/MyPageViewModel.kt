@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.firebase.FirebaseLogoutUseCase
 import com.example.domain.usecase.firebase.GetBookmarkWordListUseCase
 import com.example.domain.usecase.firebase.GetCurrentFirebaseUserUseCase
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

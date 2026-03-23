@@ -1,6 +1,6 @@
 package com.example.domain.repo
 
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth

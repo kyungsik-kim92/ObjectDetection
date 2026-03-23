@@ -1,6 +1,6 @@
 package com.example.data.network
 
-import com.example.model.api.ExcelResponse
+import com.example.domain.model.api.ExcelResponse
 import retrofit2.http.GET
 
 interface SheetApi {

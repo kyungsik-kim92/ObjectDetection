@@ -25,7 +25,7 @@
 
         <argument
             android:name="item_word"
-            app:argType="com.example.model.WordItem" />
+            app:argType="com.example.domain.model.WordItem" />
 
     </fragment>
 

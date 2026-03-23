@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.model.WordItem
+import com.example.domain.model.WordItem
 import com.example.presentation.databinding.ItemWordBinding
 
 class WordAdapter(

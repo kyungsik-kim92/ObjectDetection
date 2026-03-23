@@ -1,7 +1,7 @@
 package com.example.domain.repo
 
-import com.example.model.WordItem
-import com.example.model.api.DictionaryResponse
+import com.example.domain.model.WordItem
+import com.example.domain.model.api.DictionaryResponse
 import kotlinx.coroutines.flow.Flow
 
 

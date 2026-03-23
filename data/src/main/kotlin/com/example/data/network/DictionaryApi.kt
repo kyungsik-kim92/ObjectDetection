@@ -1,6 +1,6 @@
 package com.example.data.network
 
-import com.example.model.api.DictionaryResponse
+import com.example.domain.model.api.DictionaryResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

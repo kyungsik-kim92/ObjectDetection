@@ -1,7 +1,7 @@
 package com.example.presentation.ui.search.word
 
-import com.example.model.WordItem
-import com.example.model.api.DictionaryResponseItem
+import com.example.domain.model.WordItem
+import com.example.domain.model.api.DictionaryResponseItem
 
 sealed class WordDetailUiState {
     data object Loading : WordDetailUiState()

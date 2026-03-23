@@ -2,7 +2,7 @@ package com.example.domain.usecase.firebase
 
 import com.example.domain.repo.FirebaseRepository
 import com.example.domain.usecase.ext.toVoidCallbackFlow
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 import javax.inject.Inject
 
 class DeleteWordUseCase @Inject constructor(

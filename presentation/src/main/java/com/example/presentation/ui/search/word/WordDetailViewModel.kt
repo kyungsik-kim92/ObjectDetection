@@ -6,8 +6,8 @@ import com.example.domain.usecase.firebase.AddWordUseCase
 import com.example.domain.usecase.firebase.DeleteWordUseCase
 import com.example.domain.usecase.firebase.GetBookmarkWordListUseCase
 import com.example.domain.usecase.word.SearchWordUseCase
-import com.example.model.BookmarkWord
-import com.example.model.WordItem
+import com.example.domain.model.BookmarkWord
+import com.example.domain.model.WordItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.example.model.api
+package com.example.domain.model.api
 
 data class ExcelResponse(
     val word: String,

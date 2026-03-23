@@ -47,7 +47,6 @@ android {
 dependencies {
     implementation(projects.presentation)
     implementation(projects.data)
-    implementation(projects.model)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

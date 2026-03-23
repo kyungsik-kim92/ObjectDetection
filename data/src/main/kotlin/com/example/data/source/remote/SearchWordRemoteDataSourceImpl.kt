@@ -2,8 +2,8 @@ package com.example.data.source.remote
 
 import com.example.data.network.DictionaryApi
 import com.example.data.network.SheetApi
-import com.example.model.api.DictionaryResponse
-import com.example.model.api.ExcelResponse
+import com.example.domain.model.api.DictionaryResponse
+import com.example.domain.model.api.ExcelResponse
 import javax.inject.Inject
 
 

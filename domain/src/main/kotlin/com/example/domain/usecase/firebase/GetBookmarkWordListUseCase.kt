@@ -1,7 +1,7 @@
 package com.example.domain.usecase.firebase
 
 import com.example.domain.repo.FirebaseRepository
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.awaitClose

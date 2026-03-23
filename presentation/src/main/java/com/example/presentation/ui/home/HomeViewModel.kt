@@ -3,7 +3,7 @@ package com.example.presentation.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.firebase.DeleteWordUseCase
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

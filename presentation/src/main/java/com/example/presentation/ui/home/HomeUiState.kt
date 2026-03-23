@@ -1,6 +1,6 @@
 package com.example.presentation.ui.home
 
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 
 
 sealed class HomeUiEvent {

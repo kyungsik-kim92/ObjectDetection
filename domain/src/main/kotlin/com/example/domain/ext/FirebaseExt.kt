@@ -1,8 +1,8 @@
 package com.example.domain.ext
 
 import com.example.domain.repo.FirebaseRepository
-import com.example.model.BookmarkWord
-import com.example.model.toBookmarkWord
+import com.example.domain.model.BookmarkWord
+import com.example.domain.model.toBookmarkWord
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

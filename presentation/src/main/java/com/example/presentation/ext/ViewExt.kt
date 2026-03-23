@@ -3,7 +3,7 @@ package com.example.presentation.ext
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import com.example.model.WordItem
+import com.example.domain.model.WordItem
 import com.example.presentation.R
 import com.example.presentation.ui.home.HomeFragmentDirections
 import com.example.presentation.ui.search.detect.CameraFragmentDirections

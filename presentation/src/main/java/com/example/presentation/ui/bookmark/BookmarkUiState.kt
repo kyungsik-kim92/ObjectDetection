@@ -1,6 +1,6 @@
 package com.example.presentation.ui.bookmark
 
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 
 sealed class BookmarkUiState {
     data object Loading : BookmarkUiState()

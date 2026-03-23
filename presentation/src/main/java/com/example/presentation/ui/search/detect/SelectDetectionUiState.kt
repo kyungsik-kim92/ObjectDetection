@@ -1,6 +1,6 @@
 package com.example.presentation.ui.search.detect
 
-import com.example.model.api.DictionaryResponseItem
+import com.example.domain.model.api.DictionaryResponseItem
 
 sealed class SelectDetectionUiState {
     data object Loading : SelectDetectionUiState()

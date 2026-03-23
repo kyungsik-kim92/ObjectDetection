@@ -1,4 +1,4 @@
-package com.example.model.api
+package com.example.domain.model.api
 
 class DictionaryResponse : ArrayList<DictionaryResponseItem>()
 

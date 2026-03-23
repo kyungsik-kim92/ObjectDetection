@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import com.example.domain.model.BookmarkWord
 import com.example.presentation.databinding.FragmentWordDetailBinding
 import com.example.presentation.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +56,7 @@ class WordDetailFragment : Fragment() {
 
                 if (!bookmarkState) {
                     currentState.item?.let { item ->
-                        val bookmarkWord = com.example.model.BookmarkWord(
+                        val bookmarkWord = BookmarkWord(
                             word = item.word,
                             mean = currentState.item.meanings.firstOrNull()?.definitions?.firstOrNull()?.definition
                                 ?: ""

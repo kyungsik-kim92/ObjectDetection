@@ -7,8 +7,8 @@ import com.example.domain.ext.deleteWord
 import com.example.domain.ext.getWordList
 import com.example.domain.repo.FirebaseRepository
 import com.example.domain.repo.SearchWordRepository
-import com.example.model.WordItem
-import com.example.model.api.DictionaryResponseItem
+import com.example.domain.model.WordItem
+import com.example.domain.model.api.DictionaryResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

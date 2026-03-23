@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.ksp)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -35,9 +36,6 @@ android {
 }
 
 dependencies {
-
-    implementation(projects.model)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)

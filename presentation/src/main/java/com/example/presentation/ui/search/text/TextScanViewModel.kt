@@ -1,6 +1,7 @@
 package com.example.presentation.ui.search.text
 
 import androidx.lifecycle.ViewModel
+import com.example.domain.model.WordItem
 import com.example.domain.repo.SearchWordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 
@@ -53,7 +54,7 @@ class TextScanViewModel @Inject constructor(
         _uiState.value = TextScanUiState.Idle
     }
 
-    suspend fun getLocalWordList(): List<com.example.model.WordItem> {
+    suspend fun getLocalWordList(): List<WordItem> {
         return searchWordRepository.excelList.first()
     }
 }

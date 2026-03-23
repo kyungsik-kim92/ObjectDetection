@@ -2,7 +2,7 @@ package com.example.data.repo
 
 import com.example.data.source.remote.FirebaseRemoteDataSource
 import com.example.domain.repo.FirebaseRepository
-import com.example.model.BookmarkWord
+import com.example.domain.model.BookmarkWord
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
