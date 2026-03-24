@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.ext.addWord
 import com.example.domain.ext.deleteWord
 import com.example.domain.ext.getWordList
-import com.example.domain.repo.FirebaseRepository
-import com.example.domain.repo.SearchWordRepository
 import com.example.domain.model.WordItem
 import com.example.domain.model.api.DictionaryResponseItem
+import com.example.domain.repo.FirebaseRepository
+import com.example.domain.repo.SearchWordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +36,7 @@ class SelectDetectionViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val dictionaryResponse = searchWordRepository.searchMeanWord(word)
-                    val getData = dictionaryResponse.filter { it.word == word }
+                    val getData = dictionaryResponse.items.filter { it.word == word }
 
                     if (getData.isNotEmpty()) {
                         currentWord = getData[0]

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -56,9 +57,15 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    implementation(libs.androidx.annotation.experimental)
+
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.retrofit.converter.kotlinx.serialization)
 }

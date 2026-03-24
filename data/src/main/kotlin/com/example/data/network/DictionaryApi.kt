@@ -1,6 +1,6 @@
 package com.example.data.network
 
-import com.example.domain.model.api.DictionaryResponse
+import com.example.domain.model.api.DictionaryResponseItem
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -13,7 +13,7 @@ interface DictionaryApi {
     @GET(URL_DICTIONARY)
     suspend fun getDictionaryMean(
         @Path("word") word: String
-    ): DictionaryResponse
+    ): List<DictionaryResponseItem>
 
 
 }

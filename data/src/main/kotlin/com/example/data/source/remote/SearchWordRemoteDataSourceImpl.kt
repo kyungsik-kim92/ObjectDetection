@@ -14,7 +14,8 @@ class SearchWordRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun searchMeanWord(word: String): DictionaryResponse {
         return try {
-            dictionaryApi.getDictionaryMean(word)
+            val items = dictionaryApi.getDictionaryMean(word)
+            DictionaryResponse(items = items)
         } catch (e: retrofit2.HttpException) {
             if (e.code() == 404) {
                 DictionaryResponse()

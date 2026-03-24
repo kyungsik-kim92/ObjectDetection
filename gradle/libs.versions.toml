@@ -22,6 +22,8 @@ junit = "4.13.2"
 junitExt = "1.2.1"
 espresso = "3.6.1"
 
+androidxAnnotationExperimental = "1.5.1"
+
 mlkitFaceDetection = "16.1.5"
 playServicesMlkitFaceDetection = "17.0.1"
 
@@ -36,7 +38,7 @@ hilt = "2.52"
 
 firebaseBom = "32.7.3"
 
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 
 
 lottie = "6.1.0"
@@ -61,6 +63,8 @@ navigationFragmentKtx = "2.9.6"
 navigationUiKtx = "2.9.6"
 navigationFragmentKtxVersion = "2.9.7"
 navigationUiKtxVersion = "2.9.7"
+
+kotlinxSerialization = "1.7.3"
 
 [libraries]
 # AndroidX Core
@@ -93,6 +97,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 
+androidx-annotation-experimental = { group = "androidx.annotation", name = "annotation-experimental", version.ref = "androidxAnnotationExperimental" }
 # Google ML Kit
 google-mlkit-face-detection = { group = "com.google.mlkit", name = "face-detection", version.ref = "mlkitFaceDetection" }
 play-services-mlkit-face-detection = { group = "com.google.android.gms", name = "play-services-mlkit-face-detection", version.ref = "playServicesMlkitFaceDetection" }
@@ -126,15 +131,15 @@ lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie"
 # Material CalendarView
 material-calendarview = { group = "com.github.prolificinteractive", name = "material-calendarview", version.ref = "materialCalendarView" }
 
-# Gson
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-
 google-mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 androidx-navigation-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtxVersion" }
 androidx-navigation-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtxVersion" }
 
+# Kotlin-sirialization
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -148,7 +153,7 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationSafeArgs" }
 download = { id = "de.undercouch.download", version.ref = "download" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [bundles]
 # AndroidX Core

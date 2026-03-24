@@ -1,28 +1,37 @@
 package com.example.domain.model.api
 
-class DictionaryResponse : ArrayList<DictionaryResponseItem>()
+import kotlinx.serialization.Serializable
 
+@Serializable
+data class DictionaryResponse(
+    val items: List<DictionaryResponseItem> = emptyList()
+)
+
+@Serializable
 data class DictionaryResponseItem(
-    var meanings: List<Meaning> = emptyList(),
-    var origin: String = "",
-    var phonetic: String = "",
-    var phonetics: List<Phonetic> = emptyList(),
-    var word: String = ""
+    val meanings: List<Meaning> = emptyList(),
+    val origin: String = "",
+    val phonetic: String = "",
+    val phonetics: List<Phonetic> = emptyList(),
+    val word: String = ""
 )
 
+@Serializable
 data class Meaning(
-    var definitions: List<Definition> = emptyList(),
-    var partOfSpeech: String = ""
+    val definitions: List<Definition> = emptyList(),
+    val partOfSpeech: String = ""
 )
 
+@Serializable
 data class Phonetic(
-    var audio: String = "",
-    var text: String = ""
+    val audio: String = "",
+    val text: String = ""
 )
 
+@Serializable
 data class Definition(
-    var antonyms: List<Any> = emptyList(),
-    var definition: String = "",
-    var example: String = "",
-    var synonyms: List<Any> = emptyList()
+    val antonyms: List<String> = emptyList(),
+    val definition: String = "",
+    val example: String = "",
+    val synonyms: List<String> = emptyList()
 )

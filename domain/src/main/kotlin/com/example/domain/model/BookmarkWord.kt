@@ -1,13 +1,15 @@
 package com.example.domain.model
 
+import kotlinx.serialization.Serializable
 import java.util.Calendar
 
+@Serializable
 data class BookmarkWord(
     val word: String,
     val mean: String,
-    var year: String = Calendar.getInstance().get(Calendar.YEAR).toString(),
-    var month: String = (Calendar.getInstance().get(Calendar.MONTH) + 1).toString(),
-    var day: String = (Calendar.getInstance().get(Calendar.DATE)).toString()
+    val year: String = Calendar.getInstance().get(Calendar.YEAR).toString(),
+    val month: String = (Calendar.getInstance().get(Calendar.MONTH) + 1).toString(),
+    val day: String = (Calendar.getInstance().get(Calendar.DATE)).toString()
 ) {
     fun toWordItem(): WordItem =
         WordItem(word, mean)

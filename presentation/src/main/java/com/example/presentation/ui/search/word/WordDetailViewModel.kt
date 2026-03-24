@@ -2,12 +2,12 @@ package com.example.presentation.ui.search.word
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.model.BookmarkWord
+import com.example.domain.model.WordItem
 import com.example.domain.usecase.firebase.AddWordUseCase
 import com.example.domain.usecase.firebase.DeleteWordUseCase
 import com.example.domain.usecase.firebase.GetBookmarkWordListUseCase
 import com.example.domain.usecase.word.SearchWordUseCase
-import com.example.domain.model.BookmarkWord
-import com.example.domain.model.WordItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +38,7 @@ class WordDetailViewModel @Inject constructor(
         _uiState.value = WordDetailUiState.Loading
 
         viewModelScope.launch {
-            val searchResult = searchWordUseCase(wordItem.word).firstOrNull().orEmpty()
+            val searchResult = searchWordUseCase(wordItem.word).firstOrNull()?.items.orEmpty()
             if (searchResult.isEmpty()) {
                 _uiState.value = WordDetailUiState.NotFound
                 return@launch

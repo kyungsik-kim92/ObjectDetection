@@ -6,8 +6,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
 
 
@@ -17,20 +19,20 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideDictionaryApi(): DictionaryApi {
+    fun provideDictionaryApi(json: Json): DictionaryApi {
         return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(DICTIONARY_URL)
+            .addConverterFactory(json.asConverterFactory("application/json; charset=UTF-8".toMediaType()))
             .build()
             .create(DictionaryApi::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideSheetApi(): SheetApi {
+    fun provideSheetApi(json: Json): SheetApi {
         return Retrofit.Builder()
             .baseUrl(SHEET_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(json.asConverterFactory("application/json; charset=UTF-8".toMediaType()))
             .build()
             .create(SheetApi::class.java)
     }

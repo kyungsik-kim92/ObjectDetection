@@ -1,16 +1,18 @@
 package com.example.domain.usecase.firebase
 
-import com.example.domain.repo.FirebaseRepository
 import com.example.domain.model.BookmarkWord
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.domain.repo.FirebaseRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import javax.inject.Inject
 
 class GetBookmarkWordListUseCase @Inject constructor(
     private val getCurrentFirebaseUserUseCase: GetCurrentFirebaseUserUseCase,
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    private val json: Json
 ) {
     operator fun invoke() = callbackFlow<List<BookmarkWord>> {
         val currentUser = getCurrentFirebaseUserUseCase()
@@ -21,32 +23,33 @@ class GetBookmarkWordListUseCase @Inject constructor(
             return@callbackFlow
         }
 
-        firebaseRepository.getFirebaseFireStore()
+        val registration = firebaseRepository.getFirebaseFireStore()
             .collection(currentUser.email ?: "")
             .document("word")
-            .addSnapshotListener { value, error ->
+            .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     trySend(emptyList())
-                } else if (value?.exists() == true) {
-                    try {
-                        val list = value["list"]
-                        if (list != null) {
-                            trySend(Gson().fromJson<List<BookmarkWord>>(list))
-                        } else {
-                            trySend(emptyList())
-                        }
-                    } catch (e: Exception) {
-                        trySend(emptyList())
-                    }
-                } else {
-                    trySend(emptyList())
+                    return@addSnapshotListener
                 }
+                val rawList = snapshot?.get("list")
+                trySend(rawList.toBookmarkWords(json))
             }
-        awaitClose()
+        awaitClose { registration.remove() }
     }
 
 
-    private inline fun <reified T> Gson.fromJson(json: Any?): T =
-        fromJson(toJson(json), object : TypeToken<T>() {}.type)
-
+    private fun Any?.toBookmarkWords(json: Json): List<BookmarkWord> {
+        val items = this as? List<*> ?: return emptyList()
+        return items.mapNotNull { item ->
+            val map = item as? Map<*, *> ?: return@mapNotNull null
+            runCatching {
+                val jsonObject = JsonObject(
+                    map.entries.associate { (k, v) ->
+                        k.toString() to JsonPrimitive(v?.toString().orEmpty())
+                    }
+                )
+                json.decodeFromJsonElement(BookmarkWord.serializer(), jsonObject)
+            }.getOrNull()
+        }
+    }
 }
